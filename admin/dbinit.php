@@ -1,5 +1,5 @@
 <?php
-    require_once 'db.php';
+    require_once '../util/db.php';
 
     // user accounts
     //     password: hash('sha256', '...')
