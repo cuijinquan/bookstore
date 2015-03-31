@@ -5,7 +5,7 @@
         global $db_conn;
 
         // books to sell
-        $db_conn->query('
+        return $db_conn->query('
             create table book (
                 book_id         int             primary key,
                 owner_user_id   int,

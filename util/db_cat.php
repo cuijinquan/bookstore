@@ -5,7 +5,7 @@
         global $db_conn;
 
         // catalogs
-        $db_conn->query('
+        return $db_conn->query('
             create table cat (
                 cat_id          int             primary key,
 

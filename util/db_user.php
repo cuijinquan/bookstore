@@ -7,7 +7,7 @@
         // user accounts
         //     password: hash('sha256', '...')
         //     is_admin: 'Y' or 'N'
-        $db_conn->query('
+        return $db_conn->query('
             create table user (
                 user_id         int             primary key,
 

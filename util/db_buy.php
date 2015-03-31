@@ -6,7 +6,7 @@
 
         // orders
         //     address: full shipping information
-        $db_conn->query('
+        return $db_conn->query('
             create table buy (
                 buy_id          int             primary key,
                 buy_book_id     int,
