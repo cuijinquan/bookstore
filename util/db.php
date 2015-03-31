@@ -1,6 +1,10 @@
 <?php
     require_once 'config.php';
 
-    $db_conn = mysql_connect($db, $db_username, $db_password);
-    mysql_select_db($db_name, $db_conn)
+    $db_conn = new mysqli($db_ip, $db_username, $db_password, $db_name, $db_port);
+
+    if ($db_conn->connect_error) {
+        die('DB error: ' . $mysqli->connect_error);
+    }
+
 ?>

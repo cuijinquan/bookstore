@@ -1,9 +1,11 @@
 <?php
-    require_once '../util/db.php';
+    require_once 'db.php';
 
     function db_cat_init() {
+        global $db_conn;
+
         // catalogs
-        mysql_query('
+        $db_conn->query('
             create table cat (
                 cat_id          int             primary key,
 

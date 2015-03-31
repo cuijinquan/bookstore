@@ -1,9 +1,11 @@
 <?php
-    require_once '../util/db.php';
+    require_once 'db.php';
 
     function db_book_init() {
+        global $db_conn;
+
         // books to sell
-        mysql_query('
+        $db_conn->query('
             create table book (
                 book_id         int             primary key,
                 owner_user_id   int,

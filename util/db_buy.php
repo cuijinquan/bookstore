@@ -1,10 +1,12 @@
 <?php
-    require_once '../util/db.php';
+    require_once 'db.php';
 
     function db_buy_init() {
+        global $db_conn;
+
         // orders
         //     address: full shipping information
-        mysql_query('
+        $db_conn->query('
             create table buy (
                 buy_id          int             primary key,
                 buy_book_id     int,

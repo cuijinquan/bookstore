@@ -1,11 +1,13 @@
 <?php
-    require_once '../util/db.php';
+    require_once 'db.php';
 
     function db_user_init() {
+        global $db_conn;
+
         // user accounts
         //     password: hash('sha256', '...')
         //     is_admin: 'Y' or 'N'
-        mysql_query('
+        $db_conn->query('
             create table user (
                 user_id         int             primary key,
 
@@ -14,6 +16,7 @@
                 password        char(64),
                 is_admin        char(1),
                 location        varchar(64),
+                address         text,
                 about           text,
 
                 date_create     datetime,
@@ -21,5 +24,4 @@
             );
         ');
     }
-
 ?>
