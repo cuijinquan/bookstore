@@ -16,24 +16,47 @@
         ');
     }
 
-    // example: db_insert('some_table', '1', '2', '3', '4', '5', '6', '7', '8');
-    function db_insert($table) {
+    function db_write($table) {
         global $db_conn;
 
         $data_str = '';
 
         for ($i = 1; $i < func_num_args(); $i += 1) {
-            $item = func_get_arg($i);
+            $value = func_get_arg($i);
 
             if ($i == 1) {
-                $data_str = '"' . $db_conn->escape_string($item) . '"';
+                $data_str = '"' . $db_conn->escape_string($value) . '"';
             } else {
-                $data_str = $data_str . ', "' . $db_conn->escape_string($item) . '"';
+                $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
             }
         }
 
         return $db_conn->query('
             replace into `' . $db_conn->escape_string($table) . '`
+            values (' . $data_str . ')
+        ');
+    }
+
+    function db_write_dict($table, $data) {
+        global $db_conn;
+
+        $column_str = '';
+        $data_str = '';
+
+        foreach ($data as $key => $value) {
+            if ($value != null) {
+                if ($column_str == '') {
+                    $column_str = '`' . $db_conn->escape_string($key) . '`';
+                    $data_str = '"' . $db_conn->escape_string($value) . '"';
+                } else {
+                    $column_str = $column_str . ', `' . $db_conn->escape_string($key) . '`';
+                    $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
+                }
+            }
+        }
+
+        return $db_conn->query('
+            replace into `' . $db_conn->escape_string($table) . '` (' . $column_str . ')
             values (' . $data_str . ')
         ');
     }
