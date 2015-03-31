@@ -7,9 +7,9 @@
         // catalogs
         return $db_conn->query('
             create table cat (
-                cat_id          int             primary key,
+                cat_id          bigint          primary key,
 
-                parent_cat_id   int,
+                parent_cat_id   bigint,
                 name            varchar(64)     unique,
                 detail          text
             );

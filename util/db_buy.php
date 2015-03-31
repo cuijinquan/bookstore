@@ -8,9 +8,9 @@
         //     address: full shipping information
         return $db_conn->query('
             create table buy (
-                buy_id          int             primary key,
-                buy_book_id     int,
-                buyer_user_id   int,
+                buy_id          bigint          primary key,
+                buy_book_id     bigint,
+                buyer_user_id   bigint,
 
                 address         text,
                 feedback        text,

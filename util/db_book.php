@@ -7,14 +7,14 @@
         // books to sell
         return $db_conn->query('
             create table book (
-                book_id         int             primary key,
-                owner_user_id   int,
-                parent_cat_id   int,
+                book_id         bigint          primary key,
+                owner_user_id   bigint,
+                parent_cat_id   bigint,
 
                 name            varchar(64),
                 detail          text,
                 price           varchar(64),
-                inventory       int,
+                inventory       bigint,
 
                 date_add        datetime
             );
