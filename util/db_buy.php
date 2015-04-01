@@ -21,4 +21,8 @@
             );
         ');
     }
+
+    function db_buy_get($buy_id) {
+        return db_select('buy', 'buy_id', $buy_id)->fetch_assoc();
+    }
 ?>

@@ -1,14 +1,14 @@
 <?php
     require_once '../util/ajax.php';
     require_once '../util/session.php';
-    require_once '../util/db.php';
+    require_once '../util/db_user.php';
 
     $post_name = ajax_arg('name');
     $post_password = ajax_arg('password');
 
     $auth_salt = session_delete('auth_salt');
 
-    $user_info = db_select('user', 'name', $post_name)->fetch_assoc();
+    $user_info = db_user_get_name($post_name);
     if ($user_info) {
         $auth_password = $hash('sha256', $user_info['password'] . $auth_salt);
         if ($post_password == $auth_password) {

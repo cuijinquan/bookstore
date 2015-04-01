@@ -24,4 +24,12 @@
             );
         ');
     }
+
+    function db_user_get($user_id) {
+        return db_select('user', 'user_id', $user_id)->fetch_assoc();
+    }
+
+    function db_user_get_name($name) {
+        return db_select('user', 'name', $name)->fetch_assoc();
+    }
 ?>

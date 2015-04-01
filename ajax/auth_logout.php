@@ -1,7 +1,6 @@
 <?php
     require_once '../util/ajax.php';
     require_once '../util/session.php';
-    require_once '../util/db.php';
 
     $post_user_id = ajax_arg('user_id');
 
