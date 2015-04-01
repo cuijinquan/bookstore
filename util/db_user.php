@@ -9,7 +9,7 @@
         //     is_admin: 'Y' or 'N'
         return $db_conn->query('
             create table user (
-                user_id         bigint          primary key,
+                user_id         bigint          auto_increment  primary key,
 
                 mail            varchar(64)     unique,
                 name            varchar(64)     unique,

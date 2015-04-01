@@ -7,9 +7,9 @@
         // books to sell
         return $db_conn->query('
             create table book (
-                book_id         bigint          primary key,
-                owner_user_id   bigint,
-                parent_cat_id   bigint,
+                book_id         bigint          auto_increment  primary key,
+                owner_user_id   bigint          not null,
+                parent_cat_id   bigint          not null,
 
                 name            varchar(64),
                 detail          text,
