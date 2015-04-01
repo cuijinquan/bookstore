@@ -68,4 +68,13 @@
             values (' . $data_str . ')
         ');
     }
+
+    function db_delete($table, $column, $value) {
+        global $db_conn;
+
+        return $db_conn->query('
+            delete from `' . $db_conn->escape_string($table) . '`
+            where `' . $db_conn->escape_string($column) . '` = "' . $db_conn->escape_string($value) . '"
+        ');
+    }
 ?>
