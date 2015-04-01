@@ -18,6 +18,29 @@
 
     $_SESSION['session_time'] = time();
 
+    function session_get($key) {
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        } else {
+            return null;
+        }
+    }
+
+    function session_set($key, $value) {
+        $_SESSION[$key] = $value;
+    }
+
+    function session_delete($key) {
+        if (isset($_SESSION[$key])) {
+            $value = $_SESSION[$key];
+            unset($_SESSION[$key]);
+        } else {
+            $value = null;
+        }
+
+        return $value;
+    }
+
     // $_SESSION['test'] = $_SESSION['test'] . '.';
     // echo $_SESSION['session_time'] . ' ';
     // echo $_SESSION['session_create'] . ' ';
