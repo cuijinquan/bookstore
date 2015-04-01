@@ -1,6 +1,9 @@
 <?php
     $site_name = 'Yet Another Bookstore';
-    $size_version = '1.0';
+    $site_version = '1.0';
+
+    $session_timeout = 60 * 60;
+    $session_create_timeout = 60 * 60 * 24;
 
     $db_ip = '127.0.0.1';
     $db_port = 3306;

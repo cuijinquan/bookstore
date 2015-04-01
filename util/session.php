@@ -1,11 +1,13 @@
 <?php
+    require_once 'config.php';
+
     session_start();
 
     if (
         (!isset($_SESSION['session_time']))
         || (!isset($_SESSION['session_create']))
-        || (time() - $_SESSION['session_time'] > 60 * 60)
-        || (time() - $_SESSION['session_create'] > 60 * 60 * 24)
+        || (time() - $_SESSION['session_time'] >= $session_timeout)
+        || (time() - $_SESSION['session_create'] >= $session_create_timeout)
     ) {
         // reset session
         session_destroy();
