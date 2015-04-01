@@ -24,7 +24,7 @@
         ');
     }
 
-    function db_write($table) {
+    function db_insert($table) {
         global $db_conn;
 
         $data_str = '';
@@ -40,13 +40,19 @@
         }
 
         return $db_conn->query('
-            replace into `' . $db_conn->escape_string($table) . '`
+            insert into `' . $db_conn->escape_string($table) . '`
             values (' . $data_str . ')
         ');
     }
 
-    function db_write_dict($table, $data) {
+    function db_write($table, $data, $replace = false) {
         global $db_conn;
+
+        if ($replace) {
+            $command = 'replace';
+        } else {
+            $command = 'insert';
+        }
 
         $column_str = '';
         $data_str = '';
@@ -64,7 +70,7 @@
         }
 
         return $db_conn->query('
-            replace into `' . $db_conn->escape_string($table) . '` (' . $column_str . ')
+            ' . $command . ' into `' . $db_conn->escape_string($table) . '` (' . $column_str . ')
             values (' . $data_str . ')
         ');
     }
