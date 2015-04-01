@@ -7,12 +7,20 @@
         die('DB error: ' . $mysqli->connect_error);
     }
 
-    function db_select($table, $column, $value) {
+    function db_select($table, $column, $value, $begin = 0, $count = 1000, $desc = false) {
         global $db_conn;
+
+        if ($desc) {
+            $order = 'desc';
+        } else {
+            $order = 'asc';
+        }
 
         return $db_conn->query('
             select * from `' . $db_conn->escape_string($table) . '`
             where `' . $db_conn->escape_string($column) . '` = "' . $db_conn->escape_string($value) . '"
+            order by `' . $db_conn->escape_string($column) . '` ' . $order . '
+            limit ' . $begin . ', ' . $count . '
         ');
     }
 
