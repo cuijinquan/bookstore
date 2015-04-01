@@ -1,6 +1,18 @@
 <?php
     require_once 'config.php';
 
+    function get_arg($key) {
+        global $post;
+
+        if (isset($post[$key])) {
+            return $post[$key];
+        } else {
+            // return null;
+            header("HTTP/1.1 403 Forbidden");
+            die('bad call');
+        }
+    }
+
     function gen_ajax() {
         global $site_name;
         global $site_version;
@@ -16,5 +28,4 @@
 
         return json_encode($content);
     }
-
 ?>

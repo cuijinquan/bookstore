@@ -2,6 +2,9 @@
     $site_name = 'Yet Another Bookstore';
     $site_version = '1.0';
 
+    // $post = $_POST
+    $post = $_REQUEST;
+
     $session_timeout = 60 * 60;
     $session_create_timeout = 60 * 60 * 24;
 

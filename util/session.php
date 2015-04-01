@@ -40,9 +40,4 @@
 
         return $value;
     }
-
-    // $_SESSION['test'] = $_SESSION['test'] . '.';
-    // echo $_SESSION['session_time'] . ' ';
-    // echo $_SESSION['session_create'] . ' ';
-    // echo $_SESSION['test'];
 ?>
