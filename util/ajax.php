@@ -1,11 +1,11 @@
 <?php
     require_once 'config.php';
 
-    function get_arg($key) {
-        global $post;
+    function ajax_arg($key) {
+        global $ajax_post;
 
-        if (isset($post[$key])) {
-            return $post[$key];
+        if (isset($ajax_post[$key])) {
+            return $ajax_post[$key];
         } else {
             // return null;
             header("HTTP/1.1 403 Forbidden");
@@ -13,7 +13,7 @@
         }
     }
 
-    function gen_ajax() {
+    function ajax_gen() {
         global $site_name;
         global $site_version;
 

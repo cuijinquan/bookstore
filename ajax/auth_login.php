@@ -3,8 +3,8 @@
     require_once '../util/session.php';
     require_once '../util/db.php';
 
-    $post_name = get_arg('auth_name');
-    $post_password = get_arg('auth_password');
+    $post_name = ajax_arg('name');
+    $post_password = ajax_arg('password');
 
     $auth_salt = session_delete('auth_salt');
 
@@ -14,26 +14,30 @@
         if ($post_password == $auth_password) {
             // login ok
 
+            $auth_user_id = $user_info['user_id'];
             $auth_name = $post_name;
             $auth_success = true;
 
-            session_set('auth_name', $auth_name);
+            session_set('auth_user_id', $auth_user_id);
         } else {
             // wrong password
 
+            $auth_user_id = null;
             $auth_name = $post_name;
             $auth_success = false;
 
-            session_delete('auth_name');
+            session_delete('auth_user_id');
         }
     } else {
         // wrong name
 
+        $auth_user_id = null;
         $auth_name = null;
         $auth_success = false;
     }
 
-    echo gen_ajax(
+    echo ajax_gen(
+        'auth_user_id', $auth_user_id,
         'auth_name', $auth_name,
         'auth_success', $auth_success
     );

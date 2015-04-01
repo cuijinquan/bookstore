@@ -7,7 +7,7 @@
 
     session_set('auth_salt', $auth_salt);
 
-    echo gen_ajax(
+    echo ajax_gen(
         'auth_salt', $auth_salt
     );
 ?>
