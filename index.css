@@ -4,7 +4,6 @@
     margin: 0;
     padding: 0;
 
-    line-height: 100%;
     font-family: sans-serif;
 }
 
@@ -22,25 +21,42 @@
 
     background: #58F;
     color: #DEF;
-    text-shadow: 1px 1px #36D;
-
+    text-shadow: 1px 1px #36F;
 }
 
 .title {
     float: left;
-    margin: 16px 4px;
+    margin: 16px 8px;
 
     height: 32px;
 
+    line-height: 100%;
     font-size: 32px;
     cursor: pointer;
 }
 
 .button {
     float: right;
-    margin: 20px 4px;
+    margin: 19px 8px;
 
+    border-top: solid 1px #47F;
+    border-bottom: solid 1px #69F;
     width: 72px;
+    max-height: 32px;
+
+    line-height: 150%;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.button_long {
+    float: right;
+    margin: 19px 8px;
+
+    border-top: solid 1px #47F;
+    border-bottom: solid 1px #69F;
+    width: 144px;
     max-height: 32px;
 
     line-height: 150%;
@@ -53,9 +69,34 @@
     float: right;
     margin: 20px 4px;
 
-    border: none;
+    border: solid 2px #47F;
     width: 128px;
-    height: 24px;
+    height: 20px;
 
+    line-height: 100%;
     background: #DEF;
+}
+
+/* -------- content -------- */
+
+#content {
+    position: absolute;
+    top: 64px;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+    padding: 0 96px;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#footer {
+    margin: 8px 0;
+    padding: 8px 0;
+
+    border-top: solid 1px #888;
+
+    color: #888;
+    text-align: center;
 }

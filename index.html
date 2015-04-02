@@ -7,16 +7,17 @@
 
     <link rel="stylesheet" type="text/css" href="index.css" />
     <script src='lib/jquery.min.js'></script>
+    <script src='lib/sha256.js'></script>
     <script src='index.js'></script>
 </head>
 <body>
     <div id='header'>
         <div id='btn_login' class='button login_need'>登录</div>
-        <input id='input_pass' class='input login_need' type='password' />
-        <input id='input_name' class='input login_need' />
+        <input id='input_password' class='input login_need' type='password' placeholder="密码..." />
+        <input id='input_name' class='input login_need' placeholder="用户名..." />
 
         <div id='btn_logout' class='button login_ok'>退出</div>
-        <div id='btn_my' class='button login_ok'>我的</div>
+        <div id='btn_my' class='button_long login_ok'><span id='text_name'></span></div>
         <div id='btn_orders' class='button login_ok'>订单</div>
 
         <div id='btn_stores' class='button'>商家</div>
