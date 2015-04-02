@@ -57,7 +57,7 @@
         ');
     }
 
-    function db_write($table, $data, $replace = false) {
+    function db_write($table, $data, $replace) {
         global $db_conn;
 
         if ($replace) {

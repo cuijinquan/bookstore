@@ -26,6 +26,20 @@
         return db_select('buy', 'buy_id', $buy_id)->fetch_assoc();
     }
 
+    function db_buy_list_book(
+        $book_id,
+        $begin, $count = 20, $desc = true
+    ) {
+        return db_select('buy', 'buy_book_id', $book_id, $begin, $count, $desc);
+    }
+
+    function db_buy_list_buyer(
+        $user_id,
+        $begin, $count = 20, $desc = true
+    ) {
+        return db_select('buy', 'buyer_user_id', $user_id, $begin, $count, $desc);
+    }
+
     function db_buy_set($data) {
         return db_write('buy', $data, true);
     }
