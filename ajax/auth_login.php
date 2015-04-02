@@ -9,8 +9,10 @@
     $auth_salt = session_delete('auth_salt');
 
     $user_info = db_user_get_name($post_name);
+
     if ($user_info) {
         $auth_password = $hash('sha256', $user_info['password'] . $auth_salt);
+
         if ($post_password == $auth_password) {
             // login ok
 
