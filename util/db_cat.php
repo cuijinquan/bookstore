@@ -28,7 +28,9 @@
         $cat_id,
         $begin, $count = 20, $desc = true
     ) {
-        return db_select('cat', 'parent_cat_id', $cat_id, $begin, $count, $desc);
+        return db_select(
+            'cat', 'parent_cat_id', $cat_id, $begin, $count, $desc
+        );
     }
 
     function db_cat_set($data) {
