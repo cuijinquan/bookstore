@@ -1,0 +1,61 @@
+/* -------- global -------- */
+
+* {
+    margin: 0;
+    padding: 0;
+
+    line-height: 100%;
+    font-family: sans-serif;
+}
+
+/* -------- header -------- */
+
+#header {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    right: 0%;
+    padding: 0 96px;
+
+    overflow: hidden;
+    height: 64px;
+
+    background: #58F;
+    color: #DEF;
+    text-shadow: 1px 1px #36D;
+
+}
+
+.title {
+    float: left;
+    margin: 16px 4px;
+
+    height: 32px;
+
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.button {
+    float: right;
+    margin: 20px 4px;
+
+    width: 72px;
+    max-height: 32px;
+
+    line-height: 150%;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.input {
+    float: right;
+    margin: 20px 4px;
+
+    border: none;
+    width: 128px;
+    height: 24px;
+
+    background: #DEF;
+}
