@@ -21,6 +21,18 @@
         ');
     }
 
+    function db_book_add(
+        $owner_user_id, $parent_cat_id,
+        $name, $detail, $price, $inventory
+    ) {
+        return db_insert(
+            'book',
+            null, $owner_user_id, $parent_cat_id,
+            $name, $detail, $price, $inventory,
+            time()
+        );
+    }
+
     function db_book_get($book_id) {
         return db_select('book', 'book_id', $book_id)->fetch_assoc();
     }

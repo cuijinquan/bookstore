@@ -22,6 +22,18 @@
         ');
     }
 
+    function db_buy_add(
+        $buy_book_id, $buyer_user_id,
+        $address
+    ) {
+        return db_insert(
+            'buy',
+            null, $buy_book_id, $buyer_user_id,
+            $address, null,
+            time(), null, null
+        );
+    }
+
     function db_buy_get($buy_id) {
         return db_select('buy', 'buy_id', $buy_id)->fetch_assoc();
     }
