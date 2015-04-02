@@ -7,9 +7,12 @@
         die('DB error: ' . $mysqli->connect_error);
     }
 
+    $db_conn->query('set character set "utf8";');
+    $db_conn->query('set names "utf8";');
+
     function db_select(
         $table, $column, $value,
-        $begin = 0, $count = 20, $desc = false, $more_cond
+        $begin = 0, $count = 20, $desc = false, $more_cond = null
     ) {
         global $db_conn;
 

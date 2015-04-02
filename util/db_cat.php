@@ -20,6 +20,10 @@
         return db_select('cat', 'cat_id', $cat_id)->fetch_assoc();
     }
 
+    function db_cat_get_name($name) {
+        return db_select('cat', 'name', $name)->fetch_assoc();
+    }
+
     function db_cat_list_parent(
         $cat_id,
         $begin, $count = 20, $desc = true

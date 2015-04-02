@@ -5,7 +5,7 @@
         global $db_conn;
 
         // user accounts
-        //     password: hash('sha256', '...')
+        //     password: hash('sha256', $name . ':' . $password_raw)
         //     is_admin: 'Y' or 'N'
         return $db_conn->query('
             create table user (

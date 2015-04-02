@@ -6,7 +6,7 @@
 
     $auth_user_id = session_get('auth_user_id');
 
-    if ($post_user_id == $auth_user_id) {
+    if ($auth_user_id && $post_user_id == $auth_user_id) {
         // logout ok
 
         $auth_success = true;
