@@ -9,7 +9,7 @@
 
     function db_select(
         $table, $column, $value,
-        $begin = 0, $count = 20, $desc = false
+        $begin = 0, $count = 20, $desc = false, $more_cond
     ) {
         global $db_conn;
 
@@ -19,11 +19,20 @@
             $order = 'asc';
         }
 
+        if ($more_cond) {
+            $cond = ' and (' . $more_cond . ')';
+        } else {
+            $cond = '';
+        }
+
         return $db_conn->query('
             select * from `' . $db_conn->escape_string($table) . '`
-            where `' . $db_conn->escape_string($column) . '` = "' . $db_conn->escape_string($value) . '"
+            where (
+                `' . $db_conn->escape_string($column) . '`
+                = "' . $db_conn->escape_string($value) . '"
+            )' . $cond . '
             order by `' . $db_conn->escape_string($column) . '` ' . $order . '
-            limit ' . $begin . ', ' . $count . '
+            limit ' . $begin . ', ' . $count . ';
         ');
     }
 
@@ -44,7 +53,7 @@
 
         return $db_conn->query('
             insert into `' . $db_conn->escape_string($table) . '`
-            values (' . $data_str . ')
+            values (' . $data_str . ');
         ');
     }
 
@@ -74,7 +83,7 @@
 
         return $db_conn->query('
             ' . $command . ' into `' . $db_conn->escape_string($table) . '` (' . $column_str . ')
-            values (' . $data_str . ')
+            values (' . $data_str . ');
         ');
     }
 
@@ -83,7 +92,10 @@
 
         return $db_conn->query('
             delete from `' . $db_conn->escape_string($table) . '`
-            where `' . $db_conn->escape_string($column) . '` = "' . $db_conn->escape_string($value) . '"
+            where (
+                `' . $db_conn->escape_string($column) . '`
+                = "' . $db_conn->escape_string($value) . '"
+            );
         ');
     }
 ?>
