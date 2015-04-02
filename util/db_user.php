@@ -33,7 +33,7 @@
         ');
     }
 
-    function user_pass($name, $password_raw) {
+    function crypt_password($name, $password_raw) {
         return hash('sha256', $name . ':' . $password_raw);
     }
 
