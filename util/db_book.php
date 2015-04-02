@@ -38,4 +38,8 @@
     ) {
         return db_select('book', 'parent_cat_id', $cat_id, $begin, $count, $desc);
     }
+
+    function db_book_set($data) {
+        return db_write('book', $data, true);
+    }
 ?>

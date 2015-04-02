@@ -32,4 +32,8 @@
     function db_user_get_name($name) {
         return db_select('user', 'name', $name)->fetch_assoc();
     }
+
+    function db_user_set($data) {
+        return db_write('user', $data, true);
+    }
 ?>

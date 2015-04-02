@@ -19,6 +19,9 @@
             $auth_success = true;
 
             session_set('auth_user_id', $auth_user_id);
+
+            $user_info['date_login'] = time();
+            db_user_set($user_info);
         } else {
             // wrong password
 

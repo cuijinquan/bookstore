@@ -19,4 +19,8 @@
     function db_cat_get($cat_id) {
         return db_select('cat', 'cat_id', $cat_id)->fetch_assoc();
     }
+
+    function db_cat_set($data) {
+        return db_write('cat', $data, true);
+    }
 ?>
