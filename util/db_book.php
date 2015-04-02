@@ -21,6 +21,14 @@
         ');
     }
 
+    function db_book_truncate() {
+        global $db_conn;
+
+        return $db_conn->query('
+            truncate table book;
+        ');
+    }
+
     function db_book_add(
         $owner_user_id, $parent_cat_id,
         $name, $detail, $price, $inventory

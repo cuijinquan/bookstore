@@ -22,6 +22,14 @@
         ');
     }
 
+    function db_buy_truncate() {
+        global $db_conn;
+
+        return $db_conn->query('
+            truncate table buy;
+        ');
+    }
+
     function db_buy_add(
         $buy_book_id, $buyer_user_id,
         $address

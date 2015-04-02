@@ -16,6 +16,14 @@
         ');
     }
 
+    function db_cat_truncate() {
+        global $db_conn;
+
+        return $db_conn->query('
+            truncate table cat;
+        ');
+    }
+
     function db_cat_add(
         $parent_cat_id,
         $name, $detail

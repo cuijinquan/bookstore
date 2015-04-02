@@ -4,6 +4,11 @@
     require_once '../util/db_book.php';
     require_once '../util/db_buy.php';
 
+    db_user_truncate();
+    db_cat_truncate();
+    db_book_truncate();
+    db_buy_truncate();
+
     db_user_add_admin(
         'hczhcz@example.com', 'hczhcz', user_pass('hczhcz', '123456'),
         'Shanghai', 'Room 101, No 1, Some Rd', 'Hi! I am HCZ.'

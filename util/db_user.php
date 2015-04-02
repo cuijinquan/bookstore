@@ -25,6 +25,14 @@
         ');
     }
 
+    function db_user_truncate() {
+        global $db_conn;
+
+        return $db_conn->query('
+            truncate table user;
+        ');
+    }
+
     function user_pass($name, $password_raw) {
         return hash('sha256', $name . ':' . $password_raw);
     }
