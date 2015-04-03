@@ -16,12 +16,20 @@
     right: 0%;
     padding: 0 96px;
 
-    overflow: hidden;
     height: 64px;
+    overflow: hidden;
 
     background: #58F;
-    color: #DEF;
+    color: #DDF;
     text-shadow: 1px 1px #36F;
+}
+
+#header a {
+    display: block;
+
+    color: #DDF;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .title {
@@ -32,7 +40,6 @@
 
     line-height: 100%;
     font-size: 32px;
-    cursor: pointer;
 }
 
 .button {
@@ -47,7 +54,6 @@
     line-height: 150%;
     font-size: 16px;
     text-align: center;
-    cursor: pointer;
 }
 
 .button_long {
@@ -62,7 +68,6 @@
     line-height: 150%;
     font-size: 16px;
     text-align: center;
-    cursor: pointer;
 }
 
 .input {
@@ -74,7 +79,7 @@
     height: 20px;
 
     line-height: 100%;
-    background: #DEF;
+    background: #DDF;
 }
 
 /* -------- content -------- */

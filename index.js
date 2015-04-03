@@ -16,13 +16,13 @@ var crypt_salt = function (password, salt) {
 };
 
 var login_need_show = function () {
-    $('.login_need').css('display', 'initial');
+    $('.login_need').css('display', 'block');
     $('.login_ok').css('display', 'none');
 };
 
 var login_ok_show = function () {
     $('.login_need').css('display', 'none');
-    $('.login_ok').css('display', 'initial');
+    $('.login_ok').css('display', 'block');
 };
 
 var login_update = function () {
@@ -37,26 +37,6 @@ var login_update = function () {
 // -------- header --------
 
 $(function () {
-    $('#title').click(function () {
-        window.location.hash = '';
-    });
-
-    $('#btn_explore').click(function () {
-        window.location.hash = '!explore';
-    });
-
-    $('#btn_stores').click(function () {
-        window.location.hash = '!stores';
-    });
-
-    $('#btn_orders').click(function () {
-        window.location.hash = '!orders';
-    });
-
-    $('#btn_my').click(function () {
-        window.location.hash = '!my';
-    });
-
     $('#btn_logout').click(function () {
         $.post(
             'ajax/auth_logout.php',
