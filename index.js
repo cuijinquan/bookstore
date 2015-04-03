@@ -160,12 +160,12 @@ var view_isotope = function (data) {
                         .append(
                             $('<div />')
                                 .addClass('isotope_title')
-                                .text(data[i]['title'])
+                                .html(markdown.toHTML(data[i]['title']))
                         )
                         .append(
                             $('<div />')
                                 .addClass('isotope_text')
-                                .text(data[i]['text'])
+                                .html(markdown.toHTML(data[i]['text']))
                         )
                 )
                 .appendTo('#view_isotope')
@@ -269,6 +269,34 @@ var content_update = function () {
                             'json'
                         );
 
+                        $.get(
+                            'ajax/cat_book.php',
+                            {
+                                book_id: parseInt(arg[1]),
+                                begin: 0,
+                            },
+                            function (data) {
+                                var idata = [];
+
+                                for (var i in data['data']) {
+                                    var book_info = data['data'][i];
+
+                                    idata.push({
+                                        big: true,
+                                        href: '#!book-' + book_info['book_id'],
+                                        click: function () {},
+                                        title: book_info['name'],
+                                        text: book_info['detail'] + '\n\n**价格：**'
+                                            + book_info['price'] + '\n\n**已售：**'
+                                            + book_info['sold'] + '\n\n**库存：**'
+                                            + book_info['inventory'],
+                                    });
+                                }
+
+                                view_isotope(idata);
+                            },
+                            'json'
+                        );
 
                         break;
                     case '#!book':
