@@ -3,22 +3,25 @@
     require_once '../util/session.php';
     require_once '../util/db_book.php';
 
-    $cat_id = ajax_arg('cat_id');
-    $cat_begin = ajax_arg('begin');
+    $book_id = ajax_arg('book_id');
+    $book_begin = ajax_arg('begin');
 
-    $cat_data = array();
+    $book_data = array();
 
-    $data_all = db_book_list_cat($cat_id, $cat_begin);
+    $data_all = db_book_list_cat($book_id, $book_begin);
 
     while ($book_info = $data_all->fetch_assoc()) {
-        $cat_data[] = array(
+        $book_data[] = array(
             'book_id'=> $book_info['book_id'],
             'name'=> $book_info['name'],
-            'detail'=> $book_info['detail']
+            'detail'=> $book_info['detail'],
+            'price'=> $book_info['price'],
+            'sold'=> $book_info['sold'],
+            'inventory'=> $book_info['inventory']
         );
     }
 
     echo ajax_gen(
-        'data', $cat_data
+        'data', $book_data
     );
 ?>

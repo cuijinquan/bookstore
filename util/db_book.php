@@ -14,6 +14,7 @@
                 name            varchar(64),
                 detail          text,
                 price           varchar(64),
+                sold            bigint,
                 inventory       bigint,
 
                 date_add        datetime
@@ -36,7 +37,7 @@
         return db_insert(
             'book',
             null, $owner_user_id, $parent_cat_id,
-            $name, $detail, $price, $inventory,
+            $name, $detail, $price, 0, $inventory,
             time()
         );
     }

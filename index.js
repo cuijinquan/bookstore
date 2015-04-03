@@ -132,19 +132,24 @@ var view_switch = function (name) {
     }, 200);
 }
 
-var view_isotope_clear = function () {
-    // skip the first call
-    view_isotope_clear = function () {
-        $('#view_isotope').isotope('destroy');
-        $('#view_isotope').empty();
-    };
+var view_isotope_init = function () {
+    $('#view_isotope').isotope({
+        layoutMode: 'masonry',
+        itemSelector: '.isotope, .isotope_big',
+        transitionDuration: '0.2s',
+    });
+}
+
+var view_isotope_reset = function () {
+    $('#view_isotope').isotope('destroy');
+    $('#view_isotope').empty();
+
+    view_isotope_init();
 };
 
 var view_isotope = function (data) {
     for (var i in data) {
-        // data[i]['big']
-
-        $('#view_isotope').append(
+        $('#view_isotope').isotope('insert',
             $('<div />')
                 .addClass(data[i]['big'] ? 'isotope_big' : 'isotope')
                 .append(
@@ -163,13 +168,9 @@ var view_isotope = function (data) {
                                 .text(data[i]['text'])
                         )
                 )
-        );
+                .appendTo('#view_isotope')
+        )
     }
-
-    $('#view_isotope').isotope({
-        layoutMode: 'masonry',
-        itemSelector: '.isotope, .isotope_big',
-    });
 };
 
 // -------- content --------
@@ -182,7 +183,7 @@ var content_update = function () {
     view_hide(function () {
         switch (window.location.hash) {
             case '#!home':
-                view_isotope_clear();
+                view_isotope_reset();
                 view_switch('isotope');
 
                 $.get(
@@ -237,8 +238,10 @@ var content_update = function () {
 
                         break;
                     case '#!cat':
-                        view_isotope_clear();
+                        view_isotope_reset();
                         view_switch('isotope');
+
+                        // TODO: load more than 20 catalogs & books
 
                         $.get(
                             'ajax/cat_cat.php',
@@ -287,6 +290,8 @@ $(window).on('hashchange', content_update);
 // -------- page init --------
 
 $(function () {
+    view_isotope_init();
+
     $.get(
         'ajax/auth_get.php',
         {},
