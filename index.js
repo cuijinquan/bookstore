@@ -132,10 +132,15 @@ var view_switch = function (name) {
     });
 }
 
-var view_isotope = function (data) {
-    $('#view_isotope').isotope('destroy');
-    $('#view_isotope').empty();
+var view_isotope_clear = function () {
+    // skip the first call
+    view_isotope_clear = function () {
+        $('#view_isotope').isotope('destroy');
+        $('#view_isotope').empty();
+    };
+};
 
+var view_isotope = function (data) {
     for (var i in data) {
         // data[i]['big']
 
@@ -143,15 +148,26 @@ var view_isotope = function (data) {
             $('<div />')
                 .addClass(data[i]['big'] ? 'isotope_big' : 'isotope')
                 .append(
-                    $('<div />')
+                    $('<a />')
                         .addClass('isotope_inner')
-                        .text('test111')
+                        .attr('href', data[i]['href'])
+                        .click(data[i]['click'])
+                        .append(
+                            $('<div />')
+                                .addClass('isotope_title')
+                                .text(data[i]['title'])
+                        )
+                        .append(
+                            $('<div />')
+                                .addClass('isotope_text')
+                                .text(data[i]['text'])
+                        )
                 )
         );
     }
 
     $('#view_isotope').isotope({
-        layoutMode: "masonry",
+        layoutMode: 'masonry',
         itemSelector: '.isotope, .isotope_big',
     });
 };
