@@ -49,12 +49,25 @@ $(function () {
                     login_name = undefined;
 
                     login_update();
+                    content_update();
                 } else {
                     // TODO: internal error
                 }
             },
             'json'
         );
+    });
+
+    $('#input_name').keypress(function (e) {
+        if (e.which == 13) {
+            $('#input_password').focus();
+        }
+    });
+
+    $('#input_password').keypress(function (e) {
+        if (e.which == 13) {
+            $('#btn_login').click();
+        }
     });
 
     $('#btn_login').click(function () {
@@ -64,6 +77,7 @@ $(function () {
             function (data) {
                 var i_name = $('#input_name').val();
                 var i_pass = $('#input_password').val();
+                $('#input_password').val('');
 
                 $.get(
                     'ajax/auth_login.php',
@@ -80,6 +94,7 @@ $(function () {
                             login_name = data['auth_name'];
 
                             login_update();
+                            content_update();
                         } else {
                             if (data['auth_name']) {
                                 // TODO: wrong password
@@ -96,8 +111,19 @@ $(function () {
     });
 });
 
+// -------- content --------
+
+var content_update = function () {
+    if (!window.location.hash) {
+        window.location.hash = '!home';
+    }
+};
+
+$(window).on('hashchange', content_update);
+
 // -------- page init --------
 
 $(function () {
     login_update();
+    content_update();
 });
