@@ -189,13 +189,13 @@ var view_submit = function (url, handler, rows) {
         var checker = function (i) {
             if (rows[i]['checker']) {
                 return function () {
-                    var value = $('#submit_' + i).find('.submit_field').val();
+                    var target = $('#submit_' + i + ' input');
 
                     $('#submit_' + i)
                         .find('.submit_hint')
                         .empty()
                         .append(
-                            rows[i]['checker'](value, i)
+                            rows[i]['checker'](target.val(), i)
                         );
                 };
             } else {
@@ -216,6 +216,13 @@ var view_submit = function (url, handler, rows) {
                         .addClass('submit_field')
                         .attr('id', 'submit_field_' + rows[i]['key'])
                         .attr('type', rows[i]['type'])
+                        .keypress(function () {
+                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+
+                            if (target) {
+                                target.focus();
+                            }
+                        })
                         .change(checker)
                 ))
                 .append($('<td />').append(
@@ -238,12 +245,12 @@ var view_submit = function (url, handler, rows) {
 
         for (var i in rows) {
             if (rows[i]['key']) {
-                var value = $('#submit_' + i).find('.submit_field').val();
+                var target = $('#submit_' + i + ' input');
 
                 if (rows[i]['generator']) {
-                    arg[rows[i]['key']] = rows[i]['generator'](value, i);
+                    arg[rows[i]['key']] = rows[i]['generator'](target.val(), i);
                 } else {
-                    arg[rows[i]['key']] = value;
+                    arg[rows[i]['key']] = target.val();
                 }
             }
         }
@@ -361,10 +368,10 @@ var content_update = function () {
                         name: '密码',
                         type: 'password',
                         checker: function (value, i) {
-                            var tr = $('#submit_' + (parseInt(i) + 1));
+                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
 
-                            if (value != tr.find('.submit_field').val()) {
-                                tr.find('.submit_field').val('');
+                            if (value != target.val()) {
+                                target.val('');
                             }
 
                             if (value.length >= 6) {
@@ -376,10 +383,10 @@ var content_update = function () {
                             }
                         },
                         generator: function (value, i) {
-                            var tr = $('#submit_' + (parseInt(i) - 1));
+                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
 
                             return crypt_password(
-                                tr.find('.submit_field').val(),
+                                target.val(),
                                 value
                             );
                         },
@@ -389,8 +396,8 @@ var content_update = function () {
                         name: '确认密码',
                         type: 'password',
                         checker: function (value, i) {
-                            var tr = $('#submit_' + (parseInt(i) - 1));
-                            var value1 = tr.find('.submit_field').val();
+                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+                            var value1 = target.val();
 
                             if (value1 == value) {
                                 return '';
@@ -415,8 +422,8 @@ var content_update = function () {
                         type: 'text',
                         checker: undefined,
                         generator: function (value, i) {
-                            var tr = $('#submit_' + (parseInt(i) + 1));
-                            var line = tr.find('.submit_field').val();
+                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+                            var line = target.val();
 
                             if (line) {
                                 value += '\n\n' + line;
@@ -439,8 +446,8 @@ var content_update = function () {
                         checker: undefined,
                         generator: function (value, i) {
                             for (var j = 1; j <= 5; ++j) {
-                                var tr = $('#submit_' + (parseInt(i) + j));
-                                var line = tr.find('.submit_field').val();
+                                var target = $('#submit_' + (parseInt(i) + j) + ' input');
+                                var line = target.val();
 
                                 if (line) {
                                     value += '\n\n' + line;
