@@ -120,7 +120,7 @@ var view_hide = function (action) {
         $('#content').css('display', 'none');
         action();
     });
-}
+};
 
 var view_switch = function (name) {
     $('.view').css('display', 'none');
@@ -130,7 +130,7 @@ var view_switch = function (name) {
     $('#content').stop().animate({
         opacity: 1,
     }, 200);
-}
+};
 
 var view_isotope_init = function () {
     $('#view_isotope').isotope({
@@ -138,7 +138,7 @@ var view_isotope_init = function () {
         itemSelector: '.isotope, .isotope_big',
         transitionDuration: '0.2s',
     });
-}
+};
 
 var view_isotope_reset = function () {
     $('#view_isotope').isotope('destroy');
@@ -147,7 +147,7 @@ var view_isotope_reset = function () {
     view_isotope_init();
 };
 
-var view_isotope = function (data) {
+var view_isotope_insert = function (data) {
     for (var i in data) {
         $('#view_isotope').isotope('insert',
             $('<div />')
@@ -170,6 +170,85 @@ var view_isotope = function (data) {
                 )
                 .appendTo('#view_isotope')
         )
+    }
+};
+
+// view_submit click handler
+var submit_func = undefined;
+
+var view_submit_init = function () {
+    $('#submit_button').click(function () {
+        submit_func();
+    });
+};
+
+var view_submit = function (url, handler, rows) {
+    $('#submit_table').empty();
+
+    for (var i in rows) {
+        var checker = function (i) {
+            if (rows[i]['checker']) {
+                return function () {
+                    var value = $('#submit_' + i).find('.submit_field').val();
+
+                    $('#submit_' + i)
+                        .find('.submit_hint')
+                        .empty()
+                        .append(
+                            rows[i]['checker'](value, i)
+                        );
+                };
+            } else {
+                return function () {};
+            }
+        } (i);
+
+        $('#submit_table').append(
+            $('<tr />')
+                .attr('id', 'submit_' + i)
+                .append($('<td />').append(
+                    $('<p />')
+                        .addClass('submit_name')
+                        .html(rows[i]['name'])
+                ))
+                .append($('<td />').append(
+                    $('<input />')
+                        .addClass('submit_field')
+                        .attr('id', 'submit_field_' + rows[i]['key'])
+                        .attr('type', rows[i]['type'])
+                        .change(checker)
+                ))
+                .append($('<td />').append(
+                    $('<p />')
+                        .addClass('submit_hint')
+                ))
+        );
+    }
+
+    submit_func = function () {
+        // check error again
+        $('#submit_table input').change();
+
+        if ($('#submit_table .error').length > 0) {
+            // TODO: error
+            return;
+        }
+
+        var arg = {};
+
+        for (var i in rows) {
+            if (rows[i]['key']) {
+                var value = $('#submit_' + i).find('.submit_field').val();
+
+                if (rows[i]['generator']) {
+                    arg[rows[i]['key']] = rows[i]['generator'](value, i);
+                } else {
+                    arg[rows[i]['key']] = value;
+                }
+            }
+        }
+
+        handler(arg);
     }
 };
 
@@ -207,7 +286,7 @@ var content_update = function () {
                             });
                         }
 
-                        view_isotope(idata);
+                        view_isotope_insert(idata);
                     },
                     'json'
                 );
@@ -227,6 +306,168 @@ var content_update = function () {
                 break;
             case '#!my':
                 // view_switch('isotope');
+
+                break;
+            case '#!register':
+                view_submit(
+                    'ajax/user_reg.php',
+                    function (arg) {
+                        alert(JSON.stringify(arg));
+                    },
+                    [{
+                        key: 'mail',
+                        name: '邮箱',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.match(/^[^ ;@]+@[^ ;@]+$/g)) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('邮箱格式错误！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: 'name',
+                        name: '用户名',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.length != 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('用户名不能为空！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: 'password',
+                        name: '密码',
+                        type: 'password',
+                        checker: function (value, i) {
+                            var tr = $('#submit_' + (parseInt(i) + 1));
+
+                            if (value != tr.find('.submit_field').val()) {
+                                tr.find('.submit_field').val('');
+                            }
+
+                            if (value.length >= 6) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('密码过短！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: '',
+                        name: '确认密码',
+                        type: 'password',
+                        checker: function (value, i) {
+                            var tr = $('#submit_' + (parseInt(i) - 1));
+                            var value1 = tr.find('.submit_field').val();
+
+                            if (value1 == value) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('密码不一致！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: 'location',
+                        name: '所在地区',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: 'address',
+                        name: '收货地址 <small>[1]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: function (value, i) {
+                            var tr = $('#submit_' + (parseInt(i) + 1));
+                            var line = tr.find('.submit_field').val();
+
+                            if (line) {
+                                value += '\n\n' + line;
+                            }
+
+                            return value;
+                        },
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[2]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: 'about',
+                        name: '自我介绍 <small>[1]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: function (value, i) {
+                            for (var j = 1; j <= 5; ++j) {
+                                var tr = $('#submit_' + (parseInt(i) + j));
+                                var line = tr.find('.submit_field').val();
+
+                                if (line) {
+                                    value += '\n\n' + line;
+                                }
+                            }
+
+                            return value;
+                        },
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[2]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[3]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[4]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[5]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[6]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },]
+                );
+                view_switch('submit');
 
                 break;
             default:
@@ -264,7 +505,7 @@ var content_update = function () {
                                     });
                                 }
 
-                                view_isotope(idata);
+                                view_isotope_insert(idata);
                             },
                             'json'
                         );
@@ -293,7 +534,7 @@ var content_update = function () {
                                     });
                                 }
 
-                                view_isotope(idata);
+                                view_isotope_insert(idata);
                             },
                             'json'
                         );
@@ -319,6 +560,7 @@ $(window).on('hashchange', content_update);
 
 $(function () {
     view_isotope_init();
+    view_submit_init();
 
     $.get(
         'ajax/auth_get.php',

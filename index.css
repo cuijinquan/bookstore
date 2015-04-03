@@ -51,9 +51,9 @@
     max-height: 32px;
     width: 72px;
 
+    text-align: center;
     line-height: 150%;
     font-size: 16px;
-    text-align: center;
 }
 
 .button_long {
@@ -65,9 +65,9 @@
     max-height: 32px;
     width: 144px;
 
+    text-align: center;
     line-height: 150%;
     font-size: 16px;
-    text-align: center;
 }
 
 .input {
@@ -95,6 +95,8 @@
     display: none;
     overflow-y: scroll;
     overflow-x: hidden;
+
+    font-size: 20px;
 }
 
 #navigation {
@@ -103,6 +105,8 @@
 
 #main {
     width: 100%;
+
+    color: #444;
 }
 
 #footer {
@@ -116,13 +120,44 @@
     text-align: center;
 }
 
-/* -------- view: isotope -------- */
-
-#view_isotope {
-    padding: 4px;
+.view {
+    margin: 8px;
 
     width: 100%;
 }
+
+.frame_body {
+    padding: 8px;
+
+    border: solid 2px #EEE;
+
+    /* background-color: #EEE; */
+    text-shadow: 1px 1px #888;
+}
+
+.button_body {
+    width: 256px;
+
+    background: #EEE;
+    text-align: center;
+    line-height: 200%;
+    text-shadow: 1px 1px #888;
+    cursor: pointer;
+}
+
+.error {
+    color: #C30;
+    text-shadow: 1px 1px #820;
+}
+
+.center {
+    margin-top: 32px;
+    margin-bottom: 32px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* -------- view -------- */
 
 .isotope {
     height: 200px;
@@ -162,5 +197,32 @@
 
 .isotope_text {
     line-height: 150%;
-    font-size: 20px;
+}
+
+.submit_name {
+    margin: 4px;
+
+    width: 192px;
+
+    text-align: right;
+    line-height: 200%;
+}
+
+.submit_field {
+    margin: 4px;
+
+    border: solid 1px #EEE;
+    width: 384px;
+
+    line-height: 150%;
+    font-size: 16px;
+}
+
+.submit_hint {
+    margin: 4px;
+
+    width: 192px;
+
+    text-align: left;
+    line-height: 150%;
 }

@@ -20,9 +20,10 @@
 </head>
 <body>
     <div id='header'>
+        <a id='btn_register' class='button login_need' href='#!register' tabindex='10'>注册</a>
         <a id='btn_login' class='button login_need' tabindex='9'>登录</a>
         <input id='input_password' class='input login_need' type='password' placeholder='密码...' tabindex='8' />
-        <input id='input_name' class='input login_need' placeholder='用户名...' tabindex='7' />
+        <input id='input_name' class='input login_need' type='text' placeholder='用户名...' tabindex='7' />
 
         <a id='btn_logout' class='button login_ok' tabindex='6'>退出</a>
         <a id='btn_my' class='button_long login_ok' href='#!my' tabindex='5'><span id='text_name'></span></a>
@@ -37,6 +38,10 @@
         <div id='navigation'></div>
         <div id='main'>
             <div id='view_isotope' class='view'></div>
+            <div id='view_submit' class='view'>
+                <table id='submit_table' class='frame_body center'></table>
+                <div id='submit_button' class='button_body center'>提交</div>
+            </div>
         </div>
         <div id='footer'>
             <p>Yet Another Bookstore</p>
