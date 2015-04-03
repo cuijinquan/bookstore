@@ -30,22 +30,22 @@
     );
 
     db_cat_add(
-        null,
+        0,
         '科学技术', '这是科学技术类图书。'
     );
 
     db_cat_add(
-        null,
+        0,
         '休闲娱乐', '这是休闲娱乐类图书。'
     );
 
     db_cat_add(
-        null,
+        0,
         '医疗健康', '这是医疗健康类图书。'
     );
 
     db_cat_add(
-        null,
+        0,
         '外文图书', 'Books in English are listed here.'
     );
 
