@@ -312,7 +312,19 @@ var content_update = function () {
                 view_submit(
                     'ajax/user_reg.php',
                     function (arg) {
-                        alert(JSON.stringify(arg));
+                        $.post(
+                            'ajax/auth_reg.php',
+                            arg,
+                            function (data) {
+                                if (data['auth_reg_error']) {
+                                    // TODO: error
+                                } else {
+                                    // TODO: login
+                                    window.location.hash = '#!home';
+                                }
+                            },
+                            'json'
+                        );
                     },
                     [{
                         key: 'mail',
@@ -363,7 +375,14 @@ var content_update = function () {
                                     .text('密码过短！');
                             }
                         },
-                        generator: undefined,
+                        generator: function (value, i) {
+                            var tr = $('#submit_' + (parseInt(i) - 1));
+
+                            return crypt_password(
+                                tr.find('.submit_field').val(),
+                                value
+                            );
+                        },
                     },
                     {
                         key: '',
