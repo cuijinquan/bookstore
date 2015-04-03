@@ -197,6 +197,21 @@ $(window).on('hashchange', content_update);
 // -------- page init --------
 
 $(function () {
-    login_update();
-    content_update();
+    $.get(
+        'ajax/auth_get.php',
+        {},
+        function (data) {
+            if (data['auth_user_id']) {
+                login_user_id = data['auth_user_id'];
+                login_name = data['auth_name'];
+
+                login_update();
+                content_update();
+            } else {
+                login_update();
+                content_update();
+            }
+        },
+        'json'
+    );
 });
