@@ -111,12 +111,85 @@ $(function () {
     });
 });
 
+// -------- view --------
+
+var view_hide = function (action) {
+    $('#content').stop().animate({
+        opacity: 0
+    }, function () {
+        $('#content').css('display', 'none');
+        action();
+    });
+}
+
+var view_switch = function (name) {
+    $('.view').css('display', 'none');
+    $('#view_' + name).css('display', 'block');
+    $('#content').css('display', 'block');
+
+    $('#content').stop().animate({
+        opacity: 1
+    });
+}
+
+var view_isotope = function (data) {
+    $('#view_isotope').isotope('destroy');
+    $('#view_isotope').empty();
+
+    for (var i in data) {
+        // data[i]['big']
+
+        $('#view_isotope').append(
+            $('<div />')
+                .addClass(data[i]['big'] ? 'isotope_big' : 'isotope')
+                .append(
+                    $('<div />')
+                        .addClass('isotope_inner')
+                        .text('test111')
+                )
+        );
+    }
+
+    $('#view_isotope').isotope({
+        layoutMode: "masonry",
+        itemSelector: '.isotope, .isotope_big',
+    });
+};
+
 // -------- content --------
 
 var content_update = function () {
     if (!window.location.hash) {
-        window.location.hash = '!home';
+        window.location.hash = '#!home';
     }
+
+    view_hide(function () {
+        if (window.location.hash == '#!home') {
+            view_isotope([
+                {
+                    big: true,
+                },
+                {
+                    big: false,
+                },
+            ]);
+            view_switch('isotope');
+        } else if (window.location.hash == '#!explore') {
+            view_switch('isotope');
+        } else if (window.location.hash == '#!stores') {
+            view_switch('isotope');
+        } else if (window.location.hash == '#!orders') {
+            // view_switch('isotope');
+        } else if (window.location.hash == '#!my') {
+            // view_switch('isotope');
+        } else if (window.location.hash == '#!user') {
+            // view_switch('isotope');
+        } else if (window.location.hash == '#!cat') {
+            view_switch('isotope');
+        } else if (window.location.hash == '#!book') {
+            // view_switch('isotope');
+        }
+    });
 };
 
 $(window).on('hashchange', content_update);
