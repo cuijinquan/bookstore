@@ -41,7 +41,7 @@ $(function () {
         $.post(
             'ajax/auth_logout.php',
             {
-                user_id: 1
+                user_id: login_user_id,
             },
             function (data) {
                 if (data['auth_success']) {
@@ -71,7 +71,7 @@ $(function () {
     });
 
     $('#btn_login').click(function () {
-        $.post(
+        $.get(
             'ajax/auth_gen.php',
             {},
             function (data) {
@@ -79,7 +79,7 @@ $(function () {
                 var i_pass = $('#input_password').val();
                 $('#input_password').val('');
 
-                $.get(
+                $.post(
                     'ajax/auth_login.php',
                     {
                         name: i_name,
@@ -115,8 +115,8 @@ $(function () {
 
 var view_hide = function (action) {
     $('#content').stop().animate({
-        opacity: 0
-    }, function () {
+        opacity: 0,
+    }, 200, function () {
         $('#content').css('display', 'none');
         action();
     });
@@ -128,8 +128,8 @@ var view_switch = function (name) {
     $('#content').css('display', 'block');
 
     $('#content').stop().animate({
-        opacity: 1
-    });
+        opacity: 1,
+    }, 200);
 }
 
 var view_isotope_clear = function () {
@@ -180,30 +180,104 @@ var content_update = function () {
     }
 
     view_hide(function () {
-        if (window.location.hash == '#!home') {
-            view_isotope([
-                {
-                    big: true,
-                },
-                {
-                    big: false,
-                },
-            ]);
-            view_switch('isotope');
-        } else if (window.location.hash == '#!explore') {
-            view_switch('isotope');
-        } else if (window.location.hash == '#!stores') {
-            view_switch('isotope');
-        } else if (window.location.hash == '#!orders') {
-            // view_switch('isotope');
-        } else if (window.location.hash == '#!my') {
-            // view_switch('isotope');
-        } else if (window.location.hash == '#!user') {
-            // view_switch('isotope');
-        } else if (window.location.hash == '#!cat') {
-            view_switch('isotope');
-        } else if (window.location.hash == '#!book') {
-            // view_switch('isotope');
+        switch (window.location.hash) {
+            case '#!home':
+                view_isotope_clear();
+                view_switch('isotope');
+
+                $.get(
+                    'ajax/cat_cat.php',
+                    {
+                        cat_id: 0,
+                        begin: 0,
+                    },
+                    function (data) {
+                        var idata = [];
+
+                        for (var i in data['data']) {
+                            var cat_info = data['data'][i];
+
+                            idata.push({
+                                big: false,
+                                href: '#!cat-' + cat_info['cat_id'],
+                                click: function () {},
+                                title: cat_info['name'],
+                                text: cat_info['detail'],
+                            });
+                        }
+
+                        view_isotope(idata);
+                    },
+                    'json'
+                );
+
+                break;
+            case '#!explore':
+                view_switch('isotope');
+
+                break;
+            case '#!stores':
+                view_switch('isotope');
+
+                break;
+            case '#!orders':
+                // view_switch('isotope');
+
+                break;
+            case '#!my':
+                // view_switch('isotope');
+
+                break;
+            default:
+                var arg = window.location.hash.split('-');
+
+                switch (arg[0]) {
+                    case '#!user':
+                        // view_switch('isotope');
+
+                        break;
+                    case '#!cat':
+                        view_isotope_clear();
+                        view_switch('isotope');
+
+                        $.get(
+                            'ajax/cat_cat.php',
+                            {
+                                cat_id: parseInt(arg[1]),
+                                begin: 0,
+                            },
+                            function (data) {
+                                var idata = [];
+
+                                for (var i in data['data']) {
+                                    var cat_info = data['data'][i];
+
+                                    idata.push({
+                                        big: false,
+                                        href: '#!cat-' + cat_info['cat_id'],
+                                        click: function () {},
+                                        title: cat_info['name'],
+                                        text: cat_info['detail'],
+                                    });
+                                }
+
+                                view_isotope(idata);
+                            },
+                            'json'
+                        );
+
+
+                        break;
+                    case '#!book':
+                        // view_switch('isotope');
+
+                        break;
+                    default:
+                        // TODO: bad hashbang
+
+                        break;
+                }
+                break;
         }
     });
 };
