@@ -407,10 +407,10 @@ var content_update = function (go) {
                     },
                     [{
                         key: 'mail',
-                        name: '邮箱',
+                        name: '邮箱 *',
                         type: 'text',
                         checker: function (value, i) {
-                            if (value.match(/^[^ ;@]+@[^ ;@]+$/g)) {
+                            if (value.match(/^[^ ;@]+@[^ ;@]+\.[^ ;@]*$/ig)) {
                                 return '';
                             } else {
                                 return $('<p />')
@@ -422,7 +422,7 @@ var content_update = function (go) {
                     },
                     {
                         key: 'name',
-                        name: '用户名',
+                        name: '用户名 *',
                         type: 'text',
                         checker: function (value, i) {
                             if (value.length !== 0) {
@@ -437,7 +437,7 @@ var content_update = function (go) {
                     },
                     {
                         key: 'password',
-                        name: '密码',
+                        name: '密码 *',
                         type: 'password',
                         checker: function (value, i) {
                             var target = $('#submit_' + (parseInt(i) + 1) + ' input');
@@ -465,7 +465,7 @@ var content_update = function (go) {
                     },
                     {
                         key: '',
-                        name: '确认密码',
+                        name: '确认密码 *',
                         type: 'password',
                         checker: function (value, i) {
                             var target = $('#submit_' + (parseInt(i) - 1) + ' input');
@@ -483,9 +483,17 @@ var content_update = function (go) {
                     },
                     {
                         key: 'location',
-                        name: '所在地区',
+                        name: '所在地区 *',
                         type: 'text',
-                        checker: undefined,
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('所在地区不能为空！');
+                            }
+                        },
                         generator: undefined,
                     },
                     {
