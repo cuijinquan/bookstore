@@ -34,28 +34,149 @@ var login_update = function () {
     }
 };
 
+// -------- ajax --------
+
+var ajax_auto_login = function () {
+    $.post(
+        'ajax/auth_get.php',
+        {},
+        function (data) {
+            if (data['auth_user_id']) {
+                login_user_id = data['auth_user_id'];
+                login_name = data['auth_name'];
+
+                login_update();
+                content_update();
+            } else {
+                login_update();
+                content_update();
+            }
+        },
+        'json'
+    );
+}
+
+var ajax_login = function (i_name, i_pass) {
+    $.post(
+        'ajax/auth_gen.php',
+        {},
+        function (data) {
+            $.post(
+                'ajax/auth_login.php',
+                {
+                    name: i_name,
+                    password: crypt_salt(
+                        crypt_password(i_name, i_pass),
+                        data['auth_salt']
+                    ),
+                },
+                function (data) {
+                    if (data['auth_success']) {
+                        login_user_id = data['auth_user_id'];
+                        login_name = data['auth_name'];
+
+                        login_update();
+                        content_update();
+                    } else {
+                        if (data['auth_name']) {
+                            // TODO: wrong password
+                        } else {
+                            // TODO: wrong name
+                        }
+                    }
+                },
+                'json'
+            );
+        },
+        'json'
+    );
+};
+
+var ajax_logout = function () {
+    $.post(
+        'ajax/auth_logout.php',
+        {
+            user_id: login_user_id,
+        },
+        function (data) {
+            if (data['auth_success']) {
+                login_user_id = undefined;
+                login_name = undefined;
+
+                login_update();
+                content_update();
+            } else {
+                // TODO: internal error
+            }
+        },
+        'json'
+    );
+};
+
+var ajax_cat_cat = function (id) {
+    $.post(
+        'ajax/cat_cat.php',
+        {
+            cat_id: id,
+            begin: 0,
+        },
+        function (data) {
+            var idata = [];
+
+            for (var i in data['data']) {
+                var cat_info = data['data'][i];
+
+                idata.push({
+                    big: false,
+                    href: '#!cat-' + cat_info['cat_id'],
+                    click: function () {},
+                    title: cat_info['name'],
+                    text: cat_info['detail'],
+                });
+            }
+
+            view_isotope_insert(idata);
+        },
+        'json'
+    );
+};
+
+var ajax_cat_book = function (id) {
+    $.post(
+        'ajax/cat_book.php',
+        {
+            book_id: id,
+            begin: 0,
+        },
+        function (data) {
+            var idata = [];
+
+            for (var i in data['data']) {
+                var book_info = data['data'][i];
+
+                idata.push({
+                    big: true,
+                    href: '#!book-' + book_info['book_id'],
+                    click: function () {},
+                    title: book_info['name'],
+                    text: book_info['detail'] + '\n\n**价格：**'
+                        + book_info['price'] + '\n\n**已售：**'
+                        + book_info['sold'] + '\n\n**库存：**'
+                        + book_info['inventory'],
+                });
+            }
+
+            view_isotope_insert(idata);
+        },
+        'json'
+    );
+};
+
 // -------- header --------
 
 $(function () {
     $('#btn_logout').click(function () {
-        $.post(
-            'ajax/auth_logout.php',
-            {
-                user_id: login_user_id,
-            },
-            function (data) {
-                if (data['auth_success']) {
-                    login_user_id = undefined;
-                    login_name = undefined;
-
-                    login_update();
-                    content_update();
-                } else {
-                    // TODO: internal error
-                }
-            },
-            'json'
-        );
+        ajax_logout();
     });
 
     $('#input_name').keypress(function (e) {
@@ -71,43 +192,11 @@ $(function () {
     });
 
     $('#btn_login').click(function () {
-        $.get(
-            'ajax/auth_gen.php',
-            {},
-            function (data) {
-                var i_name = $('#input_name').val();
-                var i_pass = $('#input_password').val();
-                $('#input_password').val('');
+        var i_name = $('#input_name').val();
+        var i_pass = $('#input_password').val();
+        $('#input_password').val('');
 
-                $.post(
-                    'ajax/auth_login.php',
-                    {
-                        name: i_name,
-                        password: crypt_salt(
-                            crypt_password(i_name, i_pass),
-                            data['auth_salt']
-                        ),
-                    },
-                    function (data) {
-                        if (data['auth_success']) {
-                            login_user_id = data['auth_user_id'];
-                            login_name = data['auth_name'];
-
-                            login_update();
-                            content_update();
-                        } else {
-                            if (data['auth_name']) {
-                                // TODO: wrong password
-                            } else {
-                                // TODO: wrong name
-                            }
-                        }
-                    },
-                    'json'
-                );
-            },
-            'json'
-        );
+        ajax_login(i_name, i_pass);
     });
 });
 
@@ -272,31 +361,7 @@ var content_update = function () {
                 view_isotope_reset();
                 view_switch('isotope');
 
-                $.get(
-                    'ajax/cat_cat.php',
-                    {
-                        cat_id: 0,
-                        begin: 0,
-                    },
-                    function (data) {
-                        var idata = [];
-
-                        for (var i in data['data']) {
-                            var cat_info = data['data'][i];
-
-                            idata.push({
-                                big: false,
-                                href: '#!cat-' + cat_info['cat_id'],
-                                click: function () {},
-                                title: cat_info['name'],
-                                text: cat_info['detail'],
-                            });
-                        }
-
-                        view_isotope_insert(idata);
-                    },
-                    'json'
-                );
+                ajax_cat_cat(0);
 
                 break;
             case '#!explore':
@@ -323,11 +388,11 @@ var content_update = function () {
                             'ajax/auth_reg.php',
                             arg,
                             function (data) {
-                                if (data['auth_reg_error']) {
-                                    // TODO: error
-                                } else {
-                                    // TODO: login
+                                if (data['auth_success']) {
                                     window.location.hash = '#!home';
+                                    // TODO: login
+                                } else {
+                                    // TODO: error
                                 }
                             },
                             'json'
@@ -509,61 +574,8 @@ var content_update = function () {
                         view_switch('isotope');
 
                         // TODO: load more than 20 catalogs & books
-
-                        $.get(
-                            'ajax/cat_cat.php',
-                            {
-                                cat_id: parseInt(arg[1]),
-                                begin: 0,
-                            },
-                            function (data) {
-                                var idata = [];
-
-                                for (var i in data['data']) {
-                                    var cat_info = data['data'][i];
-
-                                    idata.push({
-                                        big: false,
-                                        href: '#!cat-' + cat_info['cat_id'],
-                                        click: function () {},
-                                        title: cat_info['name'],
-                                        text: cat_info['detail'],
-                                    });
-                                }
-
-                                view_isotope_insert(idata);
-                            },
-                            'json'
-                        );
-
-                        $.get(
-                            'ajax/cat_book.php',
-                            {
-                                book_id: parseInt(arg[1]),
-                                begin: 0,
-                            },
-                            function (data) {
-                                var idata = [];
-
-                                for (var i in data['data']) {
-                                    var book_info = data['data'][i];
-
-                                    idata.push({
-                                        big: true,
-                                        href: '#!book-' + book_info['book_id'],
-                                        click: function () {},
-                                        title: book_info['name'],
-                                        text: book_info['detail'] + '\n\n**价格：**'
-                                            + book_info['price'] + '\n\n**已售：**'
-                                            + book_info['sold'] + '\n\n**库存：**'
-                                            + book_info['inventory'],
-                                    });
-                                }
-
-                                view_isotope_insert(idata);
-                            },
-                            'json'
-                        );
+                        ajax_cat_cat(parseInt(arg[1]));
+                        ajax_cat_book(parseInt(arg[1]));
 
                         break;
                     case '#!book':
@@ -588,21 +600,5 @@ $(function () {
     view_isotope_init();
     view_submit_init();
 
-    $.get(
-        'ajax/auth_get.php',
-        {},
-        function (data) {
-            if (data['auth_user_id']) {
-                login_user_id = data['auth_user_id'];
-                login_name = data['auth_name'];
-
-                login_update();
-                content_update();
-            } else {
-                login_update();
-                content_update();
-            }
-        },
-        'json'
-    );
+    ajax_auto_login();
 });
