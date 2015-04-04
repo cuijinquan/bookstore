@@ -3,7 +3,7 @@
     require_once '../util/session.php';
     require_once '../util/db_user.php';
 
-    $post_user_id = ajax_arg('user_id');
+    $post_user_id = ajax_arg('user_id', FILTER_UNSAFE_RAW, null);
 
     $user_info = db_user_get($post_user_id);
 

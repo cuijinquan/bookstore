@@ -3,8 +3,8 @@
     require_once '../util/session.php';
     require_once '../util/db_user.php';
 
-    $post_name = ajax_arg('name');
-    $post_password = ajax_arg('password');
+    $post_name = ajax_arg('name', FILTER_UNSAFE_RAW, null);
+    $post_password = ajax_arg('password', FILTER_UNSAFE_RAW, null);
 
     $auth_salt = session_delete('auth_salt');
 
@@ -13,7 +13,7 @@
     if ($user_info) {
         $auth_password = hash('sha256', $user_info['password'] . $auth_salt);
 
-        if ($post_password == $auth_password) {
+        if ($post_password === $auth_password) {
             // login ok
 
             $auth_success = true;

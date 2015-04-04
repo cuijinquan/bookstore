@@ -5,7 +5,7 @@
 
     $auth_user_id = session_get('auth_user_id');
 
-    if ($auth_user_id) {
+    if ($auth_user_id !== null) {
         $user_info = db_user_get($auth_user_id);
 
         echo ajax_gen(

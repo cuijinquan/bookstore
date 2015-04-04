@@ -1,11 +1,17 @@
 <?php
     require_once 'config.php';
 
-    function ajax_arg($key) {
+    function ajax_arg($key, $filter, $options) {
         global $ajax_post;
 
         if (isset($ajax_post[$key])) {
-            return $ajax_post[$key];
+            $value = filter_var($ajax_post[$key], $filter, $options);
+        } else {
+            $value = false;
+        }
+
+        if ($value !== false) {
+            return $value;
         } else {
             // return null;
             header("HTTP/1.1 403 Forbidden");

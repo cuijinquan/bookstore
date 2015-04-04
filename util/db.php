@@ -22,7 +22,7 @@
             $order = 'asc';
         }
 
-        if ($more_cond) {
+        if ($more_cond !== null) {
             $cond = ' and (' . $more_cond . ')';
         } else {
             $cond = '';
@@ -47,7 +47,7 @@
         for ($i = 1; $i < func_num_args(); $i += 1) {
             $value = func_get_arg($i);
 
-            if ($i == 1) {
+            if ($i === 1) {
                 $data_str = '"' . $db_conn->escape_string($value) . '"';
             } else {
                 $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
@@ -73,8 +73,8 @@
         $data_str = '';
 
         foreach ($data as $key => $value) {
-            if ($value != null) {
-                if ($column_str == '') {
+            if ($value !== null) {
+                if ($column_str === '') {
                     $column_str = '`' . $db_conn->escape_string($key) . '`';
                     $data_str = '"' . $db_conn->escape_string($value) . '"';
                 } else {

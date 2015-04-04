@@ -59,13 +59,13 @@ $(function () {
     });
 
     $('#input_name').keypress(function (e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
             $('#input_password').focus();
         }
     });
 
     $('#input_password').keypress(function (e) {
-        if (e.which == 13) {
+        if (e.which === 13) {
             $('#btn_login').click();
         }
     });
@@ -353,7 +353,7 @@ var content_update = function () {
                         name: '用户名',
                         type: 'text',
                         checker: function (value, i) {
-                            if (value.length != 0) {
+                            if (value.length !== 0) {
                                 return '';
                             } else {
                                 return $('<p />')
@@ -370,7 +370,7 @@ var content_update = function () {
                         checker: function (value, i) {
                             var target = $('#submit_' + (parseInt(i) + 1) + ' input');
 
-                            if (value != target.val()) {
+                            if (value !== target.val()) {
                                 target.val('');
                             }
 
@@ -399,7 +399,7 @@ var content_update = function () {
                             var target = $('#submit_' + (parseInt(i) - 1) + ' input');
                             var value1 = target.val();
 
-                            if (value1 == value) {
+                            if (value1 === value) {
                                 return '';
                             } else {
                                 return $('<p />')
