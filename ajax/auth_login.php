@@ -3,8 +3,8 @@
     require_once '../util/session.php';
     require_once '../util/db_user.php';
 
-    $post_name = ajax_arg('name', FILTER_UNSAFE_RAW, null);
-    $post_password = ajax_arg('password', FILTER_UNSAFE_RAW, null);
+    $post_name = ajax_arg('name', FILTER_VALIDATE_REGEXP, $filter_text);
+    $post_password = ajax_arg('password', FILTER_VALIDATE_REGEXP, $filter_hash);
 
     $auth_salt = session_delete('auth_salt');
 

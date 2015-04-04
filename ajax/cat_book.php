@@ -3,8 +3,8 @@
     require_once '../util/session.php';
     require_once '../util/db_book.php';
 
-    $book_id = ajax_arg('book_id', FILTER_UNSAFE_RAW, null);
-    $book_begin = ajax_arg('begin', FILTER_UNSAFE_RAW, null);
+    $book_id = ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number);
+    $book_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
 
     $book_data = array();
 

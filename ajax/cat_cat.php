@@ -3,8 +3,8 @@
     require_once '../util/session.php';
     require_once '../util/db_cat.php';
 
-    $cat_id = ajax_arg('cat_id', FILTER_UNSAFE_RAW, null);
-    $cat_begin = ajax_arg('begin', FILTER_UNSAFE_RAW, null);
+    $cat_id = ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number);
+    $cat_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
 
     $cat_data = array();
 
