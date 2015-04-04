@@ -44,7 +44,7 @@
             'user',
             null,
             $mail, $name, $password, false, $location, $address, $about,
-            time(), time()
+            date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
         );
     }
 
@@ -55,7 +55,7 @@
             'user',
             null,
             $mail, $name, $password, true, $location, $address, $about,
-            time(), time()
+            date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
         );
     }
 

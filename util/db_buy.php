@@ -38,7 +38,7 @@
             'buy',
             null, $buy_book_id, $buyer_user_id,
             $address, null,
-            time(), null, null
+            date('Y-m-d H:i:s'), null, null
         );
     }
 

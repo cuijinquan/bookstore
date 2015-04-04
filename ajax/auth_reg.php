@@ -21,10 +21,6 @@
         $auth_name = $post_name;
 
         session_set('auth_user_id', $auth_user_id);
-
-        $user_info['date_create'] = time();
-        $user_info['date_login'] = time();
-        db_user_set($user_info);
     } else {
         $auth_success = false;
         $auth_user_id = null;

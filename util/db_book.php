@@ -38,7 +38,7 @@
             'book',
             null, $owner_user_id, $parent_cat_id,
             $name, $detail, $price, 0, $inventory,
-            time()
+            date('Y-m-d H:i:s')
         );
     }
 
