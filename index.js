@@ -350,7 +350,11 @@ var view_submit = function (url, handler, rows) {
 
 // -------- content --------
 
-var content_update = function () {
+var content_update = function (go) {
+    if (go) {
+        window.location.hash = go;
+    }
+
     if (!window.location.hash) {
         window.location.hash = '#!home';
     }
@@ -389,8 +393,11 @@ var content_update = function () {
                             arg,
                             function (data) {
                                 if (data['auth_success']) {
-                                    window.location.hash = '#!home';
-                                    // TODO: login
+                                    login_user_id = data['auth_user_id'];
+                                    login_name = data['auth_name'];
+
+                                    login_update();
+                                    content_update('#!home');
                                 } else {
                                     // TODO: error
                                 }
@@ -592,7 +599,9 @@ var content_update = function () {
     });
 };
 
-$(window).on('hashchange', content_update);
+$(window).on('hashchange', function () {
+    content_update();
+});
 
 // -------- page init --------
 
