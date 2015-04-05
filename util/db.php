@@ -12,7 +12,7 @@
 
     function db_select(
         $table, $column, $value,
-        $begin = 0, $count = 20, $desc = false, $more_cond = null
+        $begin = 0, $count = 20, $desc = false
     ) {
         global $db_conn;
 
@@ -22,18 +22,42 @@
             $order = 'asc';
         }
 
-        if ($more_cond !== null) {
-            $cond = ' and (' . $more_cond . ')';
-        } else {
-            $cond = '';
-        }
-
         return $db_conn->query('
             select * from `' . $db_conn->escape_string($table) . '`
             where (
                 `' . $db_conn->escape_string($column) . '`
                 = "' . $db_conn->escape_string($value) . '"
-            )' . $cond . '
+            )
+            order by `' . $db_conn->escape_string($column) . '` ' . $order . '
+            limit ' . $begin . ', ' . $count . ';
+        ');
+    }
+
+    vprintf('%s %s %d', array(1,2,3));
+
+    function db_select_complex(
+        $table, $cond, $values,
+        $begin = 0, $count = 20, $desc = false
+    ) {
+        global $db_conn;
+
+        if ($desc) {
+            $order = 'desc';
+        } else {
+            $order = 'asc';
+        }
+
+        $args = array();
+
+        foreach ($values as $key => $value) {
+            $args[$key] = $db_conn->escape_string($values[$key]);
+        }
+
+        return $db_conn->query('
+            select * from `' . $db_conn->escape_string($table) . '`
+            where (
+                ' . vsprintf($cond, $args) . '
+            )
             order by `' . $db_conn->escape_string($column) . '` ' . $order . '
             limit ' . $begin . ', ' . $count . ';
         ');
