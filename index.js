@@ -520,7 +520,7 @@ var content_update = function (go) {
                         generator: undefined,
                     },
                     {
-                        key: 'about',
+                        key: 'detail',
                         name: '自我介绍 <small>[1]</small>',
                         type: 'text',
                         checker: undefined,

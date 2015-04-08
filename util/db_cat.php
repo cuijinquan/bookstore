@@ -11,6 +11,7 @@
                 parent_cat_id   bigint          not null,
 
                 name            varchar(64)     unique,
+                image           varchar(64),
                 detail          text
             );
         ');
@@ -31,7 +32,7 @@
         return db_insert(
             'cat',
             null, $parent_cat_id,
-            $name, $detail
+            $name, null, $detail
         );
     }
 

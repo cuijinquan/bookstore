@@ -12,6 +12,7 @@
                 parent_cat_id   bigint          not null,
 
                 name            varchar(64),
+                image           varchar(64),
                 detail          text,
                 price           varchar(64),
                 sold            bigint,
@@ -37,7 +38,7 @@
         return db_insert(
             'book',
             null, $owner_user_id, $parent_cat_id,
-            $name, $detail, $price, 0, $inventory,
+            $name, null, $detail, $price, 0, $inventory,
             date('Y-m-d H:i:s')
         );
     }

@@ -14,6 +14,7 @@
         $cat_data[] = array(
             'cat_id'=> $cat_info['cat_id'],
             'name'=> $cat_info['name'],
+            'image'=> $cat_info['image'],
             'detail'=> $cat_info['detail']
         );
     }

@@ -5,14 +5,14 @@
 
     $post_mail = ajax_arg('mail', FILTER_VALIDATE_EMAIL, null);
     $post_name = ajax_arg('name', FILTER_VALIDATE_REGEXP, $filter_text);
+    $post_detail = ajax_arg('detail', FILTER_UNSAFE_RAW, null);
     $post_password = ajax_arg('password', FILTER_VALIDATE_REGEXP, $filter_hash);
     $post_location = ajax_arg('location', FILTER_VALIDATE_REGEXP, $filter_text);
     $post_address = ajax_arg('address', FILTER_UNSAFE_RAW, null);
-    $post_about = ajax_arg('about', FILTER_UNSAFE_RAW, null);
 
     if (db_user_add(
-        $post_mail, $post_name, $post_password,
-        $post_location, $post_address, $post_about
+        $post_mail, $post_name, $post_detail, $post_password,
+        $post_location, $post_address
     )) {
         $user_info = db_user_get_name($post_name);
 

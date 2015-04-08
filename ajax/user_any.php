@@ -14,8 +14,9 @@
             'user_id', $user_info['user_id'],
 
             'name', $user_info['name'],
-            'location', $user_info['location'],
-            'about', $user_info['about']
+            'image', $user_info['image']
+            'detail', $user_info['detail'],
+            'location', $user_info['location']
         );
     } else {
         echo ajax_gen(

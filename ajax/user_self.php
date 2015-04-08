@@ -15,10 +15,11 @@
 
             'mail', $user_info['mail'],
             'name', $user_info['name'],
+            'image', $user_info['image'],
+            'detail', $user_info['detail'],
             'is_admin', $user_info['is_admin'],
             'location', $user_info['location'],
             'address', $user_info['address'],
-            'about', $user_info['about'],
 
             'date_create', $user_info['date_create'],
             'date_login', $user_info['date_login']

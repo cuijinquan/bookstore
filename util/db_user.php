@@ -13,11 +13,12 @@
 
                 mail            varchar(64)     unique,
                 name            varchar(64)     unique,
+                image           varchar(64),
+                detail          text,
                 password        char(64),
                 is_admin        char(1),
                 location        varchar(64),
                 address         text,
-                about           text,
 
                 date_create     datetime,
                 date_login      datetime
@@ -38,12 +39,12 @@
     }
 
     function db_user_add(
-        $mail, $name, $password, $location, $address, $about
+        $mail, $name, $detail, $password, $location, $address
     ) {
         return db_insert(
             'user',
             null,
-            $mail, $name, $password, false, $location, $address, $about,
+            $mail, $name, null, $detail, $password, false, $location, $address,
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
         );
     }
