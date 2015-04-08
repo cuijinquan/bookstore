@@ -55,7 +55,7 @@
         return db_insert(
             'user',
             null,
-            $mail, $name, $password, true, $location, $address, $about,
+            $mail, $name, null, $detail, $password, true, $location, $address,
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
         );
     }
