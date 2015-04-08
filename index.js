@@ -614,6 +614,8 @@ $(window).on('hashchange', function () {
 // -------- page init --------
 
 $(function () {
+    $.backstretch(['img/bg.jpg']);
+
     view_isotope_init();
     view_submit_init();
 
