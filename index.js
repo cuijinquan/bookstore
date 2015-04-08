@@ -54,7 +54,7 @@ var ajax_auto_login = function () {
         },
         'json'
     );
-}
+};
 
 var ajax_login = function (i_name, i_pass) {
     $.post(
@@ -107,6 +107,36 @@ var ajax_logout = function () {
                 content_update();
             } else {
                 // TODO: internal error
+            }
+        },
+        'json'
+    );
+};
+
+var ajax_cat = function (id) {
+    $.post(
+        'ajax/cat.php',
+        {
+            cat_id: id,
+        },
+        function (data) {
+            if (data['get_success']) {
+                page_switch(data['name']);
+            }
+        },
+        'json'
+    );
+};
+
+var ajax_book = function (id) {
+    $.post(
+        'ajax/book.php',
+        {
+            book_id: id,
+        },
+        function (data) {
+            if (data['get_success']) {
+                page_switch(data['name']);
             }
         },
         'json'
@@ -200,6 +230,16 @@ $(function () {
     });
 });
 
+// -------- navigation --------
+
+var page_switch = function (title) {
+    if (title) {
+        document.title = title + ' - Yet Another Bookstore';
+    } else {
+        document.title = 'Yet Another Bookstore';
+    }
+};
+
 // -------- view --------
 
 var view_hide = function (action) {
@@ -272,7 +312,7 @@ var view_submit_init = function () {
     });
 };
 
-var view_submit = function (url, handler, rows) {
+var view_submit = function (handler, rows) {
     $('#submit_table').empty();
 
     for (var i in rows) {
@@ -360,6 +400,7 @@ var content_update = function (go) {
         window.location.hash = '#!home';
     }
 
+    page_switch();
     view_hide(function () {
         switch (window.location.hash) {
             case '#!home':
@@ -368,26 +409,35 @@ var content_update = function (go) {
 
                 ajax_cat_cat(0);
 
+                page_switch();
+
                 break;
             case '#!explore':
                 view_switch('isotope');
+
+                page_switch('发现');
 
                 break;
             case '#!stores':
                 view_switch('isotope');
 
+                page_switch('商家');
+
                 break;
             case '#!orders':
                 // view_switch('isotope');
+
+                page_switch('订单');
 
                 break;
             case '#!my':
                 // view_switch('isotope');
 
+                page_switch('我的');
+
                 break;
             case '#!register':
                 view_submit(
-                    'ajax/user_reg.php',
                     function (arg) {
                         $.post(
                             'ajax/auth_reg.php',
@@ -576,6 +626,8 @@ var content_update = function (go) {
                 );
                 view_switch('submit');
 
+                page_switch('注册');
+
                 break;
             default:
                 var arg = window.location.hash.split('-');
@@ -584,18 +636,28 @@ var content_update = function (go) {
                     case '#!user':
                         // view_switch('isotope');
 
+                        // page_switch('');
+
                         break;
                     case '#!cat':
                         view_isotope_reset();
                         view_switch('isotope');
 
+                        var cat_id = parseInt(arg[1]);
+
                         // TODO: load more than 20 catalogs & books
-                        ajax_cat_cat(parseInt(arg[1]));
-                        ajax_cat_book(parseInt(arg[1]));
+                        ajax_cat_cat(cat_id);
+                        ajax_cat_book(cat_id);
+
+                        ajax_cat(cat_id);
 
                         break;
                     case '#!book':
                         // view_switch('isotope');
+
+                        var book_id = parseInt(arg[1]);
+
+                        ajax_book(book_id);
 
                         break;
                     default:

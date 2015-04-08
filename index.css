@@ -24,7 +24,7 @@ body {
     overflow: hidden;
 
     background: #58F;
-    background: rgba(85, 136, 255, 0.8);
+    background: rgba(85, 136, 255, 0.6);
     color: #DDF;
     text-shadow: 1px 1px 1px #36F;
 }
@@ -90,7 +90,7 @@ body {
     width: 128px;
 
     background: #DDF;
-    background: rgba(221, 221, 255, 0.8);
+    background: rgba(221, 221, 255, 0.6);
     line-height: 100%;
 }
 
@@ -227,7 +227,7 @@ body {
     width: 384px;
 
     background: #FFF;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.6);
     line-height: 150%;
     font-size: 16px;
 }
