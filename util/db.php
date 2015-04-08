@@ -33,8 +33,6 @@
         ');
     }
 
-    vprintf('%s %s %d', array(1,2,3));
-
     function db_select_complex(
         $table, $cond, $values,
         $begin = 0, $count = 20, $desc = false
