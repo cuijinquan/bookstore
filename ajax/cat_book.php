@@ -13,6 +13,7 @@
     while ($book_info = $data_all->fetch_assoc()) {
         $book_data[] = array(
             'book_id'=> $book_info['book_id'],
+
             'name'=> $book_info['name'],
             'image'=> $book_info['image'],
             'detail'=> $book_info['detail'],
