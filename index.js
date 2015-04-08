@@ -244,6 +244,7 @@ var view_isotope_insert = function (data) {
                 .append(
                     $('<a />')
                         .addClass('isotope_inner')
+                        .addClass('frame_body')
                         .attr('href', data[i]['href'])
                         .click(data[i]['click'])
                         .append(
@@ -302,8 +303,8 @@ var view_submit = function (url, handler, rows) {
                 ))
                 .append($('<td />').append(
                     $('<input />')
-                        .addClass('submit_field')
-                        .attr('id', 'submit_field_' + rows[i]['key'])
+                        .addClass('submit_input')
+                        .attr('id', 'submit_input_' + rows[i]['key'])
                         .attr('type', rows[i]['type'])
                         .keypress(function () {
                             var target = $('#submit_' + (parseInt(i) + 1) + ' input');

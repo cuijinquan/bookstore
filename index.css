@@ -7,6 +7,10 @@
     font-family: sans-serif;
 }
 
+body {
+    background: #CCC;
+}
+
 /* -------- header -------- */
 
 #header {
@@ -20,8 +24,9 @@
     overflow: hidden;
 
     background: #58F;
+    background: rgba(85, 136, 255, 0.8);
     color: #DDF;
-    text-shadow: 1px 1px #36F;
+    text-shadow: 1px 1px 1px #36F;
 }
 
 #header a {
@@ -48,7 +53,9 @@
     margin: 19px 8px;
 
     border-top: solid 1px #47F;
+    border-top: solid 1px rgba(0, 0, 255, 0.1);
     border-bottom: solid 1px #69F;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.15);
     max-height: 32px;
     width: 72px;
 
@@ -62,7 +69,9 @@
     margin: 19px 8px;
 
     border-top: solid 1px #47F;
+    border-top: solid 1px rgba(0, 0, 255, 0.1);
     border-bottom: solid 1px #69F;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.15);
     max-height: 32px;
     width: 144px;
 
@@ -76,10 +85,12 @@
     margin: 20px 4px;
 
     border: solid 2px #47F;
+    border: solid 2px rgba(68, 119, 255, 0.4);
     height: 20px;
     width: 128px;
 
     background: #DDF;
+    background: rgba(221, 221, 255, 0.8);
     line-height: 100%;
 }
 
@@ -110,15 +121,25 @@
     color: #444;
 }
 
+#main a {
+    display: block;
+
+    color: #444;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 #footer {
     margin: 8px 0;
     padding: 8px 0;
 
-    border-top: solid 1px #888;
+    border-top: solid 1px #EEE;
     width: 100%;
 
-    color: #888;
+    opacity: 0.8;
+    color: #EEE;
     text-align: center;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .view {
@@ -130,25 +151,24 @@
 .frame_body {
     padding: 8px;
 
-    border: solid 2px #EEE;
-
-    /* background-color: #EEE; */
-    text-shadow: 1px 1px #888;
+    background: #EEE;
+    background: rgba(255, 255, 255, 0.4);
+    text-shadow: 1px 1px 2px #888;
 }
 
 .button_body {
     width: 256px;
 
     background: #EEE;
+    background: rgba(255, 255, 255, 0.6);
     text-align: center;
     line-height: 200%;
-    text-shadow: 1px 1px #888;
-    cursor: pointer;
+    text-shadow: 1px 1px 2px #888;
 }
 
 .error {
-    color: #C30;
-    text-shadow: 1px 1px #820;
+    opacity: 0.8;
+    color: #C10;
 }
 
 .center {
@@ -163,15 +183,11 @@
 .isotope {
     height: 200px;
     width: 200px;
-
-    cursor: pointer;
 }
 
 .isotope_big {
     height: 400px;
     width: 400px;
-
-    cursor: pointer;
 }
 
 .isotope_inner {
@@ -180,15 +196,10 @@
     bottom: 4px;
     left: 4px;
     right: 4px;
-    padding: 8px;
 
     overflow: hidden;
 
-    background: #EEE;
-    color: #444;
     text-align: center;
-    text-shadow: 1px 1px #888;
-    text-decoration: none;
 }
 
 .isotope_title {
@@ -209,12 +220,14 @@
     line-height: 200%;
 }
 
-.submit_field {
+.submit_input {
     margin: 4px;
 
-    border: solid 1px #EEE;
+    border: none;
     width: 384px;
 
+    background: #FFF;
+    background: rgba(255, 255, 255, 0.8);
     line-height: 150%;
     font-size: 16px;
 }
