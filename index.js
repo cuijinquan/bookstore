@@ -122,6 +122,11 @@ var ajax_cat = function (id) {
         function (data) {
             if (data['get_success']) {
                 page_switch(data['name']);
+                intro_show(
+                    data['image'],
+                    data['name'],
+                    data['detail']
+                );
             }
         },
         'json'
@@ -137,6 +142,14 @@ var ajax_book = function (id) {
         function (data) {
             if (data['get_success']) {
                 page_switch(data['name']);
+                intro_show(
+                    data['image'],
+                    data['name'],
+                    data['detail'] + '\n\n**价格：**'
+                    + data['price'] + '\n\n**已售：**'
+                    + data['sold'] + '\n\n**库存：**'
+                    + data['inventory']
+                );
             }
         },
         'json'
@@ -232,12 +245,35 @@ $(function () {
 
 // -------- navigation --------
 
+var page_prepare = function () {
+    document.title = 'Yet Another Bookstore';
+};
+
 var page_switch = function (title) {
     if (title) {
         document.title = title + ' - Yet Another Bookstore';
     } else {
         document.title = 'Yet Another Bookstore';
     }
+};
+
+// -------- intro --------
+
+var intro_hide = function () {
+    $('#intro').css('display', 'none');
+};
+
+var intro_show = function (image, title, text) {
+    if (image) {
+        $('#intro_image').css('display', 'block');
+    } else {
+        $('#intro_image').css('display', 'none');
+    }
+
+    $('#intro_title').html(markdown.toHTML(title));
+    $('#intro_text').html(markdown.toHTML(text));
+
+    $('#intro').css('display', 'block');
 };
 
 // -------- view --------
@@ -253,6 +289,7 @@ var view_hide = function (action) {
 
 var view_switch = function (name) {
     $('.view').css('display', 'none');
+
     $('#view_' + name).css('display', 'block');
     $('#content').css('display', 'block');
 
@@ -289,12 +326,12 @@ var view_isotope_insert = function (data) {
                         .click(data[i]['click'])
                         .append(
                             $('<div />')
-                                .addClass('isotope_title')
+                                .addClass('title')
                                 .html(markdown.toHTML(data[i]['title']))
                         )
                         .append(
                             $('<div />')
-                                .addClass('isotope_text')
+                                .addClass('normal')
                                 .html(markdown.toHTML(data[i]['text']))
                         )
                 )
@@ -400,13 +437,17 @@ var content_update = function (go) {
         window.location.hash = '#!home';
     }
 
-    page_switch();
     view_hide(function () {
+        // reset title
+        page_prepare();
+        intro_hide();
+
         switch (window.location.hash) {
             case '#!home':
                 view_isotope_reset();
                 view_switch('isotope');
 
+                // TODO: load more than 20 items
                 ajax_cat_cat(0);
 
                 page_switch();
@@ -645,15 +686,17 @@ var content_update = function (go) {
 
                         var cat_id = parseInt(arg[1]);
 
+                        ajax_cat(cat_id);
+
                         // TODO: load more than 20 catalogs & books
                         ajax_cat_cat(cat_id);
                         ajax_cat_book(cat_id);
 
-                        ajax_cat(cat_id);
-
                         break;
                     case '#!book':
-                        // view_switch('isotope');
+                        // TODO: a new view
+                        view_isotope_reset();
+                        view_switch('isotope');
 
                         var book_id = parseInt(arg[1]);
 
