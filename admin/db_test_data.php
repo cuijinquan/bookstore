@@ -4,10 +4,15 @@
     require_once '../util/db_book.php';
     require_once '../util/db_buy.php';
 
+    // truncate all tables in the database
+    // then add test data
+
     db_user_truncate();
     db_cat_truncate();
     db_book_truncate();
     db_buy_truncate();
+
+    // add users
 
     db_user_add_admin(
         'hczhcz@example.com', 'hczhcz', null, 'Hi! I am HCZ.',
@@ -32,6 +37,8 @@
         crypt_password('lzsd', '1234567890'),
         '五角场', '李达三楼 四楼'
     );
+
+    // add catalogs
 
     db_cat_add(
         0,
@@ -67,6 +74,8 @@
         db_cat_get_name('科学技术')['cat_id'],
         '计算机', 'ae2e4dbc9b2a993cd9ee98f0a37e8319', '这是科学技术类中的计算机类图书。'
     );
+
+    // add books
 
     db_book_add(
         db_user_get_name('hczhcz')['user_id'], db_cat_get_name('物理')['cat_id'],
@@ -108,8 +117,12 @@
         'Database System Concepts', 'f2a70b0b3a0306eb050d566c2a458a6b', 'This is a book.', 'USD 20.00', 100
     );
 
+    // add ordering actions
+
     // db_buy_add(
     //     $buy_book_id, $buyer_user_id,
     //     $address
     // );
+
+    // TODO: add other actions
 ?>

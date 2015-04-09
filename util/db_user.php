@@ -1,10 +1,12 @@
 <?php
     require_once 'db.php';
 
+    // db actions of users
+
     function db_user_init() {
         global $db_conn;
 
-        // user accounts
+        // users
         //     password: hash('sha256', $name . ':' . $password_raw)
         //     is_admin: 'Y' or 'N'
         return $db_conn->query('

@@ -2,6 +2,9 @@
     require_once '../util/ajax.php';
     require_once '../util/session.php';
 
+    // upload an image
+    // args: file (see: HTTP file upload)
+
     // $auth_user_id = session_get('auth_user_id');
 
     if (
@@ -15,6 +18,8 @@
         )
         && $_FILES['file']['error'] === 0
     ) {
+        // file accepted
+
         $upload_content = 'data:image/jpeg;base64,' . base64_encode(
             file_get_contents($_FILES['file']['tmp_name'])
         );
@@ -22,14 +27,20 @@
         $upload_filename = '../' . $upload_dir . '/' . $upload_hash;
 
         if (!file_exists($upload_filename)) {
+            // add new file
+
             $upload_success = true;
             $upload_exist = false;
             file_put_contents($upload_filename, $upload_content);
         } else {
+            // file already exists
+
             $upload_success = true;
             $upload_exist = true;
         }
     } else {
+        // bad file
+
         $upload_success = false;
         $upload_exist = false;
         $upload_hash = null;

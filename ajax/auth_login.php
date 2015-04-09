@@ -3,6 +3,9 @@
     require_once '../util/session.php';
     require_once '../util/db_user.php';
 
+    // do login
+    // args: name, password (salted hash)
+
     $post_name = ajax_arg('name', FILTER_VALIDATE_REGEXP, $filter_text);
     $post_password = ajax_arg('password', FILTER_VALIDATE_REGEXP, $filter_hash);
 

@@ -5,11 +5,13 @@
 var login_user_id = undefined;
 var login_name = undefined;
 
+// calculate 1-layer hashed password
 var crypt_password = function (name, password_raw) {
     var SHA = new jsSHA(name + ':' + password_raw, 'TEXT');
     return SHA.getHash('SHA-256', 'HEX');
 };
 
+// calculate 2-layer (basic + salted) hashed password
 var crypt_salt = function (password, salt) {
     var SHA = new jsSHA(password + salt, 'TEXT');
     return SHA.getHash('SHA-256', 'HEX');
@@ -217,6 +219,7 @@ var ajax_cat_book = function (id) {
 
 // -------- header --------
 
+// add event handlers
 $(function () {
     $('#btn_logout').click(function () {
         ajax_logout();
@@ -348,7 +351,7 @@ var view_isotope_insert = function (data) {
     }
 };
 
-// view_submit click handler
+// click event handler of view_submit
 var submit_func = undefined;
 
 var view_submit_init = function () {
@@ -407,6 +410,7 @@ var view_submit = function (handler, rows) {
         );
     }
 
+    // set the handler
     submit_func = function () {
         // check error again
         $('#submit_table input').change();
@@ -436,6 +440,7 @@ var view_submit = function (handler, rows) {
 
 // -------- content --------
 
+// parse location.hash and load a page
 var content_update = function (go) {
     if (go) {
         window.location.hash = go;

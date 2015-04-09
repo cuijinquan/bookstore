@@ -1,6 +1,8 @@
 <?php
     require_once 'db.php';
 
+    // db actions of books
+
     function db_book_init() {
         global $db_conn;
 

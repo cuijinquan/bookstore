@@ -3,9 +3,14 @@
     require_once '../util/session.php';
     require_once '../util/db_user.php';
 
+    // get info of the logged-in user
+    // args: n/a
+
     $auth_user_id = session_get('auth_user_id');
 
     if ($auth_user_id !== null) {
+        // logged in
+
         $user_info = db_user_get($auth_user_id);
 
         echo ajax_gen(
@@ -25,6 +30,8 @@
             'date_login', $user_info['date_login']
         );
     } else {
+        // not logged in
+
         echo ajax_gen(
             'get_success', false
         );

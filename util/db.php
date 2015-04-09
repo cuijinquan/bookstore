@@ -1,6 +1,8 @@
 <?php
     require_once 'config.php';
 
+    // connect to the database
+
     $db_conn = new mysqli($db_ip, $db_username, $db_password, $db_name, $db_port);
 
     if ($db_conn->connect_error) {
@@ -10,6 +12,7 @@
     $db_conn->query('set character set "utf8";');
     $db_conn->query('set names "utf8";');
 
+    // select rows in the database by a simple rule
     function db_select(
         $table, $column, $value,
         $begin = 0, $count = 20, $desc = false
@@ -33,6 +36,7 @@
         ');
     }
 
+    // select rows in the database by some rules
     function db_select_complex(
         $table, $cond, $values,
         $begin = 0, $count = 20, $desc = false
@@ -61,6 +65,7 @@
         ');
     }
 
+    // add a row to the database
     function db_insert($table) {
         global $db_conn;
 
@@ -82,13 +87,14 @@
         ');
     }
 
+    // write (insert or replace) data to the database
     function db_write($table, $data, $replace) {
         global $db_conn;
 
         if ($replace) {
             $command = 'replace';
         } else {
-            $command = 'insert';
+            $command = 'insert ignore';
         }
 
         $column_str = '';
@@ -112,6 +118,7 @@
         ');
     }
 
+    // remove rows in the database
     function db_delete($table, $column, $value) {
         global $db_conn;
 

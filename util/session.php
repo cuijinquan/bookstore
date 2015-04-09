@@ -1,6 +1,8 @@
 <?php
     require_once 'config.php';
 
+    // set up the PHP session
+
     session_start();
 
     if (
@@ -9,7 +11,9 @@
         || (time() - $_SESSION['session_time'] >= $session_timeout)
         || (time() - $_SESSION['session_create'] >= $session_create_timeout)
     ) {
-        // reset session
+        // expired
+
+        // reset the session
         session_destroy();
         session_start();
 
@@ -18,6 +22,7 @@
 
     $_SESSION['session_time'] = time();
 
+    // get value in the session data
     function session_get($key) {
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
@@ -26,10 +31,12 @@
         }
     }
 
+    // set value in the session data
     function session_set($key, $value) {
         $_SESSION[$key] = $value;
     }
 
+    // delete value in the session data
     function session_delete($key) {
         if (isset($_SESSION[$key])) {
             $value = $_SESSION[$key];

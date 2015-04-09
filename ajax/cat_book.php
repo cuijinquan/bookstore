@@ -3,6 +3,9 @@
     require_once '../util/session.php';
     require_once '../util/db_book.php';
 
+    // get info of book in a catalog
+    // args: book_id, begin
+
     $book_id = ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number);
     $book_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
 

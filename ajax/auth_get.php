@@ -3,6 +3,9 @@
     require_once '../util/session.php';
     require_once '../util/db_user.php';
 
+    // get login status
+    // args: n/a
+
     $auth_user_id = session_get('auth_user_id');
 
     if ($auth_user_id !== null) {

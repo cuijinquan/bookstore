@@ -3,6 +3,9 @@
     require_once '../util/session.php';
     require_once '../util/db_cat.php';
 
+    // get sub catalogs in a catalog
+    // args: cat_id, begin
+
     $cat_id = ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number);
     $cat_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
 

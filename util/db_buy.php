@@ -1,6 +1,8 @@
 <?php
     require_once 'db.php';
 
+    // db actions of orders
+
     function db_buy_init() {
         global $db_conn;
 
