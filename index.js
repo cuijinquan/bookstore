@@ -113,7 +113,7 @@ var ajax_logout = function () {
     );
 };
 
-var ajax_cat = function (id) {
+var ajax_cat_info = function (id) {
     $.post(
         'ajax/cat.php',
         {
@@ -133,7 +133,7 @@ var ajax_cat = function (id) {
     );
 };
 
-var ajax_book = function (id) {
+var ajax_book_info = function (id) {
     $.post(
         'ajax/book.php',
         {
@@ -210,6 +210,23 @@ var ajax_cat_book = function (id) {
             }
 
             view_isotope_insert(idata);
+        },
+        'json'
+    );
+};
+
+var ajax_img_get = function (image, action) {
+    $.post(
+        'ajax/img_get.php',
+        {
+            image: image,
+        },
+        function (data) {
+            if (data['image_success']) {
+                action(data['image_content']);
+            } else {
+                // TODO: error
+            }
         },
         'json'
     );
@@ -686,7 +703,7 @@ var content_update = function (go) {
 
                         var cat_id = parseInt(arg[1]);
 
-                        ajax_cat(cat_id);
+                        ajax_cat_info(cat_id);
 
                         // TODO: load more than 20 catalogs & books
                         ajax_cat_cat(cat_id);
@@ -700,7 +717,7 @@ var content_update = function (go) {
 
                         var book_id = parseInt(arg[1]);
 
-                        ajax_book(book_id);
+                        ajax_book_info(book_id);
 
                         break;
                     default:
