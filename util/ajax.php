@@ -9,6 +9,22 @@
     $filter_text = filter_wrap('/^[^\x{00}-\x{1f}\x{7f}]+$/isAD');
     $filter_hash = filter_wrap('/^[0-9A-F]{64}$/isAD');
 
+    // function ajax_arg_weak($key) {
+    //     if (isset($_REQUEST[$key])) {
+    //         $value = $_REQUEST[$key];
+    //     } else {
+    //         $value = false;
+    //     }
+
+    //     if ($value !== false) {
+    //         return $value;
+    //     } else {
+    //         // return null;
+    //         header("HTTP/1.1 403 Forbidden");
+    //         die('bad call');
+    //     }
+    // }
+
     function ajax_arg($key, $filter, $options) {
         global $ajax_post;
 

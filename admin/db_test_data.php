@@ -10,23 +10,27 @@
     db_buy_truncate();
 
     db_user_add_admin(
-        'hczhcz@example.com', 'hczhcz', crypt_password('hczhcz', '123456'),
-        'Shanghai', 'Room 101, No 1, Some Rd', 'Hi! I am HCZ.'
+        'hczhcz@example.com', 'hczhcz', 'Hi! I am HCZ.',
+        crypt_password('hczhcz', '123456'),
+        'Shanghai', 'Room 101, No 1, Some Rd'
     );
 
     db_user_add(
-        'zacks@example.net', 'zacks', crypt_password('zacks', '123456'),
-        'New York', 'Room 233, No 2, Another Rd', 'Hi! I am Zacks.'
+        'zacks@example.net', 'zacks', 'Hi! I am Zacks.',
+        crypt_password('zacks', '123456'),
+        'New York', 'Room 233, No 2, Another Rd'
     );
 
     db_user_add(
-        'yexiao@example.org', '夜宵', crypt_password('yexiao', '12345678'),
-        '闵大荒', '东川路水上乐园', '你好，我是夜宵！'
+        'yexiao@example.org', '夜宵', '你好，我是夜宵！',
+        crypt_password('yexiao', '12345678'),
+        '闵大荒', '东川路水上乐园'
     );
 
     db_user_add(
-        'lzsd@example.info', '栗子书店', crypt_password('lzsd', '1234567890'),
-        '五角场', '李达三楼 四楼', '你好，我们只是举个栗子！'
+        'lzsd@example.info', '栗子书店', '你好，我们只是举个栗子！',
+        crypt_password('lzsd', '1234567890'),
+        '五角场', '李达三楼 四楼'
     );
 
     db_cat_add(

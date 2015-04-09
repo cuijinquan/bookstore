@@ -50,7 +50,7 @@
     }
 
     function db_user_add_admin(
-        $mail, $name, $password, $location, $address, $about
+        $mail, $name, $detail, $password, $location, $address
     ) {
         return db_insert(
             'user',
