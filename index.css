@@ -123,6 +123,8 @@ body {
     float: left;
     margin: 8px;
 
+    max-width: 320px;
+
     opacity: 0.8;
 }
 

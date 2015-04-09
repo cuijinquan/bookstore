@@ -27,12 +27,12 @@
 
     function db_cat_add(
         $parent_cat_id,
-        $name, $detail
+        $name, $image, $detail
     ) {
         return db_insert(
             'cat',
             null, $parent_cat_id,
-            $name, null, $detail
+            $name, $image, $detail
         );
     }
 

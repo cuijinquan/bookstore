@@ -11,7 +11,7 @@
     $post_address = ajax_arg('address', FILTER_UNSAFE_RAW, null);
 
     if (db_user_add(
-        $post_mail, $post_name, $post_detail, $post_password,
+        $post_mail, $post_name, null/* TODO: image */, $post_detail, $post_password,
         $post_location, $post_address
     )) {
         $user_info = db_user_get_name($post_name);

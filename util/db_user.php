@@ -39,23 +39,23 @@
     }
 
     function db_user_add(
-        $mail, $name, $detail, $password, $location, $address
+        $mail, $name, $image, $detail, $password, $location, $address
     ) {
         return db_insert(
             'user',
             null,
-            $mail, $name, null, $detail, $password, false, $location, $address,
+            $mail, $name, $image, $detail, $password, false, $location, $address,
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
         );
     }
 
     function db_user_add_admin(
-        $mail, $name, $detail, $password, $location, $address
+        $mail, $name, $image, $detail, $password, $location, $address
     ) {
         return db_insert(
             'user',
             null,
-            $mail, $name, null, $detail, $password, true, $location, $address,
+            $mail, $name, $image, $detail, $password, true, $location, $address,
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
         );
     }

@@ -33,12 +33,12 @@
 
     function db_book_add(
         $owner_user_id, $parent_cat_id,
-        $name, $detail, $price, $inventory
+        $name, $image, $detail, $price, $inventory
     ) {
         return db_insert(
             'book',
             null, $owner_user_id, $parent_cat_id,
-            $name, null, $detail, $price, 0, $inventory,
+            $name, $image, $detail, $price, 0, $inventory,
             date('Y-m-d H:i:s')
         );
     }
