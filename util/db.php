@@ -15,7 +15,7 @@
     // select rows in the database by a simple rule
     function db_select(
         $table, $column, $value,
-        $begin = 0, $count = 20, $desc = false
+        $begin = 0, $count = 50, $desc = false
     ) {
         global $db_conn;
 
@@ -39,7 +39,7 @@
     // select rows in the database by some rules
     function db_select_complex(
         $table, $cond, $values,
-        $begin = 0, $count = 20, $desc = false
+        $begin = 0, $count = 50, $desc = false
     ) {
         global $db_conn;
 

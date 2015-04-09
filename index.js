@@ -460,7 +460,7 @@ var content_update = function (go) {
                 view_isotope_reset();
                 view_switch('isotope');
 
-                // TODO: load more than 20 items
+                // TODO: load more than 50 items
                 ajax_cat_cat(0);
 
                 page_switch();
@@ -701,7 +701,7 @@ var content_update = function (go) {
 
                         ajax_cat_info(cat_id);
 
-                        // TODO: load more than 20 catalogs & books
+                        // TODO: load more than 50 catalogs & books
                         ajax_cat_cat(cat_id);
                         ajax_cat_book(cat_id);
 

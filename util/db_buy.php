@@ -50,7 +50,7 @@
 
     function db_buy_list_book(
         $book_id, $show_done,
-        $begin, $count = 20, $desc = true
+        $begin, $count = 50, $desc = true
     ) {
         if ($show_done) {
             return db_select(
@@ -66,7 +66,7 @@
 
     function db_buy_list_buyer(
         $user_id, $show_done,
-        $begin, $count = 20, $desc = true
+        $begin, $count = 50, $desc = true
     ) {
         if ($show_done) {
             return db_select(

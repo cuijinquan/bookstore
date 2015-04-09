@@ -48,7 +48,7 @@
 
     function db_cat_list_parent(
         $cat_id,
-        $begin, $count = 20, $desc = true
+        $begin, $count = 50, $desc = true
     ) {
         return db_select(
             'cat', 'parent_cat_id', $cat_id, $begin, $count, $desc
