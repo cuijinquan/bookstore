@@ -215,23 +215,6 @@ var ajax_cat_book = function (id) {
     );
 };
 
-var ajax_img_get = function (image, action) {
-    $.post(
-        'ajax/img_get.php',
-        {
-            image: image,
-        },
-        function (data) {
-            if (data['image_success']) {
-                action(data['image_content']);
-            } else {
-                // TODO: error
-            }
-        },
-        'json'
-    );
-};
-
 // -------- header --------
 
 $(function () {
@@ -281,10 +264,18 @@ var intro_hide = function () {
 };
 
 var intro_show = function (image, title, text) {
+    $('#intro_image').css('display', 'none');
+
     if (image) {
-        $('#intro_image').css('display', 'block');
-    } else {
-        $('#intro_image').css('display', 'none');
+        $.get(
+            'upload/' + image,
+            {},
+            function (data) {
+                $('#intro_image').attr('src', data);
+                $('#intro_image').css('display', 'block');
+            },
+            'text'
+        );
     }
 
     $('#intro_title').html(markdown.toHTML(title));

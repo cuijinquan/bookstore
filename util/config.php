@@ -13,4 +13,7 @@
     $db_username = 'bookstore';
     $db_password = 'bookstore';
     $db_name = 'bookstore';
+
+    $upload_dir = 'upload';
+    $upload_limit = 1048576;
 ?>

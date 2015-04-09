@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+
+    <script src='../lib/jquery.min.js'></script>
+</head>
+<body>
+    <!--<form action="../ajax/upload_image.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <input type="submit" name="upload" value="submit" />
+    </form>-->
+    <div id='response'></div>
+    <script>
+        var upload_init = function (container, action) {
+            var upload_file = $('<input />')
+                .attr('type', 'file')
+                .attr('name', 'file');
+
+            var upload_submit = $('<input />')
+                .attr('type', 'submit')
+                .attr('name', 'submit');
+
+            var upload_form = $('<form />')
+                .attr('action', '../ajax/upload_image.php')
+                .attr('method', 'post')
+                .attr('enctype', 'multipart/form-data')
+                .append(upload_file)
+                .append(upload_submit);
+
+            var upload = $('<iframe />')
+                // .css('display', 'none')
+                .appendTo(container);
+
+            upload.contents().find('body').append(upload_form);
+            upload.on('load', function () {
+                action(upload.contents().find('body').text());
+                upload.remove();
+            });
+        };
+
+        var upload_action = function (data) {
+            $('#response').append(
+                $('<p />').text(data)
+            );
+            upload_init($('body'), upload_action);
+        }
+
+        upload_init($('body'), upload_action);
+    </script>
+</body>
