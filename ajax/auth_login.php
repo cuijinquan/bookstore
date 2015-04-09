@@ -31,7 +31,7 @@
             $auth_user_id = null;
             $auth_name = $post_name;
 
-            session_delete('auth_user_id');
+            // session_delete('auth_user_id');
         }
     } else {
         // wrong name

@@ -25,7 +25,6 @@
         $auth_success = false;
         $auth_user_id = null;
         $auth_name = null;
-
     }
 
     echo ajax_gen(
