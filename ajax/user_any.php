@@ -19,7 +19,7 @@
             'user_id', $user_info['user_id'],
 
             'name', $user_info['name'],
-            'image', $user_info['image']
+            'image', $user_info['image'],
             'detail', $user_info['detail'],
             'location', $user_info['location']
         );

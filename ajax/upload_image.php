@@ -11,10 +11,10 @@
         isset($_FILES['file'])
         && $_FILES['file']['size'] <= $upload_limit
         && (
-            $_FILES['file']['type'] == 'image/jpeg'
-            || $_FILES['file']['type'] == 'image/pjpeg'
-            || $_FILES['file']['type'] == 'image/png'
-            || $_FILES['file']['type'] == 'image/x-png'
+            $_FILES['file']['type'] === 'image/jpeg'
+            || $_FILES['file']['type'] === 'image/pjpeg'
+            || $_FILES['file']['type'] === 'image/png'
+            || $_FILES['file']['type'] === 'image/x-png'
         )
         && $_FILES['file']['error'] === 0
     ) {

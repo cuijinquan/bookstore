@@ -149,10 +149,10 @@ var ajax_book_info = function (id) {
                 intro_show(
                     data['image'],
                     data['name'],
-                    data['detail'] + '\n\n**价格：**'
-                    + data['price'] + '\n\n**已售：**'
-                    + data['sold'] + '\n\n**库存：**'
-                    + data['inventory']
+                    data['detail']
+                        + '\n\n**价格：**' + data['price']
+                        + '\n\n**销量：**' + data['sold']
+                        + '\n\n**库存：**' + data['inventory']
                 );
             } else {
                 tag_error('此书不存在');
@@ -208,10 +208,10 @@ var ajax_cat_book = function (id) {
                     href: '#!book-' + book_info['book_id'],
                     click: function () {},
                     title: book_info['name'],
-                    text: book_info['detail'] + '\n\n**价格：**'
-                        + book_info['price'] + '\n\n**已售：**'
-                        + book_info['sold'] + '\n\n**库存：**'
-                        + book_info['inventory'],
+                    text: book_info['detail']
+                        + '\n\n**价格：**' + book_info['price']
+                        + '\n\n**销量：**' + book_info['sold']
+                        + '\n\n**库存：**' + book_info['inventory'],
                 });
             }
 
@@ -453,7 +453,7 @@ var view_isotope_insert = function (data) {
                         )
                 )
                 .appendTo('#view_isotope')
-        )
+        );
     }
 };
 
@@ -545,6 +545,16 @@ var view_submit = function (handler, rows) {
 };
 
 // -------- content --------
+
+// var ajax_lock = false;
+
+// $.ajaxStart(function () {
+//     ajax_lock = true;
+// });
+
+// $.ajaxStop(function () {
+//     ajax_lock = false;
+// });
 
 // parse location.hash and load a page
 var content_update = function (go) {
@@ -835,21 +845,31 @@ var content_update = function (go) {
     });
 };
 
-$(window).on('hashchange', function () {
-    content_update();
-});
-
 // -------- page init --------
 
 $(function () {
+    // bg image
     $.backstretch(['res/bg.jpg']);
 
+    // content update
+    $(window).on('hashchange', function () {
+        content_update();
+    });
     $('#navigation_head').click(function () {
         content_update(window.location.hash);
     });
 
+    // init
     view_isotope_init();
     view_submit_init();
 
+    // ajax
+    $(document).ajaxError(function (event, xhr) {
+        if (xhr.status === 403) {
+            tag_error('提交被拒绝');
+        } else {
+            tag_error('通信错误');
+        }
+    });
     ajax_auto_login();
 });
