@@ -246,18 +246,70 @@ $(function () {
     });
 });
 
-// -------- navigation --------
+// -------- navigation & page --------
+
+var tag_now = -1;
+var tag_list = [];
+
+var navigation_update = function () {
+    $('#navigation_tail').removeAttr('id');
+    $('#navigation a:last-child').attr('id', 'navigation_tail');
+}
 
 var page_prepare = function () {
     document.title = 'Yet Another Bookstore';
+
+    $('.button_nav_current')
+        .removeClass('button_nav_current')
+        .addClass('button_nav');
 };
 
 var page_switch = function (title) {
     if (title) {
         document.title = title + ' - Yet Another Bookstore';
+        var label = title;
     } else {
         document.title = 'Yet Another Bookstore';
+        var label = '主页';
     }
+
+    // find exist tag
+    var tag_old = undefined;
+
+    for (var i in tag_list) {
+        if (tag_list[i].attr('href') == window.location.hash) {
+            // the same tag exists
+            tag_old = tag_list[i];
+            tag_list.splice(i, 1);
+            break;
+        }
+    }
+
+    // create a tag
+    var tag = $('<a />')
+        .addClass('button_nav_current')
+        .attr('href', window.location.hash)
+        .text(title ? title : '主页');
+
+    if (tag_old) {
+        tag_old.after(tag);
+        tag_old.remove();
+    } else if (tag_now >= 0) {
+        tag_list[tag_now].after(tag);
+    } else {
+        $('#navigation').append(tag);
+    }
+
+    // update the tag list
+    tag_list.push(tag);
+    tag_now = tag_list.length - 1;
+
+    if (tag_list.length > 6) {
+        tag_list.shift().remove();
+        tag_now -= 1;
+    }
+
+    navigation_update();
 };
 
 // -------- intro --------
@@ -448,8 +500,10 @@ var content_update = function (go) {
 
     if (!window.location.hash) {
         window.location.hash = '#!home';
+        return;
     }
 
+    // load page
     view_hide(function () {
         // reset title
         page_prepare();
@@ -734,6 +788,10 @@ $(window).on('hashchange', function () {
 
 $(function () {
     $.backstretch(['res/bg.jpg']);
+
+    $('#navigation_head').click(function () {
+        content_update(window.location.hash);
+    });
 
     view_isotope_init();
     view_submit_init();
