@@ -117,6 +117,68 @@ body {
     color: #888;
 }
 
+/* -------- navigation --------*/
+
+#navigation {
+    position: absolute;
+    top: 64px;
+    left: 0;
+
+    height: 24px;
+    overflow: hidden;
+
+    color: #DDF;
+    text-shadow: 1px 1px 1px #36F;
+}
+
+#navigation a {
+    float: left;
+    padding: 0 8px;
+
+    display: block;
+    border-right: solid 1px #69F;
+    border-right: solid 1px rgba(255, 255, 255, 0.2);
+    height: 24px;
+    white-space: nowrap;
+
+    color: #DDF;
+    text-decoration: none;
+    line-height: 150%;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#navigation_head {
+    padding: 0 8px 0 96px !important;
+}
+
+#navigation_tail {
+    padding: 0 16px 0 8px !important;
+
+    border-right: none !important;
+    border-radius: 0 0 16px 0;
+}
+
+.button_nav {
+    background: #58F;
+    background: rgba(85, 136, 255, 0.2);
+}
+
+.button_nav:hover {
+    background: #69F; /* #58F */
+    background: rgba(85, 136, 255, 0.4);
+}
+
+.button_nav_current {
+    background: #69F; /* #58F */
+    background: rgba(85, 136, 255, 0.4);
+}
+
+.button_nav_error {
+    background: #F69; /* #F58 */
+    background: rgba(255, 85, 136, 0.4);
+}
+
 /* -------- content -------- */
 
 #content {
