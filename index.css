@@ -104,6 +104,19 @@ body {
     line-height: 100%;
 }
 
+.input::-webkit-input-placeholder {
+    color: #888;
+}
+
+.input::-moz-placeholder {
+    opacity: 1;
+    color: #888;
+}
+
+.input:-ms-input-placeholder {
+    color: #888;
+}
+
 /* -------- content -------- */
 
 #content {
@@ -124,7 +137,7 @@ body {
 #intro {
     margin: 32px 128px;
 
-    color: #444;
+    color: #333;
 }
 
 #intro_image {
@@ -144,13 +157,13 @@ body {
 #main {
     width: 100%;
 
-    color: #444;
+    color: #333;
 }
 
 #main a {
     display: block;
 
-    color: #444;
+    color: #333;
     text-decoration: none;
     cursor: pointer;
 }
