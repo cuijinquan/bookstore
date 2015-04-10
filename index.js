@@ -115,6 +115,54 @@ var ajax_logout = function () {
     );
 };
 
+var ajax_self_info = function (id) {
+    $.post(
+        'ajax/user_self.php',
+        {
+            user_id: id,
+        },
+        function (data) {
+            if (data['get_success']) {
+                intro_show(
+                    data['image'],
+                    data['name'],
+                    data['detail']
+                        + '\n\n**邮箱：**' + data['mail']
+                        + '\n\n**身份：**' + (data['is_admin'] ? '管理员' : '用户')
+                        + '\n\n**地区：**' + data['location']
+                        + '\n\n**地址：**' + data['address']
+                );
+            } else {
+                tag_error('未登录');
+            }
+        },
+        'json'
+    );
+};
+
+var ajax_user_info = function (id) {
+    $.post(
+        'ajax/user_any.php',
+        {
+            user_id: id,
+        },
+        function (data) {
+            if (data['get_success']) {
+                page_switch(data['name']);
+                intro_show(
+                    data['image'],
+                    data['name'],
+                    data['detail']
+                        + '\n\n**地区：**' + data['location']
+                );
+            } else {
+                tag_error('此用户不存在');
+            }
+        },
+        'json'
+    );
+};
+
 var ajax_cat_info = function (id) {
     $.post(
         'ajax/cat.php',
@@ -578,10 +626,10 @@ var content_update = function (go) {
                 view_isotope_reset();
                 view_switch('isotope');
 
+                page_switch();
+
                 // TODO: load more than 50 items
                 ajax_cat_cat(0);
-
-                page_switch();
 
                 break;
             case '#!explore':
@@ -603,12 +651,18 @@ var content_update = function (go) {
 
                 break;
             case '#!my':
-                // view_switch('isotope');
+                // TODO: a new view
+                view_isotope_reset();
+                view_switch('isotope');
 
                 page_switch('我的');
 
+                ajax_self_info();
+
                 break;
             case '#!register':
+                page_switch('注册', true);
+
                 view_submit(
                     function (arg) {
                         $.post(
@@ -798,17 +852,19 @@ var content_update = function (go) {
                 );
                 view_switch('submit');
 
-                page_switch('注册', true);
-
                 break;
             default:
                 var arg = window.location.hash.split('-');
 
                 switch (arg[0]) {
                     case '#!user':
-                        // view_switch('isotope');
+                        // TODO: a new view
+                        view_isotope_reset();
+                        view_switch('isotope');
 
-                        // page_switch('');
+                        var user_id = parseInt(arg[1]);
+
+                        ajax_user_info(user_id);
 
                         break;
                     case '#!cat':
