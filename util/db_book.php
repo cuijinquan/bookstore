@@ -7,6 +7,7 @@
         global $db_conn;
 
         // books to sell
+        //     inventory: auto decrease + edit by user
         return $db_conn->query('
             create table book (
                 book_id         bigint          auto_increment  primary key,
@@ -17,10 +18,11 @@
                 image           varchar(64),
                 detail          text,
                 price           varchar(64),
-                sold            bigint,
                 inventory       bigint,
 
-                date_add        datetime
+                sold_count      bigint,
+
+                date_create     datetime
             );
         ');
     }
@@ -40,7 +42,8 @@
         return db_insert(
             'book',
             null, $owner_user_id, $parent_cat_id,
-            $name, $image, $detail, $price, 0, $inventory,
+            $name, $image, $detail, $price, $inventory,
+            0,
             date('Y-m-d H:i:s')
         );
     }

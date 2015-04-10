@@ -21,7 +21,6 @@
             'image'=> $book_info['image'],
             'detail'=> $book_info['detail'],
             'price'=> $book_info['price'],
-            'sold'=> $book_info['sold'],
             'inventory'=> $book_info['inventory']
         );
     }

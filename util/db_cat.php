@@ -14,7 +14,10 @@
 
                 name            varchar(64)     unique,
                 image           varchar(64),
-                detail          text
+                detail          text,
+
+                cat_count       bigint,
+                book_count      bigint
             );
         ');
     }
@@ -34,7 +37,8 @@
         return db_insert(
             'cat',
             null, $parent_cat_id,
-            $name, $image, $detail
+            $name, $image, $detail,
+            0, 0
         );
     }
 

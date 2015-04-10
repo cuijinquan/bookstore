@@ -131,6 +131,8 @@ var ajax_self_info = function (id) {
                         + '\n\n**身份：**' + (data['is_admin'] ? '管理员' : '用户')
                         + '\n\n**地区：**' + data['location']
                         + '\n\n**地址：**' + data['address']
+                        + '\n\n**注册日期：**' + data['date_create']
+                        + '\n\n**上次登录：**' + data['date_login']
                 );
             } else {
                 tag_error('未登录');
@@ -199,8 +201,9 @@ var ajax_book_info = function (id) {
                     data['name'],
                     data['detail']
                         + '\n\n**价格：**' + data['price']
-                        + '\n\n**销量：**' + data['sold']
+                        // + '\n\n**销量：**' + data['sold']
                         + '\n\n**库存：**' + data['inventory']
+                        + '\n\n**创建日期：**' + data['date_create']
                 );
             } else {
                 tag_error('此书不存在');
@@ -258,7 +261,7 @@ var ajax_cat_book = function (id) {
                     title: book_info['name'],
                     text: book_info['detail']
                         + '\n\n**价格：**' + book_info['price']
-                        + '\n\n**销量：**' + book_info['sold']
+                        // + '\n\n**销量：**' + book_info['sold']
                         + '\n\n**库存：**' + book_info['inventory'],
                 });
             }

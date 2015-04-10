@@ -22,10 +22,9 @@
             'image', $book_info['image'],
             'detail', $book_info['detail'],
             'price', $book_info['price'],
-            'sold', $book_info['sold'],
             'inventory', $book_info['inventory'],
 
-            'date_add', $book_info['date_add']
+            'date_create', $book_info['date_create']
 
             // TODO: order history & comments?
             // TODO: catalog path?

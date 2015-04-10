@@ -8,7 +8,6 @@
 
         // users
         //     password: hash('sha256', $name . ':' . $password_raw)
-        //     is_admin: 'Y' or 'N'
         return $db_conn->query('
             create table user (
                 user_id         bigint          auto_increment  primary key,
@@ -18,9 +17,13 @@
                 image           varchar(64),
                 detail          text,
                 password        char(64),
-                is_admin        char(1),
+                is_admin        bool,
                 location        varchar(64),
                 address         text,
+
+                bought_count    bigint,
+                book_count      bigint,
+                sold_count      bigint,
 
                 date_create     datetime,
                 date_login      datetime
@@ -47,6 +50,7 @@
             'user',
             null,
             $mail, $name, $image, $detail, $password, false, $location, $address,
+            0, 0, 0,
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
         );
     }
@@ -58,6 +62,7 @@
             'user',
             null,
             $mail, $name, $image, $detail, $password, true, $location, $address,
+            0, 0, 0,
             date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
         );
     }
