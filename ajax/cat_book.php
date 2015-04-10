@@ -15,13 +15,17 @@
 
     while ($book_info = $data_all->fetch_assoc()) {
         $book_data[] = array(
-            'book_id'=> $book_info['book_id'],
+            'book_id' => $book_info['book_id'],
 
-            'name'=> $book_info['name'],
-            'image'=> $book_info['image'],
-            'detail'=> $book_info['detail'],
-            'price'=> $book_info['price'],
-            'inventory'=> $book_info['inventory']
+            'name' => $book_info['name'],
+            // 'image' => $book_info['image'],
+            'detail' => $book_info['detail'],
+            'price' => $book_info['price'],
+            'inventory' => $book_info['inventory'],
+
+            'sold_count' => $book_info['sold_count']
+
+            // 'date_create' => $book_info['date_create']
         );
     }
 

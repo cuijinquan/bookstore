@@ -20,7 +20,10 @@
 
             'name', $cat_info['name'],
             'image', $cat_info['image'],
-            'detail', $cat_info['detail']
+            'detail', $cat_info['detail'],
+
+            'cat_count', $cat_info['cat_count'],
+            'book_count', $cat_info['book_count']
 
             // TODO: catalog path?
         );

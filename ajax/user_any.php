@@ -21,7 +21,10 @@
             'name', $user_info['name'],
             'image', $user_info['image'],
             'detail', $user_info['detail'],
-            'location', $user_info['location']
+            'location', $user_info['location'],
+
+            'book_count', $user_info['book_count'],
+            'sold_count', $user_info['sold_count']
         );
     } else {
         // user not found

@@ -15,11 +15,14 @@
 
     while ($cat_info = $data_all->fetch_assoc()) {
         $cat_data[] = array(
-            'cat_id'=> $cat_info['cat_id'],
+            'cat_id' => $cat_info['cat_id'],
 
-            'name'=> $cat_info['name'],
-            'image'=> $cat_info['image'],
-            'detail'=> $cat_info['detail']
+            'name' => $cat_info['name'],
+            // 'image' => $cat_info['image'],
+            'detail' => $cat_info['detail']
+
+            // 'cat_count' => $cat_info['cat_count'],
+            // 'book_count' => $cat_info['book_count']
         );
     }
 

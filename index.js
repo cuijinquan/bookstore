@@ -115,22 +115,24 @@ var ajax_logout = function () {
     );
 };
 
-var ajax_self_info = function (id) {
+var ajax_self_info = function () {
     $.post(
         'ajax/user_self.php',
-        {
-            user_id: id,
-        },
+        {},
         function (data) {
             if (data['get_success']) {
                 intro_show(
                     data['image'],
                     data['name'],
                     data['detail']
+                        + '\n\n**用户ID：**' + data['user_id']
                         + '\n\n**邮箱：**' + data['mail']
                         + '\n\n**身份：**' + (data['is_admin'] ? '管理员' : '用户')
                         + '\n\n**地区：**' + data['location']
                         + '\n\n**地址：**' + data['address']
+                        + '\n\n**已购买：**' + data['bought_count'] + '本'
+                        + '\n\n**在售图书：**' + data['book_count']
+                        + '\n\n**已销售：**' + data['sold_count'] + '本'
                         + '\n\n**注册日期：**' + data['date_create']
                         + '\n\n**上次登录：**' + data['date_login']
                 );
@@ -155,7 +157,10 @@ var ajax_user_info = function (id) {
                     data['image'],
                     data['name'],
                     data['detail']
+                        + '\n\n**用户ID：**' + data['user_id']
                         + '\n\n**地区：**' + data['location']
+                        + '\n\n**在售图书：**' + data['book_count']
+                        + '\n\n**已销售：**' + data['sold_count'] + '本'
                 );
             } else {
                 tag_error('此用户不存在');
@@ -178,6 +183,9 @@ var ajax_cat_info = function (id) {
                     data['image'],
                     data['name'],
                     data['detail']
+                        // cat_id
+                        + '\n\n**子目录：**' + data['cat_count'] + '个'
+                        + '\n\n**在售图书：**' + data['book_count'] + '本'
                 );
             } else {
                 tag_error('此目录不存在');
@@ -200,10 +208,11 @@ var ajax_book_info = function (id) {
                     data['image'],
                     data['name'],
                     data['detail']
+                        // book_id
                         + '\n\n**价格：**' + data['price']
-                        // + '\n\n**销量：**' + data['sold']
-                        + '\n\n**库存：**' + data['inventory']
-                        + '\n\n**创建日期：**' + data['date_create']
+                        + '\n\n**库存：**' + data['inventory'] + '本'
+                        + '\n\n**已销售：**' + data['sold_count'] + '本'
+                        + '\n\n**上架日期：**' + data['date_create']
                 );
             } else {
                 tag_error('此书不存在');
@@ -261,8 +270,8 @@ var ajax_cat_book = function (id) {
                     title: book_info['name'],
                     text: book_info['detail']
                         + '\n\n**价格：**' + book_info['price']
-                        // + '\n\n**销量：**' + book_info['sold']
-                        + '\n\n**库存：**' + book_info['inventory'],
+                        + '\n\n**库存：**' + book_info['inventory'] + '本'
+                        + '\n\n**已销售：**' + book_info['sold_count'] + '本',
                 });
             }
 

@@ -24,6 +24,8 @@
             'price', $book_info['price'],
             'inventory', $book_info['inventory'],
 
+            'sold_count', $book_info['sold_count'],
+
             'date_create', $book_info['date_create']
 
             // TODO: order history & comments?

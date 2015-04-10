@@ -26,6 +26,10 @@
             'location', $user_info['location'],
             'address', $user_info['address'],
 
+            'bought_count', $user_info['bought_count'],
+            'book_count', $user_info['book_count'],
+            'sold_count', $user_info['sold_count'],
+
             'date_create', $user_info['date_create'],
             'date_login', $user_info['date_login']
         );
