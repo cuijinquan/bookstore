@@ -81,9 +81,9 @@ var ajax_login = function (i_name, i_pass) {
                         content_update();
                     } else {
                         if (data['auth_name']) {
-                            // TODO: wrong password
+                            tag_error('密码错误');
                         } else {
-                            // TODO: wrong name
+                            tag_error('用户不存在');
                         }
                     }
                 },
@@ -108,7 +108,7 @@ var ajax_logout = function () {
                 login_update();
                 content_update();
             } else {
-                // TODO: internal error
+                tag_error('内部错误');
             }
         },
         'json'
@@ -129,6 +129,8 @@ var ajax_cat_info = function (id) {
                     data['name'],
                     data['detail']
                 );
+            } else {
+                tag_error('此目录不存在');
             }
         },
         'json'
@@ -152,6 +154,8 @@ var ajax_book_info = function (id) {
                     + data['sold'] + '\n\n**库存：**'
                     + data['inventory']
                 );
+            } else {
+                tag_error('此书不存在');
             }
         },
         'json'
@@ -254,25 +258,14 @@ var tag_list = [];
 var navigation_update = function () {
     $('#navigation_tail').removeAttr('id');
     $('#navigation a:last-child').attr('id', 'navigation_tail');
-}
 
-var page_prepare = function () {
-    document.title = 'Yet Another Bookstore';
-
-    $('.button_nav_current')
-        .removeClass('button_nav_current')
-        .addClass('button_nav');
+    while (tag_list.length > 6) {
+        tag_list.shift().remove();
+        tag_now -= 1;
+    }
 };
 
-var page_switch = function (title) {
-    if (title) {
-        document.title = title + ' - Yet Another Bookstore';
-        var label = title;
-    } else {
-        document.title = 'Yet Another Bookstore';
-        var label = '主页';
-    }
-
+var tag_page = function (title) {
     // find exist tag
     var tag_old = undefined;
 
@@ -289,7 +282,7 @@ var page_switch = function (title) {
     var tag = $('<a />')
         .addClass('button_nav_current')
         .attr('href', window.location.hash)
-        .text(title ? title : '主页');
+        .text(title);
 
     if (tag_old) {
         tag_old.after(tag);
@@ -303,13 +296,47 @@ var page_switch = function (title) {
     // update the tag list
     tag_list.push(tag);
     tag_now = tag_list.length - 1;
+    navigation_update();
+};
 
-    if (tag_list.length > 6) {
-        tag_list.shift().remove();
-        tag_now -= 1;
+var tag_error = function (message) {
+    // create a tag
+    var tag = $('<a />')
+        .addClass('button_nav_error')
+        .text(message);
+
+    if (tag_now >= 0) {
+        tag_list[tag_now].after(tag);
+    } else {
+        $('#navigation').append(tag);
     }
 
+    // update the tag list
+    tag_list.push(tag);
+    tag_now = tag_list.length - 1;
     navigation_update();
+};
+
+var page_prepare = function () {
+    document.title = 'Yet Another Bookstore';
+
+    $('.button_nav_current')
+        .removeClass('button_nav_current')
+        .addClass('button_nav');
+};
+
+var page_switch = function (title, notag) {
+    if (title) {
+        document.title = title + ' - Yet Another Bookstore';
+        if (!notag) {
+            tag_page(title);
+        }
+    } else {
+        document.title = 'Yet Another Bookstore';
+        if (!notag) {
+            tag_page('主页');
+        }
+    }
 };
 
 // -------- intro --------
@@ -468,7 +495,7 @@ var view_submit = function (handler, rows) {
         $('#submit_table input').change();
 
         if ($('#submit_table .error').length > 0) {
-            // TODO: error
+            tag_error('无法提交');
             return;
         }
 
@@ -558,7 +585,7 @@ var content_update = function (go) {
                                     login_update();
                                     content_update('#!home');
                                 } else {
-                                    // TODO: error
+                                    tag_error('注册失败');
                                 }
                             },
                             'json'
@@ -734,7 +761,7 @@ var content_update = function (go) {
                 );
                 view_switch('submit');
 
-                page_switch('注册');
+                page_switch('注册', true);
 
                 break;
             default:
@@ -771,7 +798,8 @@ var content_update = function (go) {
 
                         break;
                     default:
-                        // TODO: bad hashbang
+                        // TODO: use a view?
+                        tag_error('此页不存在');
 
                         break;
                 }
