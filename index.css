@@ -126,9 +126,6 @@ body {
 
     height: 24px;
     overflow: hidden;
-
-    color: #DDF;
-    text-shadow: 1px 1px 1px #36F;
 }
 
 #navigation a {
@@ -141,7 +138,6 @@ body {
     height: 24px;
     white-space: nowrap;
 
-    color: #DDF;
     text-decoration: none;
     line-height: 150%;
     font-size: 16px;
@@ -162,6 +158,8 @@ body {
 .button_nav {
     background: #58F;
     background: rgba(85, 136, 255, 0.2);
+    color: #DDF;
+    text-shadow: 1px 1px 1px #36F;
 }
 
 .button_nav:hover {
@@ -172,11 +170,15 @@ body {
 .button_nav_current {
     background: #69F; /* #58F */
     background: rgba(85, 136, 255, 0.4);
+    color: #DDF;
+    text-shadow: 1px 1px 1px #36F;
 }
 
 .button_nav_error {
     background: #F69; /* #F58 */
     background: rgba(255, 85, 136, 0.4);
+    color: #FDD;
+    text-shadow: 1px 1px 1px #F36;
 }
 
 /* -------- content -------- */
