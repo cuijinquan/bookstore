@@ -257,7 +257,11 @@ var tag_list = [];
 
 var navigation_update = function () {
     $('#navigation_tail').removeAttr('id');
-    $('#navigation a:last-child').attr('id', 'navigation_tail');
+
+    var last = $('#navigation a:last-child');
+    if (!last.attr('id')) {
+        last.attr('id', 'navigation_tail');
+    }
 
     while (tag_list.length > 6) {
         tag_list.shift().remove();
@@ -269,11 +273,15 @@ var tag_page = function (title) {
     // find exist tag
     var tag_old = undefined;
 
+    // remove errors
+    $('.button_nav_error').click();
+
     for (var i in tag_list) {
-        if (tag_list[i].attr('href') == window.location.hash) {
+        if (tag_list[i].attr('href') === window.location.hash) {
             // the same tag exists
             tag_old = tag_list[i];
             tag_list.splice(i, 1);
+
             break;
         }
     }
@@ -296,6 +304,7 @@ var tag_page = function (title) {
     // update the tag list
     tag_list.push(tag);
     tag_now = tag_list.length - 1;
+
     navigation_update();
 };
 
@@ -303,7 +312,24 @@ var tag_error = function (message) {
     // create a tag
     var tag = $('<a />')
         .addClass('button_nav_error')
-        .text(message);
+        .text(message)
+        .click(function () {
+            for (var i in tag_list) {
+                if (tag_list[i] === tag) {
+                    // remove self if clicked
+                    tag.remove();
+                    tag_list.splice(i, 1);
+
+                    if (tag_now >= i) {
+                        tag_now -= 1;
+                    }
+
+                    break;
+                }
+            }
+
+            navigation_update();
+        });
 
     if (tag_now >= 0) {
         tag_list[tag_now].after(tag);
@@ -314,6 +340,7 @@ var tag_error = function (message) {
     // update the tag list
     tag_list.push(tag);
     tag_now = tag_list.length - 1;
+
     navigation_update();
 };
 
