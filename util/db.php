@@ -60,7 +60,7 @@
         $args = array();
 
         foreach ($cond_values as $key => $value) {
-            $args[$key] = $db_conn->escape_string($value);
+            $args[$key] = '"' . $db_conn->escape_string($value) . '"';
         }
 
         return $db_conn->query('

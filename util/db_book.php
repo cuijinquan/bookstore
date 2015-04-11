@@ -14,15 +14,15 @@
                 owner_user_id   bigint          not null,
                 parent_cat_id   bigint          not null,
 
-                name            varchar(64),
+                name            varchar(64)     not null,
                 image           varchar(64),
                 detail          text,
-                price           varchar(64),
-                inventory       bigint,
+                price           varchar(64)     not null,
+                inventory       bigint          not null,
 
-                sold_count      bigint,
+                sold_count      bigint          not null,
 
-                date_create     datetime
+                date_create     datetime        not null
             );
         ');
     }

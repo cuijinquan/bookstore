@@ -16,8 +16,8 @@
                 image           varchar(64),
                 detail          text,
 
-                cat_count       bigint,
-                book_count      bigint
+                cat_count       bigint          not null,
+                book_count      bigint          not null
             );
         ');
     }

@@ -14,10 +14,10 @@
                 buy_book_id     bigint          not null,
                 buyer_user_id   bigint          not null,
 
-                address         text,
+                address         text            not null,
                 feedback        text,
 
-                date_create     datetime,
+                date_create     datetime        not null,
                 date_accept     datetime,
                 date_done       datetime
             );

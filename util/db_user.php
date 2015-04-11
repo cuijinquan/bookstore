@@ -16,17 +16,17 @@
                 name            varchar(64)     unique,
                 image           varchar(64),
                 detail          text,
-                password        char(64),
-                is_admin        bool,
-                location        varchar(64),
+                password        char(64)        not null,
+                is_admin        bool            not null,
+                location        varchar(64)     not null,
                 address         text,
 
-                bought_count    bigint,
-                book_count      bigint,
-                sold_count      bigint,
+                bought_count    bigint          not null,
+                book_count      bigint          not null,
+                sold_count      bigint          not null,
 
-                date_create     datetime,
-                date_login      datetime
+                date_create     datetime        not null,
+                date_login      datetime        not null
             );
         ');
     }
