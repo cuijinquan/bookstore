@@ -7,6 +7,7 @@
         global $db_conn;
 
         // catalogs
+        //     cat_count: no more than 50
         return $db_conn->query('
             create table cat (
                 cat_id          bigint          auto_increment  primary key,
@@ -56,10 +57,10 @@
 
     function db_cat_list_parent(
         $cat_id,
-        $begin, $count = 50, $order = null, $desc = true
+        $begin, $count = 50
     ) {
         return db_select(
-            'cat', 'parent_cat_id', $cat_id, $begin, $count, $order, $desc
+            'cat', 'parent_cat_id', $cat_id, null, true, $begin, $count
         );
     }
 

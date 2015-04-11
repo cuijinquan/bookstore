@@ -15,7 +15,7 @@
     // select rows in the database by a simple rule
     function db_select(
         $table, $cond_column, $cond_value,
-        $begin = 0, $count = 50, $order = null, $desc = false
+        $order = null, $desc = false, $begin = 0, $count = 50
     ) {
         global $db_conn;
 
@@ -40,10 +40,10 @@
         ');
     }
 
-    // select rows in the database by some rules
-    function db_select_complex(
+    // select rows in the database by customized rules
+    function db_select_cond(
         $table, $cond /* raw */, $cond_values,
-        $begin = 0, $count = 50, $order = null, $desc = false
+        $order, $desc = false, $begin = 0, $count = 50
     ) {
         global $db_conn;
 

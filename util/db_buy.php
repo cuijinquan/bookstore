@@ -50,15 +50,15 @@
 
     function db_buy_list_book(
         $book_id, $show_done,
-        $begin, $count = 50, $order = null, $desc = true
+        $begin, $count = 50
     ) {
         if ($show_done) {
             return db_select(
-                'buy', 'buy_book_id', $book_id, $begin, $count, $order, $desc
+                'buy', 'buy_book_id', $book_id, null, true, $begin, $count
             );
         } else {
             return db_select(
-                'buy', 'buy_book_id', $book_id, $begin, $count, $order, $desc,
+                'buy', 'buy_book_id', $book_id, null, true, $begin, $count,
                 'date_done is none'
             );
         }
@@ -66,15 +66,15 @@
 
     function db_buy_list_buyer(
         $user_id, $show_done,
-        $begin, $count = 50, $order = null, $desc = true
+        $begin, $count = 50
     ) {
         if ($show_done) {
             return db_select(
-                'buy', 'buyer_user_id', $user_id, $begin, $count, $order, $desc
+                'buy', 'buyer_user_id', $user_id, null, true, $begin, $count
             );
         } else {
             return db_select(
-                'buy', 'buyer_user_id', $user_id, $begin, $count, $order, $desc,
+                'buy', 'buyer_user_id', $user_id, null, true, $begin, $count,
                 'date_done is none'
             );
         }
