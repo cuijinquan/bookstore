@@ -14,45 +14,53 @@
 
     // select rows in the database by a simple rule
     function db_select(
-        $table, $column, $value,
-        $begin = 0, $count = 50, $desc = false
+        $table, $cond_column, $cond_value,
+        $begin = 0, $count = 50, $order = null, $desc = false
     ) {
         global $db_conn;
 
         if ($desc) {
-            $order = 'desc';
+            $ordertag = 'desc';
         } else {
-            $order = 'asc';
+            $ordertag = 'asc';
+        }
+
+        if ($order === null) {
+            $order = $cond_column;
         }
 
         return $db_conn->query('
             select * from `' . $db_conn->escape_string($table) . '`
             where (
-                `' . $db_conn->escape_string($column) . '`
-                = "' . $db_conn->escape_string($value) . '"
+                `' . $db_conn->escape_string($cond_column) . '`
+                = "' . $db_conn->escape_string($cond_value) . '"
             )
-            order by `' . $db_conn->escape_string($column) . '` ' . $order . '
-            limit ' . $begin . ', ' . $count . ';
+            order by `' . $db_conn->escape_string($order) . '` ' . $ordertag . '
+            limit ' . intval($begin) . ', ' . intval($count) . ';
         ');
     }
 
     // select rows in the database by some rules
     function db_select_complex(
-        $table, $cond, $values,
-        $begin = 0, $count = 50, $desc = false
+        $table, $cond /* raw */, $cond_values,
+        $begin = 0, $count = 50, $order = null, $desc = false
     ) {
         global $db_conn;
 
         if ($desc) {
-            $order = 'desc';
+            $ordertag = 'desc';
         } else {
-            $order = 'asc';
+            $ordertag = 'asc';
         }
+
+        // if ($order === null) {
+        //     $order = $column;
+        // }
 
         $args = array();
 
-        foreach ($values as $key => $value) {
-            $args[$key] = $db_conn->escape_string($values[$key]);
+        foreach ($cond_values as $key => $value) {
+            $args[$key] = $db_conn->escape_string($value);
         }
 
         return $db_conn->query('
@@ -60,13 +68,13 @@
             where (
                 ' . vsprintf($cond, $args) . '
             )
-            order by `' . $db_conn->escape_string($column) . '` ' . $order . '
-            limit ' . $begin . ', ' . $count . ';
+            order by `' . $db_conn->escape_string($order) . '` ' . $ordertag . '
+            limit ' . intval($begin) . ', ' . intval($count) . ';
         ');
     }
 
     // add a row to the database
-    function db_insert($table) {
+    function db_insert($table /* var args */) {
         global $db_conn;
 
         $data_str = '';

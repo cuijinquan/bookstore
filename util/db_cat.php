@@ -52,10 +52,10 @@
 
     function db_cat_list_parent(
         $cat_id,
-        $begin, $count = 50, $desc = true
+        $begin, $count = 50, $order = null, $desc = true
     ) {
         return db_select(
-            'cat', 'parent_cat_id', $cat_id, $begin, $count, $desc
+            'cat', 'parent_cat_id', $cat_id, $begin, $count, $order, $desc
         );
     }
 
