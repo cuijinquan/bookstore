@@ -75,7 +75,15 @@
         return db_select('user', 'name', $name)->fetch_assoc();
     }
 
-    function db_user_set($data) {
-        return db_write('user', $data, true);
+    function db_user_set_login($user_id) {
+        return db_update(
+            'user',
+            'user_id', $user_id,
+            'date_login = %s', array(date('Y-m-d H:i:s'))
+        );
     }
+
+    // function db_user_set($data) {
+    //     return db_write('user', $data, true);
+    // }
 ?>

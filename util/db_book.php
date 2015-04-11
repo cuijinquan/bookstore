@@ -45,6 +45,14 @@
             $name, $image, $detail, $price, $inventory,
             0,
             date('Y-m-d H:i:s')
+        ) && db_update(
+            'user',
+            'user_id', $owner_user_id,
+            'book_count = book_count + 1'
+        ) && db_update( // $parent_cat_id should not be 0
+            'cat',
+            'cat_id', $parent_cat_id,
+            'book_count = book_count + 1'
         );
     }
 
@@ -70,7 +78,7 @@
         );
     }
 
-    function db_book_set($data) {
-        return db_write('book', $data, true);
-    }
+    // function db_book_set($data) {
+    //     return db_write('book', $data, true);
+    // }
 ?>

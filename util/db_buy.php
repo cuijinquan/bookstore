@@ -80,7 +80,7 @@
         }
     }
 
-    function db_buy_set($data) {
-        return db_write('buy', $data, true);
-    }
+    // function db_buy_set($data) {
+    //     return db_write('buy', $data, true);
+    // }
 ?>

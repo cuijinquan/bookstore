@@ -82,10 +82,18 @@
         for ($i = 1; $i < func_num_args(); $i += 1) {
             $value = func_get_arg($i);
 
-            if ($i === 1) {
-                $data_str = '"' . $db_conn->escape_string($value) . '"';
+            if ($value !== null) {
+                if ($i === 1) {
+                    $data_str = '"' . $db_conn->escape_string($value) . '"';
+                } else {
+                    $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
+                }
             } else {
-                $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
+                if ($i === 1) {
+                    $data_str = 'null';
+                } else {
+                    $data_str = $data_str . ', null';
+                }
             }
         }
 
@@ -95,36 +103,59 @@
         ');
     }
 
-    // write (insert or replace) data to the database
-    function db_write($table, $data, $replace) {
+    // update an exist row
+    function db_update(
+        $table, $cond_column, $cond_value,
+        $expr /* raw */, $values = array()
+    ) {
         global $db_conn;
 
-        if ($replace) {
-            $command = 'replace';
-        } else {
-            $command = 'insert ignore';
-        }
+        $args = array();
 
-        $column_str = '';
-        $data_str = '';
-
-        foreach ($data as $key => $value) {
-            if ($value !== null) {
-                if ($column_str === '') {
-                    $column_str = '`' . $db_conn->escape_string($key) . '`';
-                    $data_str = '"' . $db_conn->escape_string($value) . '"';
-                } else {
-                    $column_str = $column_str . ', `' . $db_conn->escape_string($key) . '`';
-                    $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
-                }
-            }
+        foreach ($values as $key => $value) {
+            $args[$key] = '"' . $db_conn->escape_string($values[$key]) . '"';
         }
 
         return $db_conn->query('
-            ' . $command . ' into `' . $db_conn->escape_string($table) . '` (' . $column_str . ')
-            values (' . $data_str . ');
+            update `' . $db_conn->escape_string($table) . '`
+            set ' . vsprintf($expr, $args) . '
+            where (
+                `' . $db_conn->escape_string($cond_column) . '`
+                = "' . $db_conn->escape_string($cond_value) . '"
+            );
         ');
     }
+
+    // write (insert or replace) data to the database
+    // function db_write($table, $data, $replace) {
+    //     global $db_conn;
+
+    //     if ($replace) {
+    //         $command = 'replace';
+    //     } else {
+    //         $command = 'insert ignore';
+    //     }
+
+    //     $column_str = '';
+    //     $data_str = '';
+
+    //     foreach ($data as $key => $value) {
+    //         if ($value !== null) {
+    //             if ($column_str === '') {
+    //                 $column_str = '`' . $db_conn->escape_string($key) . '`';
+    //                 $data_str = '"' . $db_conn->escape_string($value) . '"';
+    //             } else {
+    //                 $column_str = $column_str . ', `' . $db_conn->escape_string($key) . '`';
+    //                 $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
+    //             }
+    //         }
+    //     }
+
+    //     return $db_conn->query('
+    //         ' . $command . ' into `' . $db_conn->escape_string($table) . '` (' . $column_str . ')
+    //         values (' . $data_str . ');
+    //     ');
+    // }
 
     // remove rows in the database
     function db_delete($table, $column, $value) {

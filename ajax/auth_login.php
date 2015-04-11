@@ -25,8 +25,7 @@
 
             session_set('auth_user_id', $auth_user_id);
 
-            $user_info['date_login'] = date('Y-m-d H:i:s');
-            db_user_set($user_info);
+            db_user_set_login($auth_user_id);
         } else {
             // wrong password
 

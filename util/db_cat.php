@@ -39,7 +39,11 @@
             null, $parent_cat_id,
             $name, $image, $detail,
             0, 0
-        );
+        ) && ($parent_cat_id === 0 || db_update(
+            'cat',
+            'cat_id', $parent_cat_id,
+            'cat_count = cat_count + 1'
+        ));
     }
 
     function db_cat_get($cat_id) {
@@ -59,7 +63,7 @@
         );
     }
 
-    function db_cat_set($data) {
-        return db_write('cat', $data, true);
-    }
+    // function db_cat_set($data) {
+    //     return db_write('cat', $data, true);
+    // }
 ?>
