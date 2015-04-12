@@ -60,6 +60,15 @@
         return db_select('book', 'book_id', $book_id)->fetch_assoc();
     }
 
+    function db_book_list_all(
+        $cond, $order, $desc, $begin, $count = 50
+    ) {
+        return db_select_cond(
+            'book', $cond, array(),
+            $order, $desc, $begin, $count
+        );
+    }
+
     function db_book_list_owner(
         $user_id,
         $begin, $count = 50

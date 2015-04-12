@@ -48,6 +48,15 @@
         return db_select('buy', 'buy_id', $buy_id)->fetch_assoc();
     }
 
+    function db_buy_list_all(
+        $cond, $order, $desc, $begin, $count = 50
+    ) {
+        return db_select_cond(
+            'buy', $cond, array(),
+            $order, $desc, $begin, $count
+        );
+    }
+
     function db_buy_list_book(
         $book_id, $show_done,
         $begin, $count = 50
