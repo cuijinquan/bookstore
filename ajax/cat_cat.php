@@ -6,12 +6,12 @@
     // get sub catalogs in a catalog
     // args: cat_id, begin
 
-    $cat_id = ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number);
-    $cat_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_cat_id = ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
+
+    $data_all = db_cat_list_parent($post_cat_id, $post_begin);
 
     $cat_data = array();
-
-    $data_all = db_cat_list_parent($cat_id, $cat_begin);
 
     while ($cat_info = $data_all->fetch_assoc()) {
         $cat_data[] = array(

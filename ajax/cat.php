@@ -6,9 +6,9 @@
     // get info of a catalog
     // args: cat_id
 
-    $cat_id = ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_cat_id = ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number);
 
-    $cat_info = db_cat_get($cat_id);
+    $cat_info = db_cat_get($post_cat_id);
 
     if ($cat_info) {
         // cat exists

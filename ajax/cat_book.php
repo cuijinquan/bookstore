@@ -3,15 +3,15 @@
     require_once '../util/session.php';
     require_once '../util/db_book.php';
 
-    // get info of book in a catalog
-    // args: book_id, begin
+    // get info of books in a catalog
+    // args: cat_id, begin
 
-    $book_id = ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number);
-    $book_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_cat_id = ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
+
+    $data_all = db_book_list_cat($post_cat_id, $post_begin);
 
     $book_data = array();
-
-    $data_all = db_book_list_cat($book_id, $book_begin);
 
     while ($book_info = $data_all->fetch_assoc()) {
         $book_data[] = array(

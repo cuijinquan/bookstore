@@ -6,9 +6,9 @@
     // get info of a book
     // args: book_id
 
-    $book_id = ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_book_id = ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number);
 
-    $book_info = db_book_get($book_id);
+    $book_info = db_book_get($post_book_id);
 
     if ($book_info) {
         // book exists

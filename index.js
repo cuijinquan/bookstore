@@ -254,7 +254,7 @@ var ajax_cat_book = function (id) {
     $.post(
         'ajax/cat_book.php',
         {
-            book_id: id,
+            cat_id: id,
             begin: 0,
         },
         function (data) {
@@ -650,10 +650,10 @@ var content_update = function (go) {
                 page_switch('发现');
 
                 break;
-            case '#!stores':
+            case '#!users':
                 view_switch('isotope');
 
-                page_switch('商家');
+                page_switch('用户');
 
                 break;
             case '#!orders':
