@@ -60,7 +60,8 @@
         $begin, $count = 50
     ) {
         return db_select(
-            'cat', 'parent_cat_id', $cat_id, null, true, $begin, $count
+            'cat', 'parent_cat_id', $cat_id,
+            null, true, $begin, $count
         );
     }
 

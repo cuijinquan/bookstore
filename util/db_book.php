@@ -74,7 +74,8 @@
         $begin, $count = 50
     ) {
         return db_select(
-            'book', 'owner_user_id', $user_id, null, true, $begin, $count
+            'book', 'owner_user_id', $user_id,
+            null, true, $begin, $count
         );
     }
 
@@ -83,7 +84,8 @@
         $begin, $count = 50
     ) {
         return db_select(
-            'book', 'parent_cat_id', $cat_id, null, true, $begin, $count
+            'book', 'parent_cat_id', $cat_id,
+            null, true, $begin, $count
         );
     }
 

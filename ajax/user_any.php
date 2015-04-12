@@ -8,6 +8,8 @@
 
     $post_user_id = ajax_arg('user_id', FILTER_VALIDATE_REGEXP, $filter_number);
 
+    // note: see also list_user.php
+
     $user_info = db_user_get($post_user_id);
 
     if ($user_info) {

@@ -63,12 +63,13 @@
     ) {
         if ($show_done) {
             return db_select(
-                'buy', 'buy_book_id', $book_id, null, true, $begin, $count
+                'buy', 'buy_book_id', $book_id,
+                null, true, $begin, $count
             );
         } else {
             return db_select(
-                'buy', 'buy_book_id', $book_id, null, true, $begin, $count,
-                'date_done is none'
+                'buy', 'buy_book_id', $book_id,
+                null, true, $begin, $count, 'date_done is none' // TODO: db_select_cond
             );
         }
     }
@@ -79,12 +80,13 @@
     ) {
         if ($show_done) {
             return db_select(
-                'buy', 'buyer_user_id', $user_id, null, true, $begin, $count
+                'buy', 'buyer_user_id', $user_id,
+                null, true, $begin, $count
             );
         } else {
             return db_select(
-                'buy', 'buyer_user_id', $user_id, null, true, $begin, $count,
-                'date_done is none'
+                'buy', 'buyer_user_id', $user_id,
+                null, true, $begin, $count, 'date_done is none' // TODO: db_select_cond
             );
         }
     }

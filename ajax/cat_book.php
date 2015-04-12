@@ -11,6 +11,8 @@
 
     $data_all = db_book_list_cat($post_cat_id, $post_begin);
 
+    // note: see also list_book.php
+
     $book_data = array();
 
     while ($book_info = $data_all->fetch_assoc()) {
