@@ -23,7 +23,7 @@
             break;
 
         case 'newsold':
-            $cond = ''; // TODO
+            $cond = 'to_days(now()) - to_days(date_create) <= 30';
             $order = 'sold_count';
             $desc = true;
             break;

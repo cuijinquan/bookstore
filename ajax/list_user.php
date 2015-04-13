@@ -38,21 +38,19 @@
         $cond, $order, $desc, $post_begin
     );
 
-    // note: see also user_any.php
-
     $user_data = array();
 
     while ($user_info = $data_all->fetch_assoc()) {
         $user_data[] = array(
-            'user_id', $user_info['user_id'],
+            'user_id' => $user_info['user_id'],
 
-            'name', $user_info['name'],
-            'image', $user_info['image'],
-            'detail', $user_info['detail'],
-            'location', $user_info['location'],
+            'name' => $user_info['name'],
+            // 'image' => $user_info['image'],
+            'detail' => $user_info['detail'],
+            'location' => $user_info['location'],
 
-            'book_count', $user_info['book_count'],
-            'sold_count', $user_info['sold_count']
+            'book_count' => $user_info['book_count'],
+            'sold_count' => $user_info['sold_count']
         );
     }
 
