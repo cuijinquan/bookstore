@@ -170,6 +170,70 @@ var ajax_user_info = function (id) {
     );
 };
 
+var ajax_list_user = function (title, mode) {
+    $.post(
+        'ajax/list_user.php',
+        {
+            mode: mode,
+            begin: 0,
+        },
+        function (data) {
+            var idata = [];
+
+            for (var i in data['data']) {
+                var user_info = data['data'][i];
+
+                idata.push({
+                    href: '#!user-' + user_info['user_id'],
+                    click: function () {},
+                    textl: user_info['name'],
+                    textr: {
+                        'new': '',
+                        book: user_info['book_count'],
+                        sold: user_info['sold_count'],
+                    }[mode],
+                    textmore: '', // TODO: add this feature (detailed info)
+                });
+            }
+
+            view_lists_insert(title, idata);
+        },
+        'json'
+    );
+};
+
+var ajax_list_book = function (title, mode) {
+    $.post(
+        'ajax/list_book.php',
+        {
+            mode: mode,
+            begin: 0,
+        },
+        function (data) {
+            var idata = [];
+
+            for (var i in data['data']) {
+                var book_info = data['data'][i];
+
+                idata.push({
+                    href: '#!book-' + book_info['book_id'],
+                    click: function () {},
+                    textl: book_info['name'],
+                    textr: {
+                        'new': '',
+                        sold: book_info['sold_count'],
+                        newsold: book_info['sold_count'],
+                    }[mode],
+                    textmore: '', // TODO: add this feature (detailed info)
+                });
+            }
+
+            view_lists_insert(title, idata);
+        },
+        'json'
+    );
+};
+
 var ajax_cat_info = function (id) {
     $.post(
         'ajax/cat.php',
@@ -580,33 +644,32 @@ var view_submit = function (handler, rows) {
             }
         } (i);
 
-        $('#submit_table').append(
-            $('<tr />')
-                .attr('id', 'submit_' + i)
-                .append($('<td />').append(
-                    $('<p />')
-                        .addClass('submit_name')
-                        .html(rows[i]['name'])
-                ))
-                .append($('<td />').append(
-                    $('<input />')
-                        .addClass('submit_input')
-                        .attr('id', 'submit_input_' + rows[i]['key'])
-                        .attr('type', rows[i]['type'])
-                        .keypress(function () {
-                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+        $('<tr />')
+            .attr('id', 'submit_' + i)
+            .append($('<td />').append(
+                $('<p />')
+                    .addClass('submit_name')
+                    .html(rows[i]['name'])
+            ))
+            .append($('<td />').append(
+                $('<input />')
+                    .addClass('submit_input')
+                    .attr('id', 'submit_input_' + rows[i]['key'])
+                    .attr('type', rows[i]['type'])
+                    .keypress(function () {
+                        var target = $('#submit_' + (parseInt(i) + 1) + ' input');
 
-                            if (target) {
-                                target.focus();
-                            }
-                        })
-                        .change(checker)
-                ))
-                .append($('<td />').append(
-                    $('<p />')
-                        .addClass('submit_hint')
-                ))
-        );
+                        if (target) {
+                            target.focus();
+                        }
+                    })
+                    .change(checker)
+            ))
+            .append($('<td />').append(
+                $('<p />')
+                    .addClass('submit_hint')
+            ))
+            .appendTo('#submit_table');
     }
 
     // set the handler
@@ -678,15 +741,25 @@ var content_update = function (go) {
 
                 break;
             case '#!explore':
-                view_switch('isotope');
+                view_lists_reset();
+                view_switch('lists');
 
                 page_switch('发现');
 
+                ajax_list_book('最新上架', 'new');
+                ajax_list_book('畅销图书', 'sold');
+                ajax_list_book('热门新书', 'newsold');
+
                 break;
             case '#!users':
-                view_switch('isotope');
+                view_lists_reset();
+                view_switch('lists');
 
                 page_switch('用户');
+
+                ajax_list_user('新注册用户', 'new');
+                ajax_list_user('最多在售', 'book');
+                ajax_list_user('畅销卖家', 'sold');
 
                 break;
             case '#!orders':
@@ -710,6 +783,7 @@ var content_update = function (go) {
 
                 view_submit(
                     function (arg) {
+                        // TODO: move to a function?
                         $.post(
                             'ajax/auth_reg.php',
                             arg,
