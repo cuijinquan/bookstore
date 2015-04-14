@@ -586,7 +586,7 @@ var view_lists_reset = function () {
 };
 
 var view_lists_insert = function (title, data) {
-    var list = $('<div />')
+    var list = $('<table />')
         .addClass('lists_list')
         .append(
             $('<div />')
@@ -596,17 +596,16 @@ var view_lists_insert = function (title, data) {
         .appendTo('#view_lists');
 
     for (var i in data) {
-        $('<div />')
-            .addClass('lists_item')
-            .attr('href', data[i]['href'])
+        $('<tr />')
+            // TODO: .attr('href', data[i]['href'])
             .click(data[i]['click'])
             .append(
-                $('<div />')
+                $('<td />')
                     .addClass('lists_item_l')
                     .html(markdown.toHTML(data[i]['textl']))
             )
             .append(
-                $('<div />')
+                $('<td />')
                     .addClass('lists_item_r')
                     .html(markdown.toHTML(data[i]['textr']))
             )
