@@ -12,18 +12,25 @@
     $db_conn->query('set character set "utf8";');
     $db_conn->query('set names "utf8";');
 
+    // escape null, int or string
+    function db_escape($value) {
+        global $db_conn;
+
+        if ($value === null) {
+            return 'null';
+        } else if (is_int($value)) {
+            return strval($value);
+        } else {
+            return '"' . $db_conn->escape_string($value) . '"';
+        }
+    }
+
     // select rows in the database by a simple rule
     function db_select(
         $table, $cond_column, $cond_value,
         $order = null, $desc = false, $begin = 0, $count = 50
     ) {
         global $db_conn;
-
-        if ($desc) {
-            $ordertag = 'desc';
-        } else {
-            $ordertag = 'asc';
-        }
 
         if ($order === null) {
             $order = $cond_column;
@@ -33,9 +40,10 @@
             select * from `' . $db_conn->escape_string($table) . '`
             where (
                 `' . $db_conn->escape_string($cond_column) . '`
-                = "' . $db_conn->escape_string($cond_value) . '"
+                = ' . db_escape($cond_value) . '
             )
-            order by `' . $db_conn->escape_string($order) . '` ' . $ordertag . '
+            order by `' . $db_conn->escape_string($order)
+                . '` ' . ($desc ? 'desc' : 'asc') . '
             limit ' . intval($begin) . ', ' . intval($count) . ';
         ');
     }
@@ -47,12 +55,6 @@
     ) {
         global $db_conn;
 
-        if ($desc) {
-            $ordertag = 'desc';
-        } else {
-            $ordertag = 'asc';
-        }
-
         // if ($order === null) {
         //     $order = $column;
         // }
@@ -60,7 +62,7 @@
         $args = array();
 
         foreach ($cond_values as $key => $value) {
-            $args[$key] = '"' . $db_conn->escape_string($value) . '"';
+            $args[$key] = db_escape($value);
         }
 
         return $db_conn->query('
@@ -68,7 +70,8 @@
             where (
                 ' . vsprintf($cond, $args) . '
             )
-            order by `' . $db_conn->escape_string($order) . '` ' . $ordertag . '
+            order by `' . $db_conn->escape_string($order) . '` '
+                . ($desc ? 'desc' : 'asc') . '
             limit ' . intval($begin) . ', ' . intval($count) . ';
         ');
     }
@@ -82,18 +85,10 @@
         for ($i = 1; $i < func_num_args(); $i += 1) {
             $value = func_get_arg($i);
 
-            if ($value !== null) {
-                if ($i === 1) {
-                    $data_str = '"' . $db_conn->escape_string($value) . '"';
-                } else {
-                    $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
-                }
+            if ($i === 1) {
+                $data_str = db_escape($value);
             } else {
-                if ($i === 1) {
-                    $data_str = 'null';
-                } else {
-                    $data_str = $data_str . ', null';
-                }
+                $data_str = $data_str . ', ' . db_escape($value);
             }
         }
 
@@ -113,7 +108,7 @@
         $args = array();
 
         foreach ($values as $key => $value) {
-            $args[$key] = '"' . $db_conn->escape_string($values[$key]) . '"';
+            $args[$key] = db_escape($values[$key]);
         }
 
         return $db_conn->query('
@@ -121,7 +116,7 @@
             set ' . vsprintf($expr, $args) . '
             where (
                 `' . $db_conn->escape_string($cond_column) . '`
-                = "' . $db_conn->escape_string($cond_value) . '"
+                = ' . db_escape($cond_value) . '
             );
         ');
     }
@@ -143,10 +138,10 @@
     //         if ($value !== null) {
     //             if ($column_str === '') {
     //                 $column_str = '`' . $db_conn->escape_string($key) . '`';
-    //                 $data_str = '"' . $db_conn->escape_string($value) . '"';
+    //                 $data_str = db_escape($value);
     //             } else {
     //                 $column_str = $column_str . ', `' . $db_conn->escape_string($key) . '`';
-    //                 $data_str = $data_str . ', "' . $db_conn->escape_string($value) . '"';
+    //                 $data_str = $data_str . ', ' . db_escape($value);
     //             }
     //         }
     //     }
@@ -158,14 +153,14 @@
     // }
 
     // remove rows in the database
-    function db_delete($table, $column, $value) {
+    function db_delete($table, $cond_column, $cond_value) {
         global $db_conn;
 
         return $db_conn->query('
             delete from `' . $db_conn->escape_string($table) . '`
             where (
-                `' . $db_conn->escape_string($column) . '`
-                = "' . $db_conn->escape_string($value) . '"
+                `' . $db_conn->escape_string($cond_column) . '`
+                = ' . db_escape($cond_value) . '
             );
         ');
     }
