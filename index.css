@@ -84,7 +84,7 @@ table {
     border-bottom: solid 1px #69F;
     border-bottom: solid 1px rgba(255, 255, 255, 0.2);
     max-height: 32px;
-    width: 144px;
+    width: 128px;
 
     line-height: 150%;
     text-align: center;
@@ -205,12 +205,15 @@ table {
 #intro {
     margin: 32px 128px;
 
+    min-width: 512px;
+
     color: #333;
+    line-height: 150%;
 }
 
 #intro_image {
     float: left;
-    margin: 8px;
+    padding: 8px 16px 8px 8px;
 
     max-width: 320px;
 
@@ -218,14 +221,14 @@ table {
 }
 
 #intro_info {
-    float: left;
-    margin: 4px 8px;
+    padding: 4px 8px;
 }
 
 #main {
     width: 100%;
 
     color: #333;
+    line-height: 150%;
 }
 
 #main a {
@@ -260,6 +263,7 @@ table {
     background: #EEE;
     background: rgba(255, 255, 255, 0.2);
     text-shadow: 1px 1px 2px #888;
+    cursor: default;
 }
 
 .button_body {
@@ -304,13 +308,13 @@ table {
 /* -------- view -------- */
 
 .isotope {
-    height: 200px;
-    width: 200px;
+    height: 192px;
+    width: 192px;
 }
 
 .isotope_big {
-    height: 400px;
-    width: 400px;
+    height: 384px;
+    width: 384px;
 }
 
 .isotope_inner {
@@ -342,10 +346,14 @@ table {
 
 .lists_item_l {
     padding: 4px 8px;
+
+    text-align: left;
 }
 
 .lists_item_r {
     padding: 4px 8px;
+
+    text-align: right;
 }
 
 .submit_name {
