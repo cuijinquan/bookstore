@@ -27,11 +27,11 @@
         ');
     }
 
-    function db_book_truncate() {
+    function db_book_drop() {
         global $db_conn;
 
         return $db_conn->query('
-            truncate table book;
+            drop table book;
         ');
     }
 

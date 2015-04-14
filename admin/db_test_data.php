@@ -7,10 +7,15 @@
     // truncate all tables in the database
     // then add test data
 
-    db_user_truncate();
-    db_cat_truncate();
-    db_book_truncate();
-    db_buy_truncate();
+    db_buy_drop();
+    db_book_drop();
+    db_user_drop();
+    db_cat_drop();
+
+    db_user_init();
+    db_cat_init();
+    db_book_init();
+    db_buy_init();
 
     // add users
 

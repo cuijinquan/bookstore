@@ -24,11 +24,11 @@
         ');
     }
 
-    function db_buy_truncate() {
+    function db_buy_drop() {
         global $db_conn;
 
         return $db_conn->query('
-            truncate table buy;
+            drop table buy;
         ');
     }
 

@@ -23,11 +23,11 @@
         ');
     }
 
-    function db_cat_truncate() {
+    function db_cat_drop() {
         global $db_conn;
 
         return $db_conn->query('
-            truncate table cat;
+            drop table cat;
         ');
     }
 

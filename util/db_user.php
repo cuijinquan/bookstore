@@ -31,11 +31,11 @@
         ');
     }
 
-    function db_user_truncate() {
+    function db_user_drop() {
         global $db_conn;
 
         return $db_conn->query('
-            truncate table user;
+            drop table user;
         ');
     }
 
