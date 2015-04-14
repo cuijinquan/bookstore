@@ -5,7 +5,7 @@
     // do logout
     // args: user_id
 
-    $post_user_id = ajax_arg('user_id', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_user_id = intval(ajax_arg('user_id', FILTER_VALIDATE_REGEXP, $filter_number));
 
     $auth_user_id = session_get('auth_user_id');
 

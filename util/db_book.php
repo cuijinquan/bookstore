@@ -14,6 +14,11 @@
                 owner_user_id   bigint          not null,
                 parent_cat_id   bigint          not null,
 
+                foreign key (owner_user_id) references user (user_id)
+                                on delete cascade on update cascade,
+                foreign key (parent_cat_id) references cat (cat_id)
+                                on delete cascade on update cascade,
+
                 name            varchar(64)     not null,
                 image           varchar(64),
                 detail          text,

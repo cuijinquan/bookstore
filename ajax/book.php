@@ -6,7 +6,7 @@
     // get info of a book
     // args: book_id
 
-    $post_book_id = ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_book_id = intval(ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number));
 
     $book_info = db_book_get($post_book_id);
 

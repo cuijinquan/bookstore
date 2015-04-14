@@ -46,22 +46,22 @@
     // add catalogs
 
     db_cat_add(
-        0,
+        null,
         '科学技术', '13dd167159a652a278fe0860a0abf468', '这是科学技术类图书。'
     );
 
     db_cat_add(
-        0,
+        null,
         '休闲娱乐', '1155b9cf0f24f8d2c2da854e62a4bbef', '这是休闲娱乐类图书。'
     );
 
     db_cat_add(
-        0,
+        null,
         '医疗健康', '59d9e827ccb1947002ac8acd50e38e17', '这是医疗健康类图书。'
     );
 
     db_cat_add(
-        0,
+        null,
         '外文图书', '720b75954179401f4f80bc8a91bc90e7', 'Books in English are listed here.'
     );
 

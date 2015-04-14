@@ -14,6 +14,11 @@
                 buy_book_id     bigint          not null,
                 buyer_user_id   bigint          not null,
 
+                foreign key (buy_book_id) references book (book_id)
+                                on delete cascade on update cascade,
+                foreign key (buyer_user_id) references user (user_id)
+                                on delete cascade on update cascade,
+
                 address         text            not null,
                 feedback        text,
 

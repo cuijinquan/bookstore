@@ -7,7 +7,7 @@
     // args: mode, begin
 
     $post_mode = ajax_arg('mode', FILTER_VALIDATE_REGEXP, $filter_text);
-    $post_begin = ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number);
+    $post_begin = intval(ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number));
 
     switch ($post_mode) {
         case 'new':

@@ -7,11 +7,15 @@
         global $db_conn;
 
         // catalogs
+        //     parent_cat_id: top level catalog if null
         //     cat_count: no more than 50
         return $db_conn->query('
             create table cat (
                 cat_id          bigint          auto_increment  primary key,
-                parent_cat_id   bigint          not null,
+                parent_cat_id   bigint,
+
+                foreign key (parent_cat_id) references cat (cat_id)
+                                on delete cascade on update cascade,
 
                 name            varchar(64)     unique,
                 image           varchar(64),
@@ -39,8 +43,8 @@
             'cat',
             null, $parent_cat_id,
             $name, $image, $detail,
-            0, 0
-        ) && ($parent_cat_id === 0 || db_update(
+            0, 0, 0
+        ) && ($parent_cat_id === null || db_update(
             'cat',
             'cat_id', $parent_cat_id,
             'cat_count = cat_count + 1'
@@ -59,10 +63,19 @@
         $cat_id,
         $begin, $count = 50
     ) {
-        return db_select(
-            'cat', 'parent_cat_id', $cat_id,
-            null, true, $begin, $count
-        );
+        if ($cat_id === 0) {
+            // top level
+            return db_select_cond(
+                'cat', 'parent_cat_id is null', array(),
+                'parent_cat_id', true, $begin, $count
+            );
+        } else {
+            // not top level
+            return db_select(
+                'cat', 'parent_cat_id', $cat_id,
+                null, true, $begin, $count
+            );
+        }
     }
 
     // function db_cat_set($data) {
