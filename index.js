@@ -511,7 +511,7 @@ var intro_show = function (image, title, text) {
         );
     }
 
-    $('#intro_title').html(markdown.toHTML(title));
+    $('#intro_title').html(title);
     $('#intro_text').html(markdown.toHTML(text));
 
     $('#intro').css('display', 'block');
@@ -588,9 +588,11 @@ var view_lists_reset = function () {
 var view_lists_insert = function (title, data) {
     var list = $('<table />')
         .addClass('lists_list')
+        .addClass('frame_body')
         .append(
             $('<div />')
                 .addClass('lists_title')
+                .addClass('title')
                 .text(title)
         )
         .appendTo('#view_lists');

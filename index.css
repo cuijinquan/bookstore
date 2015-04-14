@@ -66,8 +66,8 @@ table {
     max-height: 32px;
     width: 72px;
 
-    text-align: center;
     line-height: 150%;
+    text-align: center;
     font-size: 16px;
 }
 
@@ -86,8 +86,8 @@ table {
     max-height: 32px;
     width: 144px;
 
-    text-align: center;
     line-height: 150%;
+    text-align: center;
     font-size: 16px;
 }
 
@@ -297,6 +297,10 @@ table {
     margin-right: auto;
 }
 
+.inline {
+    line-height: 0%;
+}
+
 /* -------- view -------- */
 
 .isotope {
@@ -324,18 +328,24 @@ table {
 }
 
 .lists_list {
+    margin: 4px;
+
+    display: inline-block;
+    min-width: 256px;
+
+    line-height: 150%;
 }
 
 .lists_title {
-}
-
-.lists_item {
+    padding: 4px 8px;
 }
 
 .lists_item_l {
+    padding: 4px 8px;
 }
 
 .lists_item_r {
+    padding: 4px 8px;
 }
 
 .submit_name {
@@ -343,8 +353,8 @@ table {
 
     width: 192px;
 
-    text-align: right;
     line-height: 200%;
+    text-align: right;
 }
 
 .submit_input {
@@ -364,6 +374,6 @@ table {
 
     width: 192px;
 
-    text-align: left;
     line-height: 150%;
+    text-align: left;
 }
