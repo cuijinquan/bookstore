@@ -124,10 +124,32 @@
 
     // add ordering actions
 
-    // db_buy_add(
-    //     $buy_book_id, $buyer_user_id,
-    //     $address
-    // );
+    // buy
+    db_buy_add(db_user_get_name('hczhcz')['user_id'], 2, '地址1'); // 1
+    db_buy_add(db_user_get_name('夜宵')['user_id'], 3, '地址2');
+    db_buy_add(db_user_get_name('hczhcz')['user_id'], 4, '地址3');
+    db_buy_add(db_user_get_name('zacks')['user_id'], 4, '地址4');
+    db_buy_add(db_user_get_name('夜宵')['user_id'], 4, '地址5');
+    db_buy_add(db_user_get_name('夜宵')['user_id'], 4, '地址5'); // 6
+    db_buy_add(db_user_get_name('夜宵')['user_id'], 4, '地址6');
+    db_buy_add(db_user_get_name('hczhcz')['user_id'], 8, '地址1');
+    db_buy_add(db_user_get_name('zacks')['user_id'], 8, 'some address');
+    db_buy_add(db_user_get_name('夜宵')['user_id'], 8, 'another address');
 
-    // TODO: add other actions
+    // accept
+    db_buy_set_accept(1);
+    db_buy_set_accept(3);
+    db_buy_set_accept(5);
+    db_buy_set_accept(6);
+    db_buy_set_accept(7);
+    db_buy_set_accept(8);
+    db_buy_set_accept(9);
+    db_buy_set_accept(10);
+
+    // done
+    db_buy_set_done(1, '好评');
+    db_buy_set_done(7, '不错');
+    db_buy_set_done(8, null);
+    db_buy_set_done(9, '满意');
+    db_buy_set_done(10, '很好');
 ?>
