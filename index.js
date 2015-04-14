@@ -38,6 +38,35 @@ var login_update = function () {
 
 // -------- ajax --------
 
+var ajax_list = [];
+var ajax_killing = false;
+
+$(document).ajaxSend(function (event, xhr) {
+    ajax_list.push(xhr);
+});
+
+$(document).ajaxStop(function () {
+    ajax_list = [];
+});
+
+$(document).ajaxError(function (event, xhr) {
+    if (!ajax_killing) {
+        if (xhr.status === 403) {
+            tag_error('提交被拒绝');
+        } else {
+            tag_error('通信错误');
+        }
+    }
+});
+
+var ajax_kill = function () {
+    ajax_killing = true;
+    for (var i in ajax_list) {
+        ajax_list[i].abort();
+    }
+    ajax_killing = false;
+};
+
 var ajax_auto_login = function () {
     $.post(
         'ajax/auth_get.php',
@@ -705,16 +734,6 @@ var view_submit = function (handler, rows) {
 
 // -------- content --------
 
-// var ajax_lock = false;
-
-// $.ajaxStart(function () {
-//     ajax_lock = true;
-// });
-
-// $.ajaxStop(function () {
-//     ajax_lock = false;
-// });
-
 // parse location.hash and load a page
 var content_update = function (go) {
     if (go) {
@@ -726,13 +745,17 @@ var content_update = function (go) {
         return;
     }
 
+    // prepare
+    ajax_kill();
+
     // load page
     view_hide(function () {
         // reset title
         page_prepare();
         intro_hide();
 
-        switch (window.location.hash) {
+        var arg = window.location.hash.split('-');
+        switch (arg[0]) {
             case '#!home':
                 view_isotope_reset();
                 view_switch('isotope');
@@ -975,49 +998,43 @@ var content_update = function (go) {
                 view_switch('submit');
 
                 break;
+            case '#!user':
+                // TODO: a new view
+                view_isotope_reset();
+                view_switch('isotope');
+
+                var user_id = parseInt(arg[1]);
+
+                ajax_user_info(user_id);
+
+                break;
+            case '#!cat':
+                view_isotope_reset();
+                view_switch('isotope');
+
+                var cat_id = parseInt(arg[1]);
+
+                ajax_cat_info(cat_id);
+
+                // TODO: load more than 50 catalogs & books
+                ajax_cat_cat(cat_id);
+                ajax_cat_book(cat_id);
+
+                break;
+            case '#!book':
+                // TODO: a new view
+                view_isotope_reset();
+                view_switch('isotope');
+
+                var book_id = parseInt(arg[1]);
+
+                ajax_book_info(book_id);
+
+                break;
             default:
-                var arg = window.location.hash.split('-');
+                // TODO: use a view?
+                tag_error('此页不存在');
 
-                switch (arg[0]) {
-                    case '#!user':
-                        // TODO: a new view
-                        view_isotope_reset();
-                        view_switch('isotope');
-
-                        var user_id = parseInt(arg[1]);
-
-                        ajax_user_info(user_id);
-
-                        break;
-                    case '#!cat':
-                        view_isotope_reset();
-                        view_switch('isotope');
-
-                        var cat_id = parseInt(arg[1]);
-
-                        ajax_cat_info(cat_id);
-
-                        // TODO: load more than 50 catalogs & books
-                        ajax_cat_cat(cat_id);
-                        ajax_cat_book(cat_id);
-
-                        break;
-                    case '#!book':
-                        // TODO: a new view
-                        view_isotope_reset();
-                        view_switch('isotope');
-
-                        var book_id = parseInt(arg[1]);
-
-                        ajax_book_info(book_id);
-
-                        break;
-                    default:
-                        // TODO: use a view?
-                        tag_error('此页不存在');
-
-                        break;
-                }
                 break;
         }
     });
@@ -1042,12 +1059,5 @@ $(function () {
     view_submit_init();
 
     // ajax
-    $(document).ajaxError(function (event, xhr) {
-        if (xhr.status === 403) {
-            tag_error('提交被拒绝');
-        } else {
-            tag_error('通信错误');
-        }
-    });
     ajax_auto_login();
 });
