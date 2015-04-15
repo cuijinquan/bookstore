@@ -278,7 +278,8 @@ var ajax_cat_info = function (id) {
                     data['detail']
                         // cat_id
                         + '\n\n**子目录：**' + data['cat_count'] + '个'
-                        + '\n\n**在售图书：**' + data['book_count'] + '本'
+                        + '\n\n**在售图书：**' + data['tot_book_count'] + '本'
+                        + '\n\n**当前目录：**' + data['book_count'] + '本'
                 );
             } else {
                 tag_error('此目录不存在');
@@ -333,7 +334,8 @@ var ajax_cat_cat = function (id) {
                     href: '#!cat-' + cat_info['cat_id'],
                     click: function () {},
                     title: cat_info['name'],
-                    text: cat_info['detail'],
+                    text: cat_info['detail']
+                        + '\n\n在售 ' + cat_info['tot_book_count'] + '本',
                 });
             }
 
@@ -362,9 +364,9 @@ var ajax_cat_book = function (id) {
                     click: function () {},
                     title: book_info['name'],
                     text: book_info['detail']
-                        + '\n\n**价格：**' + book_info['price']
-                        + '\n\n**库存：**' + book_info['inventory'] + '本'
-                        + '\n\n**已销售：**' + book_info['sold_count'] + '本',
+                        + '\n\n价格 ' + book_info['price']
+                        + '\n\n库存 ' + book_info['inventory'] + '本'
+                        + '\n\n已销售 ' + book_info['sold_count'] + '本',
                 });
             }
 

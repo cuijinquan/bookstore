@@ -22,6 +22,7 @@
                 detail          text,
 
                 cat_count       bigint          not null,
+                tot_book_count  bigint          not null,
                 book_count      bigint          not null
             );
         ');
@@ -76,6 +77,20 @@
                 null, true, $begin, $count
             );
         }
+    }
+
+    function db_cat_set_totinc($cat_id) {
+        if ($cat_id === null) {
+            return true;
+        }
+
+        return db_update(
+            'cat',
+            'cat_id', $cat_id,
+            'tot_book_count = tot_book_count + 1'
+        ) && (
+            $cat_info = db_cat_get($cat_id)
+        ) && db_cat_set_totinc($cat_info['parent_cat_id']);
     }
 
     // function db_cat_set($data) {

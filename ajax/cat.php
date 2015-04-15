@@ -23,6 +23,7 @@
             'detail', $cat_info['detail'],
 
             'cat_count', $cat_info['cat_count'],
+            'tot_book_count', $cat_info['tot_book_count'],
             'book_count', $cat_info['book_count']
 
             // TODO: catalog path?

@@ -1,5 +1,6 @@
 <?php
     require_once 'db.php';
+    require_once 'db_cat.php';
 
     // db actions of books
 
@@ -58,7 +59,7 @@
             'cat',
             'cat_id', $parent_cat_id,
             'book_count = book_count + 1'
-        );
+        ) && db_cat_set_totinc($parent_cat_id);
     }
 
     function db_book_get($book_id) {
