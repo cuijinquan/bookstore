@@ -71,38 +71,54 @@
         );
     }
 
-    function db_buy_list_book(
-        $book_id, $show_done,
-        $begin, $count = 50
-    ) {
-        if ($show_done) {
-            return db_select(
-                'buy', 'buy_book_id', $book_id,
-                null, true, $begin, $count
-            );
-        } else {
-            return db_select(
-                'buy', 'buy_book_id', $book_id,
-                null, true, $begin, $count, 'date_done is none' // TODO: db_select_cond
-            );
+    function db_buy_list_mode_expr($mode) {
+        switch ($mode) {
+            case 'c':
+                return 'data_accept is null' /* and data_done is null */;
+            case 'ca':
+                return 'data_done is null';
+            case 'a':
+                return 'data_accept is not null and data_done is null';
+            case 'd':
+                return /* data_accept is not null */ 'and data_done is not null';
+            case 'ad':
+                return 'data_accept is not null';
+            default:
+                return 'true';
         }
     }
 
     function db_buy_list_buyer(
-        $user_id, $show_done,
+        $user_id, $mode,
         $begin, $count = 50
     ) {
-        if ($show_done) {
-            return db_select(
-                'buy', 'buyer_user_id', $user_id,
-                null, true, $begin, $count
-            );
-        } else {
-            return db_select(
-                'buy', 'buyer_user_id', $user_id,
-                null, true, $begin, $count, 'date_done is none' // TODO: db_select_cond
-            );
-        }
+        return db_select_cond(
+            'buy', 'buyer_user_id = %s and '. db_buy_list_mode_expr($mode),
+            array($user_id),
+            'buy_id', true, $begin, $count
+        );
+    }
+
+    function db_buy_list_seller(
+        $user_id, $mode,
+        $begin, $count = 50
+    ) {
+        return db_select(
+            'buy', 'seller_user_id = %s and ' . db_buy_list_mode_expr($mode),
+            array($user_id),
+            'buy_id', true, $begin, $count
+        );
+    }
+
+    function db_buy_list_book(
+        $book_id, $mode,
+        $begin, $count = 50
+    ) {
+        return db_select_cond(
+            'buy', 'buy_book_id = %s and ' . db_buy_list_mode_expr($mode),
+            array($book_id),
+            'buy_id', true, $begin, $count
+        );
     }
 
     function db_buy_set_accept($buy_id) {
