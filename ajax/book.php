@@ -17,6 +17,8 @@
             'get_success', true,
 
             'book_id', $book_info['book_id'],
+            // 'owner_user_id', $book_info['owner_user_id'], // TODO
+            // 'parent_cat_id', $book_info['parent_cat_id'], // TODO
 
             'name', $book_info['name'],
             'image', $book_info['image'],

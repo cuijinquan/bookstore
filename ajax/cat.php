@@ -17,6 +17,7 @@
             'get_success', true,
 
             'cat_id', $cat_info['cat_id'],
+            // 'parent_cat_id', $cat_info['parent_cat_id'], // TODO
 
             'name', $cat_info['name'],
             'image', $cat_info['image'],

@@ -16,6 +16,7 @@
     while ($cat_info = $data_all->fetch_assoc()) {
         $cat_data[] = array(
             'cat_id' => $cat_info['cat_id'],
+            // 'parent_cat_id' => $cat_info['parent_cat_id'],
 
             'name' => $cat_info['name'],
             // 'image' => $cat_info['image'],

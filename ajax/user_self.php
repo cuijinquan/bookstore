@@ -22,6 +22,7 @@
             'name', $user_info['name'],
             'image', $user_info['image'],
             'detail', $user_info['detail'],
+            // 'password', $user_info['password'],
             'is_admin', $user_info['is_admin'],
             'location', $user_info['location'],
             'address', $user_info['address'],
