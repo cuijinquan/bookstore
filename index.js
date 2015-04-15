@@ -540,7 +540,7 @@ var intro_show = function (image, title, text) {
         );
     }
 
-    $('#intro_title').html(title);
+    $('#intro_title').text(title);
     $('#intro_text').html(markdown.toHTML(text));
 
     $('#intro').css('display', 'block');
@@ -597,7 +597,7 @@ var view_isotope_insert = function (data) {
                         .append(
                             $('<div />')
                                 .addClass('title')
-                                .html(markdown.toHTML(data[i]['title']))
+                                .text(data[i]['title'])
                         )
                         .append(
                             $('<div />')
@@ -795,7 +795,6 @@ var content_update = function (go) {
 
                 break;
             case '#!my':
-                // TODO: a new view
                 view_isotope_reset();
                 view_switch('isotope');
 
@@ -999,7 +998,6 @@ var content_update = function (go) {
 
                 break;
             case '#!user':
-                // TODO: a new view
                 view_isotope_reset();
                 view_switch('isotope');
 
@@ -1022,7 +1020,6 @@ var content_update = function (go) {
 
                 break;
             case '#!book':
-                // TODO: a new view
                 view_isotope_reset();
                 view_switch('isotope');
 

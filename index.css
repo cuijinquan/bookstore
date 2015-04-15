@@ -325,6 +325,7 @@ table {
     right: 4px;
 
     text-align: center;
+    cursor: pointer;
 }
 
 .isotope_inner:hover {
