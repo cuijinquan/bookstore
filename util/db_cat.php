@@ -24,7 +24,7 @@
                 cat_count       bigint          not null,
                 tot_book_count  bigint          not null,
                 book_count      bigint          not null
-            );
+            ) ENGINE = InnoDB;
         ');
     }
 
@@ -68,13 +68,13 @@
             // top level
             return db_select_cond(
                 'cat', 'parent_cat_id is null', array(),
-                'parent_cat_id', true, $begin, $count
+                'cat_id', false, $begin, $count
             );
         } else {
             // not top level
             return db_select(
                 'cat', 'parent_cat_id', $cat_id,
-                null, true, $begin, $count
+                'cat_id', false, $begin, $count
             );
         }
     }

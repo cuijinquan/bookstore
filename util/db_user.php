@@ -27,7 +27,7 @@
 
                 date_create     datetime        not null,
                 date_login      datetime        not null
-            );
+            ) ENGINE = InnoDB;
         ');
     }
 

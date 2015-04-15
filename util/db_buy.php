@@ -1,5 +1,7 @@
 <?php
     require_once 'db.php';
+    // require_once 'db_user.php';
+    require_once 'db_book.php';
 
     // db actions of orders
 
@@ -25,7 +27,7 @@
                 date_create     datetime        not null,
                 date_accept     datetime,
                 date_done       datetime
-            );
+            ) ENGINE = InnoDB;
         ');
     }
 

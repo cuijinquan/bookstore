@@ -1,5 +1,6 @@
 <?php
     require_once 'db.php';
+    // require_once 'db_user.php';
     require_once 'db_cat.php';
 
     // db actions of books
@@ -29,7 +30,7 @@
                 sold_count      bigint          not null,
 
                 date_create     datetime        not null
-            );
+            ) ENGINE = InnoDB;
         ');
     }
 
@@ -81,7 +82,7 @@
     ) {
         return db_select(
             'book', 'owner_user_id', $user_id,
-            null, true, $begin, $count
+            'book_id', true, $begin, $count
         );
     }
 
@@ -91,7 +92,7 @@
     ) {
         return db_select(
             'book', 'parent_cat_id', $cat_id,
-            null, true, $begin, $count
+            'book_id', true, $begin, $count
         );
     }
 
