@@ -27,6 +27,8 @@
                 price           varchar(64)     not null,
                 inventory       bigint          not null,
 
+                index (book_id, owner_user_id, name),
+
                 sold_count      bigint          not null,
 
                 date_create     datetime        not null

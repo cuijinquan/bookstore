@@ -16,9 +16,13 @@
                 buyer_user_id   bigint          not null,
                 buy_book_id     bigint          not null,
 
+                seller_user_id  bigint          not null,
+                book_name       varchar(64)     not null,
+
                 foreign key (buyer_user_id) references user (user_id)
                                 on delete cascade on update cascade,
-                foreign key (buy_book_id) references book (book_id)
+                foreign key (buy_book_id, seller_user_id, book_name)
+                                references book (book_id, owner_user_id, name)
                                 on delete cascade on update cascade,
 
                 address         text            not null,
@@ -43,9 +47,12 @@
         $buyer_user_id, $buy_book_id,
         $address
     ) {
+        $book_info = db_book_get($buy_book_id);
+
         return db_insert(
             'buy',
             null, $buyer_user_id, $buy_book_id,
+            $book_info['owner_user_id'], $book_info['name'],
             $address, null,
             date('Y-m-d H:i:s'), null, null
         );
