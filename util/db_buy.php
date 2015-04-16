@@ -75,16 +75,19 @@
         switch ($mode) {
             case 'c':
                 return 'data_accept is null' /* and data_done is null */;
-            case 'ca':
-                return 'data_done is null';
             case 'a':
                 return 'data_accept is not null and data_done is null';
             case 'd':
                 return /* data_accept is not null */ 'and data_done is not null';
+            case 'ca':
+                return 'data_done is null';
             case 'ad':
                 return 'data_accept is not null';
-            default:
+            case 'cad':
                 return 'true';
+            default:
+                // never reach
+                return 'false';
         }
     }
 

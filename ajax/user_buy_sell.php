@@ -39,8 +39,8 @@
         while ($buy_info = $data_all->fetch_assoc()) {
             $buy_data[] = array(
                 'buy_id' => $buy_info['buy_id'],
-                'buyer_user_id' => $buy_info['buyer_user_id'],
-                'buy_book_id' => $buy_info['buy_book_id'],
+                'buyer_user_id' => intval($buy_info['buyer_user_id']),
+                'buy_book_id' => intval($buy_info['buy_book_id']),
 
                 'seller_user_id' => $buy_info['seller_user_id'],
                 'book_name' => $buy_info['book_name'],

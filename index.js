@@ -280,6 +280,7 @@ var ajax_cat_info = function (id) {
                         + '\n\n**子目录：**' + data['cat_count'] + '个'
                         + '\n\n**在售图书：**' + data['tot_book_count'] + '本'
                         + '\n\n**当前目录：**' + data['book_count'] + '本'
+                        + '\n\n[**返回上层**](#!cat-' + data['parent_cat_id'] + ')'
                 );
             } else {
                 tag_error('此目录不存在');
@@ -307,6 +308,8 @@ var ajax_book_info = function (id) {
                         + '\n\n**库存：**' + data['inventory'] + '本'
                         + '\n\n**已销售：**' + data['sold_count'] + '本'
                         + '\n\n**上架日期：**' + data['date_create']
+                        + '\n\n[**查看商家**](#!user-' + data['owner_user_id'] + ')'
+                        + '\n\n[**返回目录**](#!cat-' + data['parent_cat_id'] + ')'
                 );
             } else {
                 tag_error('此书不存在');
@@ -742,7 +745,10 @@ var content_update = function (go) {
         window.location.hash = go;
     }
 
-    if (!window.location.hash) {
+    if (
+        !window.location.hash
+        || window.location.hash === '#!cat-0'
+    ) {
         window.location.hash = '#!home';
         return;
     }
