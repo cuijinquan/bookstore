@@ -9,7 +9,7 @@
 
     $auth_user_id = session_get('auth_user_id');
 
-    if ($auth_user_id !== null && $post_user_id === $auth_user_id) {
+    if ($auth_user_id !== null && $post_user_id === intval($auth_user_id)) {
         // logout ok
 
         $auth_success = true;

@@ -33,13 +33,13 @@
 
     db_user_add(
         'yexiao@example.org', '夜宵', null, '你好，我是夜宵！',
-        crypt_password('yexiao', '12345678'),
+        crypt_password('夜宵', '12345678'),
         '闵大荒', '东川路水上乐园'
     );
 
     db_user_add(
         'lzsd@example.info', '栗子书店', null, '你好，我们只是举个*栗子*！',
-        crypt_password('lzsd', '1234567890'),
+        crypt_password('栗子书店', '1234567890'),
         '五角场', '李达三楼 四楼'
     );
 
