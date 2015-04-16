@@ -606,6 +606,7 @@ var view_isotope_insert = function (data) {
                         )
                         .append(
                             $('<div />')
+                                .addClass('normal')
                                 .html(markdown.toHTML(data[i]['text']))
                         )
                 )
@@ -639,13 +640,13 @@ var view_lists_insert = function (title, data) {
                         $('<a />')
                             .attr('href', data[i]['href'])
                             .click(data[i]['click'])
-                            .html(markdown.toHTML(data[i]['textl']))
+                            .text(data[i]['textl'])
                     )
             )
             .append(
                 $('<td />')
                     .addClass('lists_item_r')
-                    .html(markdown.toHTML(data[i]['textr']))
+                    .text(data[i]['textr'])
             )
             .appendTo(list);
     }

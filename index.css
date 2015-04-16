@@ -12,6 +12,7 @@ body {
 }
 
 a {
+    color: #555;
     text-decoration: none;
     cursor: pointer;
 }
@@ -287,6 +288,11 @@ table {
 
 .normal {
     line-height: 150%;
+}
+
+.normal * {
+    line-height: 150%;
+    font-size: 20px;
 }
 
 .error {

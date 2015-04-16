@@ -20,7 +20,7 @@
     // add users
 
     db_user_add_admin(
-        'hczhcz@example.com', 'hczhcz', null, 'Hi! I am HCZ.',
+        'hczhcz@example.com', 'hczhcz', null, 'Hi! I am [HCZ](https://github.com/hczhcz).',
         crypt_password('hczhcz', '123456'),
         'Shanghai', 'Room 101, No 1, Some Rd'
     );
@@ -38,7 +38,7 @@
     );
 
     db_user_add(
-        'lzsd@example.info', '栗子书店', null, '你好，我们只是举个栗子！',
+        'lzsd@example.info', '栗子书店', null, '你好，我们只是举个*栗子*！',
         crypt_password('lzsd', '1234567890'),
         '五角场', '李达三楼 四楼'
     );
