@@ -11,11 +11,51 @@
 
     $auth_user_id = session_get('auth_user_id');
 
-    if ($auth_user_id !== null)
+    if ($auth_user_id !== null) {
         switch ($post_mode) {
-            case 'new':
+            case 'b_d':
                 $get_buying = true;
-                $list_mode = '???';
+                $list_mode = 'd';
+                break;
+
+            case 'b_ca':
+                $get_buying = true;
+                $list_mode = 'ca';
+                break;
+
+            case 'b_all':
+                $get_buying = true;
+                $list_mode = 'cad';
+                break;
+
+            case 's_c':
+                $get_buying = false;
+                $list_mode = 'c';
+                break;
+
+            case 's_a':
+                $get_buying = false;
+                $list_mode = 'a';
+                break;
+
+            case 's_d':
+                $get_buying = false;
+                $list_mode = 'd';
+                break;
+
+            case 's_ca':
+                $get_buying = false;
+                $list_mode = 'ca';
+                break;
+
+            case 's_ad':
+                $get_buying = false;
+                $list_mode = 'ad';
+                break;
+
+            case 's_all':
+                $get_buying = false;
+                $list_mode = 'cad';
                 break;
 
             default:
@@ -56,7 +96,7 @@
 
         echo ajax_gen(
             'get_success', true,
-            'data', $book_data
+            'data', $buy_data
         );
     } else {
         // not logged in

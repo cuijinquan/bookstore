@@ -74,15 +74,15 @@
     function db_buy_list_mode_expr($mode) {
         switch ($mode) {
             case 'c':
-                return 'data_accept is null' /* and data_done is null */;
+                return 'date_accept is null' /* and date_done is null */;
             case 'a':
-                return 'data_accept is not null and data_done is null';
+                return 'date_accept is not null and date_done is null';
             case 'd':
-                return /* data_accept is not null */ 'and data_done is not null';
+                return /* date_accept is not null */ 'and date_done is not null';
             case 'ca':
-                return 'data_done is null';
+                return 'date_done is null';
             case 'ad':
-                return 'data_accept is not null';
+                return 'date_accept is not null';
             case 'cad':
                 return 'true';
             default:
@@ -96,7 +96,7 @@
         $begin, $count = 50
     ) {
         return db_select_cond(
-            'buy', 'buyer_user_id = %s and '. db_buy_list_mode_expr($mode),
+            'buy', 'buyer_user_id = %s and ' . db_buy_list_mode_expr($mode),
             array($user_id),
             'buy_id', true, $begin, $count
         );
@@ -106,7 +106,7 @@
         $user_id, $mode,
         $begin, $count = 50
     ) {
-        return db_select(
+        return db_select_cond(
             'buy', 'seller_user_id = %s and ' . db_buy_list_mode_expr($mode),
             array($user_id),
             'buy_id', true, $begin, $count

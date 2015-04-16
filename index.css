@@ -345,6 +345,7 @@ table {
     min-width: 256px;
 
     line-height: 150%;
+    vertical-align: top;
 }
 
 .lists_title {

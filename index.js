@@ -308,7 +308,7 @@ var ajax_book_info = function (id) {
                         + '\n\n**库存：**' + data['inventory'] + '本'
                         + '\n\n**已销售：**' + data['sold_count'] + '本'
                         + '\n\n**上架日期：**' + data['date_create']
-                        + '\n\n[**查看商家**](#!user-' + data['owner_user_id'] + ')'
+                        + '\n\n[**查看卖家**](#!user-' + data['owner_user_id'] + ')'
                         + '\n\n[**返回目录**](#!cat-' + data['parent_cat_id'] + ')'
                 );
             } else {
@@ -374,6 +374,44 @@ var ajax_cat_book = function (id) {
             }
 
             view_isotope_insert(idata);
+        },
+        'json'
+    );
+};
+
+var ajax_list_order = function (title, mode) {
+    $.post(
+        'ajax/user_buy_sell.php',
+        {
+            mode: mode,
+            begin: 0,
+        },
+        function (data) {
+            var idata = [];
+
+            for (var i in data['data']) {
+                var buy_info = data['data'][i];
+
+                // TODO:
+                // 'buy_id'
+                // 'buyer_user_id'
+                // 'seller_user_id'
+                // 'address'
+
+                idata.push({
+                    href: '#!book-' + buy_info['buy_book_id'],
+                    click: function () {},
+                    textl: buy_info['book_name'],
+                    textr: [
+                        '未确认',
+                        '已确认',
+                        '已完成',
+                    ][buy_info['bool_accept'] + buy_info['bool_done']],
+                    textmore: '', // TODO: add this feature (detailed info)
+                });
+            }
+
+            view_lists_insert(title, idata);
         },
         'json'
     );
@@ -798,9 +836,16 @@ var content_update = function (go) {
 
                 break;
             case '#!orders':
-                // view_switch('isotope');
+                view_lists_reset();
+                view_switch('lists');
 
                 page_switch('订单');
+
+                ajax_list_order('全部购买', 'b_all');
+                ajax_list_order('未完成购买', 'b_ca');
+                ajax_list_order('全部销售', 's_all');
+                ajax_list_order('未确认销售', 's_c');
+                ajax_list_order('未完成销售', 's_a');
 
                 break;
             case '#!my':
