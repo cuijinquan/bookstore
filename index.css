@@ -5,6 +5,7 @@
     padding: 0;
 
     font-family: sans-serif;
+    text-overflow: ellipsis;
 }
 
 body {
@@ -12,9 +13,8 @@ body {
 }
 
 a {
-    color: #555;
     text-decoration: none;
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 table {
@@ -212,6 +212,10 @@ table {
     line-height: 150%;
 }
 
+#intro a {
+    color: #555;
+}
+
 #intro_image {
     float: left;
     padding: 8px 16px 8px 8px;
@@ -250,6 +254,10 @@ table {
     color: #EEE;
     text-align: center;
     text-shadow: 1px 1px 2px #000;
+}
+
+#footer a {
+    color: #CCC;
 }
 
 .view {
@@ -331,7 +339,6 @@ table {
     right: 4px;
 
     text-align: center;
-    cursor: pointer;
 }
 
 .isotope_inner:hover {
