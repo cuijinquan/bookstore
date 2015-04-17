@@ -21,7 +21,7 @@
 
             $auth_success = true;
             $auth_user_id = $user_info['user_id'];
-            $auth_name = $post_name;
+            $auth_name = $user_info['name'];
 
             session_set('auth_user_id', $auth_user_id);
 
@@ -31,9 +31,7 @@
 
             $auth_success = false;
             $auth_user_id = null;
-            $auth_name = $post_name;
-
-            // session_delete('auth_user_id');
+            $auth_name = $user_info['name'];
         }
     } else {
         // wrong name

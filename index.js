@@ -144,6 +144,62 @@ var ajax_logout = function () {
     );
 };
 
+var ajax_auth_reg = function (arg) {
+    $.post(
+        'ajax/auth_reg.php',
+        arg,
+        function (data) {
+            if (data['auth_success']) {
+                login_user_id = data['auth_user_id'];
+                login_name = data['auth_name'];
+
+                login_update();
+                content_update('#!home');
+            } else {
+                tag_error('注册失败');
+            }
+        },
+        'json'
+    );
+};
+
+var ajax_auth_edit = function (arg) {
+    $.post(
+        'ajax/auth_gen.php',
+        {},
+        function (data) {
+            arg['login_password'] = crypt_salt(
+                arg['login_password'],
+                data['auth_salt']
+            );
+
+            $.post(
+                'ajax/auth_edit.php',
+                arg,
+                function (data) {
+                    if (data['auth_success']) {
+                        login_user_id = data['auth_user_id'];
+                        login_name = data['auth_name'];
+
+                        login_update();
+                        content_update('#!home');
+                    } else {
+                        if (data['auth_user_id']) {
+                            tag_error('修改失败');
+                        } else if (data['auth_name']) {
+                            tag_error('密码错误');
+                        } else {
+                            tag_error('用户不存在');
+                        }
+                    }
+                },
+                'json'
+            );
+        },
+        'json'
+    );
+};
+
 var ajax_self_info = function () {
     $.post(
         'ajax/user_self.php',
@@ -861,26 +917,221 @@ var content_update = function (go) {
                 page_switch('注册', true);
 
                 view_submit(
-                    function (arg) {
-                        // TODO: move to a function?
-                        $.post(
-                            'ajax/auth_reg.php',
-                            arg,
-                            function (data) {
-                                if (data['auth_success']) {
-                                    login_user_id = data['auth_user_id'];
-                                    login_name = data['auth_name'];
-
-                                    login_update();
-                                    content_update('#!home');
-                                } else {
-                                    tag_error('注册失败');
-                                }
-                            },
-                            'json'
-                        );
-                    },
+                    ajax_auth_reg,
                     [{
+                        key: 'mail',
+                        name: '邮箱 *',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.match(/^[^ ;@]+@[^ ;@]+\.[^ ;@]*$/ig)) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('邮箱格式错误！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: 'name',
+                        name: '用户名 *',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('用户名不能为空！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: 'password',
+                        name: '密码 *',
+                        type: 'password',
+                        checker: function (value, i) {
+                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+
+                            if (value !== target.val()) {
+                                target.val('');
+                            }
+
+                            if (value.length >= 6) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('密码过短！');
+                            }
+                        },
+                        generator: function (value, i) {
+                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+
+                            return crypt_password(
+                                target.val(),
+                                value
+                            );
+                        },
+                    },
+                    {
+                        key: '',
+                        name: '确认密码 *',
+                        type: 'password',
+                        checker: function (value, i) {
+                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+                            var value1 = target.val();
+
+                            if (value1 === value) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('密码不一致！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: 'location',
+                        name: '所在地区 *',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('所在地区不能为空！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: 'address',
+                        name: '收货地址 <small>[1]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: function (value, i) {
+                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+                            var line = target.val();
+
+                            if (line) {
+                                value += '\n\n' + line;
+                            }
+
+                            return value;
+                        },
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[2]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: 'detail',
+                        name: '自我介绍 <small>[1]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: function (value, i) {
+                            for (var j = 1; j <= 5; ++j) {
+                                var target = $('#submit_' + (parseInt(i) + j) + ' input');
+                                var line = target.val();
+
+                                if (line) {
+                                    value += '\n\n' + line;
+                                }
+                            }
+
+                            return value;
+                        },
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[2]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[3]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[4]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[5]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },
+                    {
+                        key: undefined,
+                        name: '<small>[6]</small>',
+                        type: 'text',
+                        checker: undefined,
+                        generator: undefined,
+                    },]
+                );
+                view_switch('submit');
+
+                break;
+            case '#!edituser':
+                page_switch('修改个人信息', true);
+
+                view_submit(
+                    ajax_auth_edit,
+                    [{
+                        key: 'login_name',
+                        name: '原用户名 *',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('用户名不能为空！');
+                            }
+                        },
+                        generator: undefined,
+                    },
+                    {
+                        key: 'login_password',
+                        name: '原密码 *',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.length >= 6) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('error')
+                                    .text('密码过短！');
+                            }
+                        },
+                        generator: function (value, i) {
+                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+
+                            return crypt_password(
+                                target.val(),
+                                value
+                            );
+                        },
+                    },
+                    {
                         key: 'mail',
                         name: '邮箱 *',
                         type: 'text',

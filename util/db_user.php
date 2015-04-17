@@ -92,7 +92,7 @@
         );
     }
 
-    // function db_user_set($data) {
-    //     return db_write('user', $data, true);
-    // }
+    function db_user_set($data) {
+        return db_write('user', $data, true);
+    }
 ?>

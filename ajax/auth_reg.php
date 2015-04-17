@@ -23,7 +23,7 @@
 
         $auth_success = true;
         $auth_user_id = $user_info['user_id'];
-        $auth_name = $post_name;
+        $auth_name = $user_info['name'];
 
         session_set('auth_user_id', $auth_user_id);
     } else {
