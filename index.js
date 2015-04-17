@@ -149,25 +149,21 @@ var ajax_self_info = function () {
         'ajax/user_self.php',
         {},
         function (data) {
-            if (data['get_success']) {
-                intro_show(
-                    data['image'],
-                    data['name'],
-                    data['detail']
-                        + '\n\n**用户ID：**' + data['user_id']
-                        + '\n\n**邮箱：**' + data['mail']
-                        + '\n\n**身份：**' + (data['is_admin'] ? '管理员' : '用户')
-                        + '\n\n**地区：**' + data['location']
-                        + '\n\n**地址：**' + data['address']
-                        + '\n\n**已购买：**' + data['bought_count'] + '本'
-                        + '\n\n**在售图书：**' + data['book_count']
-                        + '\n\n**已销售：**' + data['sold_count'] + '本'
-                        + '\n\n**注册日期：**' + data['date_create']
-                        + '\n\n**上次登录：**' + data['date_login']
-                );
-            } else {
-                tag_error('未登录');
-            }
+            intro_show(
+                data['image'],
+                data['name'],
+                data['detail']
+                    + '\n\n**用户ID：**' + data['user_id']
+                    + '\n\n**邮箱：**' + data['mail']
+                    + '\n\n**身份：**' + (data['is_admin'] ? '管理员' : '用户')
+                    + '\n\n**地区：**' + data['location']
+                    + '\n\n**地址：**' + data['address']
+                    + '\n\n**已购买：**' + data['bought_count'] + '本'
+                    + '\n\n**在售图书：**' + data['book_count']
+                    + '\n\n**已销售：**' + data['sold_count'] + '本'
+                    + '\n\n**注册日期：**' + data['date_create']
+                    + '\n\n**上次登录：**' + data['date_login']
+            );
         },
         'json'
     );
@@ -218,8 +214,8 @@ var ajax_list_user = function (title, mode) {
                     textl: user_info['name'],
                     textr: {
                         'new': '',
-                        book: user_info['book_count'],
-                        sold: user_info['sold_count'],
+                        book: user_info['book_count'] + '本',
+                        sold: user_info['sold_count'] + '本',
                     }[mode],
                     textmore: '', // TODO: add this feature (detailed info)
                 });
@@ -250,8 +246,8 @@ var ajax_list_book = function (title, mode) {
                     textl: book_info['name'],
                     textr: {
                         'new': '',
-                        sold: book_info['sold_count'],
-                        newsold: book_info['sold_count'],
+                        sold: book_info['sold_count'] + '本',
+                        newsold: book_info['sold_count'] + '本',
                     }[mode],
                     textmore: '', // TODO: add this feature (detailed info)
                 });
@@ -658,6 +654,10 @@ var view_lists_reset = function () {
 };
 
 var view_lists_insert = function (title, data) {
+    if (data.length === 0) {
+        return;
+    }
+
     var list = $('<table />')
         .addClass('lists_list')
         .addClass('frame_body')

@@ -31,6 +31,17 @@
         }
     }
 
+    // get value in the session data or error
+    function session_get_force($key) {
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        } else {
+            // value not exists
+            header("HTTP/1.1 403 Forbidden");
+            die('no session');
+        }
+    }
+
     // set value in the session data
     function session_set($key, $value) {
         $_SESSION[$key] = $value;
@@ -42,7 +53,9 @@
             $value = $_SESSION[$key];
             unset($_SESSION[$key]);
         } else {
-            $value = null;
+            // value not exists
+            header("HTTP/1.1 403 Forbidden");
+            die('no session');
         }
 
         return $value;

@@ -348,7 +348,7 @@ table {
 .lists_list {
     margin: 4px;
 
-    display: inline-block;
+    display: inline-table;
     min-width: 256px;
 
     line-height: 150%;

@@ -7,9 +7,9 @@
 
     $post_user_id = intval(ajax_arg('user_id', FILTER_VALIDATE_REGEXP, $filter_number));
 
-    $auth_user_id = session_get('auth_user_id');
+    $auth_user_id = session_get_force('auth_user_id');
 
-    if ($auth_user_id !== null && $post_user_id === intval($auth_user_id)) {
+    if ($post_user_id === intval($auth_user_id)) {
         // logout ok
 
         $auth_success = true;
