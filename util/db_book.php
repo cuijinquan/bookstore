@@ -23,7 +23,7 @@
 
                 name            varchar(64)     not null,
                 image           varchar(64),
-                detail          text,
+                detail          text            not null,
                 price           varchar(64)     not null,
                 inventory       bigint          not null,
 

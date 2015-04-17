@@ -15,11 +15,11 @@
                 mail            varchar(64)     unique,
                 name            varchar(64)     unique,
                 image           varchar(64),
-                detail          text,
+                detail          text            not null,
                 password        char(64)        not null,
                 is_admin        bool            not null,
                 location        varchar(64)     not null,
-                address         text,
+                address         text            not null,
 
                 bought_count    bigint          not null,
                 book_count      bigint          not null,

@@ -19,7 +19,7 @@
 
                 name            varchar(64)     unique,
                 image           varchar(64),
-                detail          text,
+                detail          text            not null,
 
                 cat_count       bigint          not null,
                 tot_book_count  bigint          not null,
