@@ -8,9 +8,9 @@
     $ajax_post = $_POST; // $ajax_post = $_REQUEST;
 
     // longest session time with no action
-    $session_timeout = 60 * 60;
+    $session_timeout = 60 * 60 * 6;
     // longest possible session time
-    $session_create_timeout = 60 * 60 * 12;
+    $session_create_timeout = 60 * 60 * 24;
 
     // database config
     $db_ip = '127.0.0.1';
