@@ -219,6 +219,7 @@ var ajax_self_info = function () {
                     + '\n\n**已销售：**' + data['sold_count'] + '本'
                     + '\n\n**注册日期：**' + data['date_create']
                     + '\n\n**上次登录：**' + data['date_login']
+                    + '\n\n[**编辑信息**](#!edituser)'
             );
         },
         'json'
@@ -776,31 +777,43 @@ var view_submit = function (handler, rows) {
             }
         } (i);
 
+        var name = $('<p />')
+            .addClass('submit_name')
+            .html(rows[i]['name']);
+
+        var input = undefined;
+        if (rows[i]['type'] === 'textarea') {
+            input = $('<textarea />');
+        } else if (rows[i]['type'] === 'readonly') {
+            input = $('<input />')
+                .attr('type', 'text')
+                .attr('readonly', 'readonly');
+        } else {
+            input = $('<input />')
+                .attr('type', rows[i]['type']);
+        }
+
+        input
+            .addClass('submit_input')
+            .attr('id', 'submit_input_' + rows[i]['key'])
+            .val(rows[i]['value'])
+            .keypress(function () {
+                var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+
+                if (target) {
+                    target.focus();
+                }
+            })
+            .change(checker);
+
+        var hint = $('<p />')
+            .addClass('submit_hint');
+
         $('<tr />')
             .attr('id', 'submit_' + i)
-            .append($('<td />').append(
-                $('<p />')
-                    .addClass('submit_name')
-                    .html(rows[i]['name'])
-            ))
-            .append($('<td />').append(
-                $('<input />')
-                    .addClass('submit_input')
-                    .attr('id', 'submit_input_' + rows[i]['key'])
-                    .attr('type', rows[i]['type'])
-                    .keypress(function () {
-                        var target = $('#submit_' + (parseInt(i) + 1) + ' input');
-
-                        if (target) {
-                            target.focus();
-                        }
-                    })
-                    .change(checker)
-            ))
-            .append($('<td />').append(
-                $('<p />')
-                    .addClass('submit_hint')
-            ))
+            .append($('<td />').append(name))
+            .append($('<td />').append(input))
+            .append($('<td />').append(hint))
             .appendTo('#submit_table');
     }
 
@@ -1092,12 +1105,14 @@ var content_update = function (go) {
             case '#!edituser':
                 page_switch('修改个人信息', true);
 
+                // TODO: default data
                 view_submit(
                     ajax_auth_edit,
                     [{
                         key: 'login_name',
                         name: '原用户名 *',
-                        type: 'text',
+                        type: 'readonly',
+                        value: login_name, // TODO: ?
                         checker: function (value, i) {
                             if (value.length !== 0) {
                                 return '';
