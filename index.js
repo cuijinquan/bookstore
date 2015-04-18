@@ -2,6 +2,7 @@
 
 // -------- login --------
 
+var login_page_hook = false;
 var login_user_id = undefined;
 var login_name = undefined;
 
@@ -33,6 +34,10 @@ var login_update = function () {
         login_ok_show();
     } else {
         login_need_show();
+    }
+
+    if (login_page_hook) {
+        content_update('#!home');
     }
 };
 
@@ -154,7 +159,6 @@ var ajax_auth_reg = function (arg) {
                 login_name = data['auth_name'];
 
                 login_update();
-                content_update('#!home');
             } else {
                 tag_error('注册失败');
             }
@@ -182,7 +186,6 @@ var ajax_auth_edit = function (arg) {
                         login_name = data['auth_name'];
 
                         login_update();
-                        content_update('#!home');
                     } else {
                         if (data['auth_user_id']) {
                             tag_error('修改失败');
@@ -211,7 +214,7 @@ var ajax_self_info = function () {
                 data['detail']
                     + '\n\n**用户ID：**' + data['user_id']
                     + '\n\n**邮箱：**' + data['mail']
-                    + '\n\n**身份：**' + (data['is_admin'] ? '管理员' : '用户')
+                    + '\n\n**身份：**' + (data['is_admin'] === '1' ? '管理员' : '用户')
                     + '\n\n**地区：**' + data['location']
                     + '\n\n**地址：**' + data['address']
                     + '\n\n**已购买：**' + data['bought_count'] + '本'
@@ -601,7 +604,8 @@ var page_prepare = function () {
         .addClass('button_nav');
 };
 
-var page_switch = function (title, notag) {
+var page_switch = function (title, hook, notag) {
+    login_page_hook = (hook ? true : false);
     if (title) {
         document.title = title + ' - Yet Another Bookstore';
         if (!notag) {
@@ -649,6 +653,7 @@ var view_hide = function (action) {
         opacity: 0,
     }, 200, function () {
         $('#content').css('display', 'none');
+        $('#content').scrollTop(0);
         action();
     });
 };
@@ -911,7 +916,7 @@ var content_update = function (go) {
                 view_lists_reset();
                 view_switch('lists');
 
-                page_switch('订单');
+                page_switch('订单', true);
 
                 ajax_list_order('全部购买', 'b_all');
                 ajax_list_order('未完成购买', 'b_ca');
@@ -924,13 +929,13 @@ var content_update = function (go) {
                 view_isotope_reset();
                 view_switch('isotope');
 
-                page_switch('我的');
+                page_switch('我的', true);
 
                 ajax_self_info();
 
                 break;
             case '#!register':
-                page_switch('注册', true);
+                page_switch('注册', true, true);
 
                 view_submit(
                     ajax_auth_reg,
@@ -1036,7 +1041,7 @@ var content_update = function (go) {
 
                 break;
             case '#!edituser':
-                page_switch('修改个人信息', true);
+                page_switch('修改个人信息', true, true);
 
                 // TODO: default data
                 view_submit(
