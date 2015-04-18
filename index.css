@@ -376,12 +376,11 @@ table {
 
     width: 192px;
 
-    line-height: 200%;
     text-align: right;
 }
 
 .submit_input {
-    margin: 4px;
+    margin: 12px 4px;
 
     border: none;
     width: 384px;
@@ -392,11 +391,14 @@ table {
     font-size: 16px;
 }
 
+textarea.submit_input {
+    height: 192px;
+}
+
 .submit_hint {
     margin: 4px;
 
     width: 192px;
 
-    line-height: 150%;
     text-align: left;
 }

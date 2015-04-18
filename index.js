@@ -760,10 +760,12 @@ var view_submit = function (handler, rows) {
     $('#submit_table').empty();
 
     for (var i in rows) {
-        var checker = function (i) {
+        var idname = (rows[i]['key'] ? rows[i]['key'] : i);
+
+        var checker = function (i, idname) {
             if (rows[i]['checker']) {
                 return function () {
-                    var target = $('#submit_' + i + ' input');
+                    var target = $('#submit_input_' + idname);
 
                     $('#submit_' + i)
                         .find('.submit_hint')
@@ -775,7 +777,7 @@ var view_submit = function (handler, rows) {
             } else {
                 return function () {};
             }
-        } (i);
+        } (i, idname);
 
         var name = $('<p />')
             .addClass('submit_name')
@@ -795,10 +797,10 @@ var view_submit = function (handler, rows) {
 
         input
             .addClass('submit_input')
-            .attr('id', 'submit_input_' + rows[i]['key'])
+            .attr('id', 'submit_input_' + idname)
             .val(rows[i]['value'])
             .keypress(function () {
-                var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+                var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
 
                 if (target) {
                     target.focus();
@@ -820,7 +822,7 @@ var view_submit = function (handler, rows) {
     // set the handler
     submit_func = function () {
         // check error again
-        $('#submit_table input').change();
+        $('#submit_table .submit_input').change();
 
         if ($('#submit_table .error').length > 0) {
             tag_error('无法提交');
@@ -831,12 +833,13 @@ var view_submit = function (handler, rows) {
 
         for (var i in rows) {
             if (rows[i]['key']) {
-                var target = $('#submit_' + i + ' input');
+                var target = $('#submit_input_' + rows[i]['key']);
+                var text = target.val();
 
                 if (rows[i]['generator']) {
-                    arg[rows[i]['key']] = rows[i]['generator'](target.val(), i);
+                    arg[rows[i]['key']] = rows[i]['generator'](text, i);
                 } else {
-                    arg[rows[i]['key']] = target.val();
+                    arg[rows[i]['key']] = text;
                 }
             }
         }
@@ -944,7 +947,6 @@ var content_update = function (go) {
                                     .text('邮箱格式错误！');
                             }
                         },
-                        generator: undefined,
                     },
                     {
                         key: 'name',
@@ -959,14 +961,13 @@ var content_update = function (go) {
                                     .text('用户名不能为空！');
                             }
                         },
-                        generator: undefined,
                     },
                     {
                         key: 'password',
                         name: '密码 *',
                         type: 'password',
                         checker: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+                            var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
 
                             if (value !== target.val()) {
                                 target.val('');
@@ -981,10 +982,10 @@ var content_update = function (go) {
                             }
                         },
                         generator: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+                            var name = $('#submit_input_name');
 
                             return crypt_password(
-                                target.val(),
+                                name.val(),
                                 value
                             );
                         },
@@ -994,7 +995,7 @@ var content_update = function (go) {
                         name: '确认密码 *',
                         type: 'password',
                         checker: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+                            var target = $('#submit_' + (parseInt(i) - 1) + ' .submit_input');
                             var value1 = target.val();
 
                             if (value1 === value) {
@@ -1005,7 +1006,6 @@ var content_update = function (go) {
                                     .text('密码不一致！');
                             }
                         },
-                        generator: undefined,
                     },
                     {
                         key: 'location',
@@ -1020,83 +1020,16 @@ var content_update = function (go) {
                                     .text('所在地区不能为空！');
                             }
                         },
-                        generator: undefined,
                     },
                     {
                         key: 'address',
-                        name: '收货地址 <small>[1]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
-                            var line = target.val();
-
-                            if (line) {
-                                value += '\n\n' + line;
-                            }
-
-                            return value;
-                        },
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[2]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
+                        name: '收货地址',
+                        type: 'textarea',
                     },
                     {
                         key: 'detail',
-                        name: '自我介绍 <small>[1]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: function (value, i) {
-                            for (var j = 1; j <= 5; ++j) {
-                                var target = $('#submit_' + (parseInt(i) + j) + ' input');
-                                var line = target.val();
-
-                                if (line) {
-                                    value += '\n\n' + line;
-                                }
-                            }
-
-                            return value;
-                        },
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[2]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[3]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[4]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[5]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[6]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
+                        name: '自我介绍',
+                        type: 'textarea',
                     },]
                 );
                 view_switch('submit');
@@ -1113,35 +1046,17 @@ var content_update = function (go) {
                         name: '原用户名 *',
                         type: 'readonly',
                         value: login_name, // TODO: ?
-                        checker: function (value, i) {
-                            if (value.length !== 0) {
-                                return '';
-                            } else {
-                                return $('<p />')
-                                    .addClass('error')
-                                    .text('用户名不能为空！');
-                            }
-                        },
-                        generator: undefined,
                     },
                     {
                         key: 'login_password',
                         name: '原密码 *',
                         type: 'text',
-                        checker: function (value, i) {
-                            if (value.length >= 6) {
-                                return '';
-                            } else {
-                                return $('<p />')
-                                    .addClass('error')
-                                    .text('密码过短！');
-                            }
-                        },
+                        // TODO: checker?
                         generator: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+                            var name = $('#submit_input_login_name');
 
                             return crypt_password(
-                                target.val(),
+                                name.val(),
                                 value
                             );
                         },
@@ -1159,7 +1074,6 @@ var content_update = function (go) {
                                     .text('邮箱格式错误！');
                             }
                         },
-                        generator: undefined,
                     },
                     {
                         key: 'name',
@@ -1174,14 +1088,13 @@ var content_update = function (go) {
                                     .text('用户名不能为空！');
                             }
                         },
-                        generator: undefined,
                     },
                     {
                         key: 'password',
                         name: '密码 *',
                         type: 'password',
                         checker: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
+                            var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
 
                             if (value !== target.val()) {
                                 target.val('');
@@ -1196,10 +1109,10 @@ var content_update = function (go) {
                             }
                         },
                         generator: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+                            var name = $('#submit_input_name');
 
                             return crypt_password(
-                                target.val(),
+                                name.val(),
                                 value
                             );
                         },
@@ -1209,7 +1122,7 @@ var content_update = function (go) {
                         name: '确认密码 *',
                         type: 'password',
                         checker: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) - 1) + ' input');
+                            var target = $('#submit_' + (parseInt(i) - 1) + ' .submit_input');
                             var value1 = target.val();
 
                             if (value1 === value) {
@@ -1220,7 +1133,6 @@ var content_update = function (go) {
                                     .text('密码不一致！');
                             }
                         },
-                        generator: undefined,
                     },
                     {
                         key: 'location',
@@ -1235,83 +1147,16 @@ var content_update = function (go) {
                                     .text('所在地区不能为空！');
                             }
                         },
-                        generator: undefined,
                     },
                     {
                         key: 'address',
-                        name: '收货地址 <small>[1]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) + 1) + ' input');
-                            var line = target.val();
-
-                            if (line) {
-                                value += '\n\n' + line;
-                            }
-
-                            return value;
-                        },
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[2]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
+                        name: '收货地址',
+                        type: 'textarea',
                     },
                     {
                         key: 'detail',
-                        name: '自我介绍 <small>[1]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: function (value, i) {
-                            for (var j = 1; j <= 5; ++j) {
-                                var target = $('#submit_' + (parseInt(i) + j) + ' input');
-                                var line = target.val();
-
-                                if (line) {
-                                    value += '\n\n' + line;
-                                }
-                            }
-
-                            return value;
-                        },
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[2]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[3]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[4]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[5]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
-                    },
-                    {
-                        key: undefined,
-                        name: '<small>[6]</small>',
-                        type: 'text',
-                        checker: undefined,
-                        generator: undefined,
+                        name: '自我介绍',
+                        type: 'textarea',
                     },]
                 );
                 view_switch('submit');
