@@ -221,8 +221,12 @@ var ajax_self_info = function () {
                     + '\n\n**在售图书：**' + data['book_count']
                     + '\n\n**已销售：**' + data['sold_count'] + '本'
                     + '\n\n**注册日期：**' + data['date_create']
-                    + '\n\n**上次登录：**' + data['date_login']
-                    + '\n\n[**编辑信息**](#!edituser)'
+                    + '\n\n**上次登录：**' + data['date_login'],
+                [{
+                    href: '#!edituser',
+                    click: function () {},
+                    text: '编辑信息',
+                },]
             );
         },
         'json'
@@ -245,7 +249,8 @@ var ajax_user_info = function (id) {
                         + '\n\n**用户ID：**' + data['user_id']
                         + '\n\n**地区：**' + data['location']
                         + '\n\n**在售图书：**' + data['book_count']
-                        + '\n\n**已销售：**' + data['sold_count'] + '本'
+                        + '\n\n**已销售：**' + data['sold_count'] + '本',
+                    []
                 );
             } else {
                 tag_error('此用户不存在');
@@ -335,8 +340,12 @@ var ajax_cat_info = function (id) {
                         // cat_id
                         + '\n\n**子目录：**' + data['cat_count'] + '个'
                         + '\n\n**在售图书：**' + data['tot_book_count'] + '本'
-                        + '\n\n**当前目录：**' + data['book_count'] + '本'
-                        + '\n\n[**返回上层**](#!cat-' + data['parent_cat_id'] + ')'
+                        + '\n\n**当前目录：**' + data['book_count'] + '本',
+                    [{
+                        href: '#!cat-' + data['parent_cat_id'],
+                        click: function () {},
+                        text: '返回上层',
+                    },]
                 );
             } else {
                 tag_error('此目录不存在');
@@ -363,9 +372,17 @@ var ajax_book_info = function (id) {
                         + '\n\n**价格：**' + data['price']
                         + '\n\n**库存：**' + data['inventory'] + '本'
                         + '\n\n**已销售：**' + data['sold_count'] + '本'
-                        + '\n\n**上架日期：**' + data['date_create']
-                        + '\n\n[**查看卖家**](#!user-' + data['owner_user_id'] + ')'
-                        + '\n\n[**返回目录**](#!cat-' + data['parent_cat_id'] + ')'
+                        + '\n\n**上架日期：**' + data['date_create'],
+                    [{
+                        href: '#!user-' + data['owner_user_id'],
+                        click: function () {},
+                        text: '查看卖家',
+                    },
+                    {
+                        href: '#!cat-' + data['parent_cat_id'],
+                        click: function () {},
+                        text: '返回目录',
+                    },]
                 );
             } else {
                 tag_error('此书不存在');
@@ -563,7 +580,6 @@ var tag_error = function (message) {
     // create a tag
     var tag = $('<a />')
         .addClass('button_nav_error')
-        .text(message)
         .click(function () {
             for (var i in tag_list) {
                 if (tag_list[i] === tag) {
@@ -580,7 +596,8 @@ var tag_error = function (message) {
             }
 
             navigation_update();
-        });
+        })
+        .text(message);
 
     if (tag_now >= 0) {
         tag_list[tag_now].after(tag);
@@ -624,7 +641,7 @@ var intro_hide = function () {
     $('#intro').css('display', 'none');
 };
 
-var intro_show = function (image, title, text) {
+var intro_show = function (image, title, text, buttons) {
     $('#intro_image').css('display', 'none');
 
     if (image) {
@@ -641,6 +658,16 @@ var intro_show = function (image, title, text) {
 
     $('#intro_title').text(title);
     $('#intro_text').html(markdown.toHTML(text));
+
+    $('#intro_tool').empty();
+    for (var i in buttons) {
+        $('<a />')
+            .addClass('button_float')
+            .attr('href', buttons[i]['href'])
+            .click(buttons[i]['click'])
+            .text(buttons[i]['text'])
+            .appendTo('#intro_tool');
+    }
 
     $('#intro').css('display', 'block');
 };
