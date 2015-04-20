@@ -760,7 +760,7 @@ var view_submit_init = function () {
     });
 };
 
-var view_submit = function (handler, rows) {
+var view_submit = function (rows, values, handler) {
     $('#submit_table').empty();
 
     for (var i in rows) {
@@ -802,7 +802,6 @@ var view_submit = function (handler, rows) {
         input
             .addClass('submit_input')
             .attr('id', 'submit_input_' + idname)
-            .val(rows[i]['value'])
             .keypress(function () {
                 var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
 
@@ -811,6 +810,10 @@ var view_submit = function (handler, rows) {
                 }
             })
             .change(checker);
+
+        if (values[idname]) {
+            input.val(values[idname]);
+        }
 
         var hint = $('<p />')
             .addClass('submit_hint');
@@ -937,7 +940,6 @@ var content_update = function (go) {
                 page_switch('注册', true, true);
 
                 view_submit(
-                    ajax_auth_reg,
                     [{
                         key: 'mail',
                         name: '邮箱 *',
@@ -1034,7 +1036,11 @@ var content_update = function (go) {
                         key: 'detail',
                         name: '自我介绍',
                         type: 'textarea',
-                    },]
+                    },],
+                    {
+                        // no default value
+                    },
+                    ajax_auth_reg
                 );
                 view_switch('submit');
 
@@ -1044,12 +1050,10 @@ var content_update = function (go) {
 
                 // TODO: default data
                 view_submit(
-                    ajax_auth_edit,
                     [{
                         key: 'login_name',
                         name: '原用户名 *',
                         type: 'readonly',
-                        value: login_name, // TODO: ?
                     },
                     {
                         key: 'login_password',
@@ -1099,6 +1103,13 @@ var content_update = function (go) {
                         checker: function (value, i) {
                             var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
 
+                            if (value === '') {
+                                value = $('#submit_input_login_password').val();
+
+                                $('#submit_input_password').val(value);
+                                target.val(value);
+                            }
+
                             if (value !== target.val()) {
                                 target.val('');
                             }
@@ -1160,7 +1171,11 @@ var content_update = function (go) {
                         key: 'detail',
                         name: '自我介绍',
                         type: 'textarea',
-                    },]
+                    },],
+                    {
+                        login_name: login_name,
+                    },
+                    ajax_auth_edit
                 );
                 view_switch('submit');
 
