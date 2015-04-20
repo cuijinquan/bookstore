@@ -450,7 +450,6 @@ var ajax_list_order = function (title, mode) {
 
                 // TODO:
                 // 'buy_id'
-                // 'buyer_user_id'
                 // 'seller_user_id'
                 // 'address'
 
@@ -1055,8 +1054,7 @@ var content_update = function (go) {
                     {
                         key: 'login_password',
                         name: '原密码 *',
-                        type: 'text',
-                        // TODO: checker?
+                        type: 'password',
                         generator: function (value, i) {
                             var name = $('#submit_input_login_name');
 

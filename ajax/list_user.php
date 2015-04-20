@@ -12,7 +12,7 @@
     switch ($post_mode) {
         case 'new':
             $cond = 'true';
-            $order = 'sold_count';
+            $order = 'date_create';
             $desc = true;
             break;
 
