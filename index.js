@@ -345,6 +345,11 @@ var ajax_cat_info = function (id) {
                         href: '#!cat-' + data['parent_cat_id'],
                         click: function () {},
                         text: '返回上层',
+                    },
+                    {
+                        href: undefined, // href: window.location.hash,
+                        click: function () {},
+                        text: '我要卖书', // TODO
                     },]
                 );
             } else {
@@ -374,14 +379,21 @@ var ajax_book_info = function (id) {
                         + '\n\n**已销售：**' + data['sold_count'] + '本'
                         + '\n\n**上架日期：**' + data['date_create'],
                     [{
+                        href: '#!cat-' + data['parent_cat_id'],
+                        click: function () {},
+                        text: '返回目录',
+                    },
+                    {
                         href: '#!user-' + data['owner_user_id'],
                         click: function () {},
                         text: '查看卖家',
                     },
                     {
-                        href: '#!cat-' + data['parent_cat_id'],
-                        click: function () {},
-                        text: '返回目录',
+                        href: undefined, // href: window.location.hash,
+                        click: function () {
+                            cart_add(id, '#!book-' + id, data['name']);
+                        },
+                        text: '加入购物车', // TODO
                     },]
                 );
             } else {
@@ -633,6 +645,66 @@ var page_switch = function (title, hook, notag) {
             tag_page('主页');
         }
     }
+};
+
+// -------- cart --------
+
+var cart_update = function () {
+    $('#cart_list').empty();
+
+    var cart = cart_get();
+
+    for (var i in cart) {
+        $('<a />')
+            .attr('href', cart[i]['href'])
+            .text(cart[i]['text'])
+            .appendTo('#cart_list');
+    }
+};
+
+var cart_init = function () {
+    if (!window['localStorage']) {
+        window['localStorage'] = {};
+    }
+
+    if (!localStorage['bookstore_cart']) {
+        localStorage['bookstore_cart'] = JSON.stringify([]);
+    }
+
+    cart_update();
+};
+
+var cart_get = function () {
+    return JSON.parse(localStorage['bookstore_cart']);
+};
+
+var cart_set = function (cart) {
+    localStorage['bookstore_cart'] = JSON.stringify(cart);
+    cart_update();
+};
+
+var cart_add = function (id, href, text) {
+    var cart = cart_get();
+
+    cart.push({
+        id: id,
+        href: href,
+        text: text,
+    });
+
+    cart_set(cart);
+};
+
+var cart_remove = function (index) {
+    var cart = cart_get();
+
+    cart.splice(index, 1);
+
+    cart_set(cart);
+};
+
+var cart_clear = function () {
+    cart_set([]);
 };
 
 // -------- intro --------
@@ -1262,6 +1334,7 @@ $(function () {
     });
 
     // init
+    cart_init();
     view_isotope_init();
     view_submit_init();
 
