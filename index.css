@@ -9,6 +9,8 @@
 }
 
 body {
+    overflow: hidden;
+
     background: #AAA;
 }
 
@@ -230,6 +232,7 @@ table {
 }
 
 #intro_tool {
+    float: right;
 }
 
 #main {
