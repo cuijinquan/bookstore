@@ -656,6 +656,7 @@ var cart_update = function () {
 
     for (var i in cart) {
         $('<a />')
+            .addClass('button_cart')
             .attr('href', cart[i]['href'])
             .text(cart[i]['text'])
             .appendTo('#cart_list');
@@ -685,6 +686,12 @@ var cart_set = function (cart) {
 
 var cart_add = function (id, href, text) {
     var cart = cart_get();
+
+    for (var i in cart) {
+        if (cart[i]['id'] === id) {
+            return;
+        }
+    }
 
     cart.push({
         id: id,
