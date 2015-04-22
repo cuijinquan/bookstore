@@ -650,15 +650,22 @@ var page_switch = function (title, hook, notag) {
 // -------- cart --------
 
 var cart_update = function () {
-    $('#cart_list').empty();
-
     var cart = cart_get();
 
+    $('#cart_title').text('购物车 (' + cart.length + ')');
+
+    $('#cart_list').empty();
     for (var i in cart) {
-        $('<a />')
-            .addClass('button_cart')
-            .attr('href', cart[i]['href'])
-            .text(cart[i]['text'])
+        $('<tr />')
+            .append(
+                $('<td />')
+                    .append(
+                        $('<a />')
+                            .addClass('button_cart')
+                            .attr('href', cart[i]['href'])
+                            .text(cart[i]['text'])
+                    )
+            )
             .appendTo('#cart_list');
     }
 };
