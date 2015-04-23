@@ -324,6 +324,37 @@ var ajax_list_book = function (title, mode) {
     );
 };
 
+var ajax_user_book = function (id) {
+    $.post(
+        'ajax/user_book.php',
+        {
+            user_id: id,
+            begin: 0,
+        },
+        function (data) {
+            var idata = [];
+
+            for (var i in data['data']) {
+                var book_info = data['data'][i];
+
+                idata.push({
+                    big: true,
+                    href: '#!book-' + book_info['book_id'],
+                    click: function () {},
+                    title: book_info['name'],
+                    text: book_info['detail']
+                        + '\n\n价格 ' + book_info['price']
+                        + '\n\n库存 ' + book_info['inventory'] + '本'
+                        + '\n\n已销售 ' + book_info['sold_count'] + '本',
+                });
+            }
+
+            view_isotope_insert(idata);
+        },
+        'json'
+    );
+};
+
 var ajax_cat_info = function (id) {
     $.post(
         'ajax/cat.php',
@@ -1089,6 +1120,9 @@ var content_update = function (go) {
 
                 ajax_self_info();
 
+                // TODO: load more than 50 books
+                ajax_user_book(login_user_id);
+
                 break;
             case '#!register':
                 page_switch('注册', true, true);
@@ -1341,6 +1375,9 @@ var content_update = function (go) {
                 var user_id = parseInt(arg[1]);
 
                 ajax_user_info(user_id);
+
+                // TODO: load more than 50 books
+                ajax_user_book(user_id);
 
                 break;
             case '#!cat':

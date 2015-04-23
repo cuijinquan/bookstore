@@ -11,7 +11,7 @@
 
     $data_all = db_book_list_cat($post_cat_id, $post_begin);
 
-    // note: see also list_book.php
+    // note: see also list_book.php, user_book.php
 
     $book_data = array();
 

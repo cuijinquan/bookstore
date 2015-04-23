@@ -3,42 +3,15 @@
     require_once '../util/session.php';
     require_once '../util/db_book.php';
 
-    // get info of all books
-    // args: mode, begin
+    // get info of books owned by a user
+    // args: user_id, begin
 
-    $post_mode = ajax_arg('mode', FILTER_VALIDATE_REGEXP, $filter_text);
+    $post_user_id = intval(ajax_arg('user_id', FILTER_VALIDATE_REGEXP, $filter_number));
     $post_begin = intval(ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number));
 
-    switch ($post_mode) {
-        case 'new':
-            $cond = 'true';
-            $order = 'date_create';
-            $desc = true;
-            break;
+    $data_all = db_book_list_owner($post_user_id, $post_begin);
 
-        case 'sold':
-            $cond = 'true';
-            $order = 'sold_count';
-            $desc = true;
-            break;
-
-        case 'newsold':
-            $cond = 'to_days(now()) - to_days(date_create) <= 30';
-            $order = 'sold_count';
-            $desc = true;
-            break;
-
-        default:
-            header("HTTP/1.1 403 Forbidden");
-            die('bad call');
-            break;
-    }
-
-    $data_all = db_book_list_all(
-        $cond, $order, $desc, $post_begin
-    );
-
-    // note: see also user_book.php, cat_book.php
+    // note: see also list_book.php, cat_book.php
 
     $book_data = array();
 
