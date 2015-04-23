@@ -649,14 +649,39 @@ var page_switch = function (title, hook, notag) {
 
 // -------- cart --------
 
+var cart_show = function () {
+    // $('#cart_list').stop().slideDown(200);
+    $('#cart_list').css('display', 'block');
+    $('#cart_title').click(cart_hide);
+};
+
+var cart_hide = function () {
+    // $('#cart_list').stop().slideUp(200);
+    $('#cart_list').css('display', 'none');
+    $('#cart_title').click(cart_show);
+};
+
 var cart_update = function () {
     var cart = cart_get();
 
-    $('#cart_title').text('购物车 (' + cart.length + ')');
+    $('#cart_title')
+        .text('购物车 (' + cart.length + ')');
 
     $('#cart_list').empty();
     for (var i in cart) {
         $('<tr />')
+            .append(
+                $('<td />')
+                    .addClass('button_cart')
+                    .append(
+                        $('<a />')
+                            .addClass('red')
+                            .click(function () {
+                                cart_remove(i);
+                            })
+                            .text('❌')
+                    )
+            )
             .append(
                 $('<td />')
                     .addClass('button_cart')
@@ -675,19 +700,13 @@ var cart_update = function () {
                             .text(cart[i]['textr'])
                     )
             )
-            .append(
-                $('<td />')
-                    .addClass('button_cart')
-                    .append(
-                        $('<a />')
-                            .addClass('red')
-                            .click(function () {
-                                cart_remove(i);
-                            })
-                            .text('❌')
-                    )
-            )
             .appendTo('#cart_list');
+    }
+
+    if (cart.length > 0) {
+        cart_show();
+    } else {
+        cart_hide();
     }
 };
 
