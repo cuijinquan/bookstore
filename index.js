@@ -944,7 +944,7 @@ var view_submit = function (rows, values, handler) {
         // check error again
         $('#submit_table .submit_input').change();
 
-        if ($('#submit_table .error').length > 0) {
+        if ($('#submit_table .red').length > 0) {
             tag_error('无法提交');
             return;
         }
@@ -1062,7 +1062,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('邮箱格式错误！');
                             }
                         },
@@ -1076,7 +1076,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('用户名不能为空！');
                             }
                         },
@@ -1096,7 +1096,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('密码过短！');
                             }
                         },
@@ -1121,7 +1121,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('密码不一致！');
                             }
                         },
@@ -1135,7 +1135,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('所在地区不能为空！');
                             }
                         },
@@ -1190,7 +1190,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('邮箱格式错误！');
                             }
                         },
@@ -1204,7 +1204,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('用户名不能为空！');
                             }
                         },
@@ -1231,7 +1231,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('密码过短！');
                             }
                         },
@@ -1256,7 +1256,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('密码不一致！');
                             }
                         },
@@ -1270,7 +1270,7 @@ var content_update = function (go) {
                                 return '';
                             } else {
                                 return $('<p />')
-                                    .addClass('error')
+                                    .addClass('red')
                                     .text('所在地区不能为空！');
                             }
                         },

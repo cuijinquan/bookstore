@@ -389,9 +389,9 @@ table {
     font-size: 20px;
 }
 
-.error {
+.red {
     opacity: 0.8;
-    color: #C10;
+    color: #C10 !important;
 }
 
 .center {
