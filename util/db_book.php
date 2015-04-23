@@ -12,14 +12,15 @@
         //     inventory: auto decrease + edit by user
         return $db_conn->query('
             create table book (
-                book_id         bigint          auto_increment  primary key,
+                book_id         bigint          auto_increment,
                 owner_user_id   bigint          not null,
                 parent_cat_id   bigint          not null,
 
-                foreign key (owner_user_id) references user (user_id)
-                                on delete cascade on update cascade,
-                foreign key (parent_cat_id) references cat (cat_id)
-                                on delete cascade on update cascade,
+                    primary key (book_id),
+                    foreign key (owner_user_id) references user (user_id)
+                        on delete cascade on update cascade,
+                    foreign key (parent_cat_id) references cat (cat_id)
+                        on delete cascade on update cascade,
 
                 name            varchar(64)     not null,
                 image           varchar(64),
@@ -27,11 +28,15 @@
                 price           varchar(64)     not null,
                 inventory       bigint          not null,
 
-                index (book_id, owner_user_id, name),
+                    key (book_id, owner_user_id, name),
 
                 sold_count      bigint          not null,
 
-                date_create     datetime        not null
+                    key (sold_count),
+
+                date_create     datetime        not null,
+
+                    key (date_create)
             ) ENGINE = InnoDB;
         ');
     }

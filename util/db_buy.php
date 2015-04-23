@@ -12,25 +12,32 @@
         //     address: full shipping information
         return $db_conn->query('
             create table buy (
-                buy_id          bigint          auto_increment  primary key,
+                buy_id          bigint          auto_increment,
                 buyer_user_id   bigint          not null,
-                buy_book_id     bigint          not null,
 
+                    primary key (buy_id),
+                    foreign key (buyer_user_id) references user (user_id)
+                        on delete cascade on update cascade,
+
+                buy_book_id     bigint          not null,
                 seller_user_id  bigint          not null,
                 book_name       varchar(64)     not null,
 
-                foreign key (buyer_user_id) references user (user_id)
-                                on delete cascade on update cascade,
-                foreign key (buy_book_id, seller_user_id, book_name)
-                                references book (book_id, owner_user_id, name)
-                                on delete cascade on update cascade,
+                    key (buy_book_id),
+                    key (seller_user_id),
+                    foreign key (buy_book_id, seller_user_id, book_name)
+                        references book (book_id, owner_user_id, name)
+                        on delete cascade on update cascade,
 
                 address         text            not null,
                 feedback        text,
 
                 date_create     datetime        not null,
                 date_accept     datetime,
-                date_done       datetime
+                date_done       datetime,
+
+                    key (date_accept),
+                    key (date_done)
             ) ENGINE = InnoDB;
         ');
     }

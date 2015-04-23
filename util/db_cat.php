@@ -11,15 +11,18 @@
         //     cat_count: no more than 50
         return $db_conn->query('
             create table cat (
-                cat_id          bigint          auto_increment  primary key,
+                cat_id          bigint          auto_increment,
                 parent_cat_id   bigint,
 
-                foreign key (parent_cat_id) references cat (cat_id)
-                                on delete cascade on update cascade,
+                    primary key (cat_id),
+                    foreign key (parent_cat_id) references cat (cat_id)
+                        on delete cascade on update cascade,
 
-                name            varchar(64)     unique,
+                name            varchar(64)     not null,
                 image           varchar(64),
                 detail          text            not null,
+
+                    unique key (name),
 
                 cat_count       bigint          not null,
                 tot_book_count  bigint          not null,

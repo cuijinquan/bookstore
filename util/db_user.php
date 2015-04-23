@@ -10,10 +10,12 @@
         //     password: hash('sha256', $name . ':' . $password_raw)
         return $db_conn->query('
             create table user (
-                user_id         bigint          auto_increment  primary key,
+                user_id         bigint          auto_increment,
 
-                mail            varchar(64)     unique,
-                name            varchar(64)     unique,
+                    primary key (user_id),
+
+                mail            varchar(64)     not null,
+                name            varchar(64)     not null,
                 image           varchar(64),
                 detail          text            not null,
                 password        char(64)        not null,
@@ -21,12 +23,20 @@
                 location        varchar(64)     not null,
                 address         text            not null,
 
+                    unique key (mail),
+                    unique key (name),
+
                 bought_count    bigint          not null,
                 book_count      bigint          not null,
                 sold_count      bigint          not null,
 
+                    key (book_count),
+                    key (sold_count),
+
                 date_create     datetime        not null,
-                date_login      datetime        not null
+                date_login      datetime        not null,
+
+                    key (date_create)
             ) ENGINE = InnoDB;
         ');
     }
