@@ -391,7 +391,7 @@ var ajax_book_info = function (id) {
                     {
                         href: undefined, // href: window.location.hash,
                         click: function () {
-                            cart_add(id, '#!book-' + id, data['name']);
+                            cart_add(id, '#!book-' + id, data['name'], data['price']);
                         },
                         text: '加入购物车', // TODO
                     },]
@@ -659,11 +659,32 @@ var cart_update = function () {
         $('<tr />')
             .append(
                 $('<td />')
+                    .addClass('button_cart')
                     .append(
                         $('<a />')
-                            .addClass('button_cart')
                             .attr('href', cart[i]['href'])
-                            .text(cart[i]['text'])
+                            .text(cart[i]['textl'])
+                    )
+            )
+            .append(
+                $('<td />')
+                    .addClass('button_cart')
+                    .append(
+                        $('<a />')
+                            .attr('href', cart[i]['href'])
+                            .text(cart[i]['textr'])
+                    )
+            )
+            .append(
+                $('<td />')
+                    .addClass('button_cart')
+                    .append(
+                        $('<a />')
+                            .addClass('red')
+                            .click(function () {
+                                cart_remove(i);
+                            })
+                            .text('❌')
                     )
             )
             .appendTo('#cart_list');
@@ -691,7 +712,7 @@ var cart_set = function (cart) {
     cart_update();
 };
 
-var cart_add = function (id, href, text) {
+var cart_add = function (id, href, textl, textr) {
     var cart = cart_get();
 
     for (var i in cart) {
@@ -703,7 +724,8 @@ var cart_add = function (id, href, text) {
     cart.push({
         id: id,
         href: href,
-        text: text,
+        textl: textl,
+        textr: textr,
     });
 
     cart_set(cart);

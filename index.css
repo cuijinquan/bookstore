@@ -195,8 +195,6 @@ table {
     bottom: 0;
     right: 0;
 
-    min-height: 256px;
-    /* max-height: 80%; */
     min-width: 384px;
 
     color: #EEE;
@@ -213,14 +211,11 @@ table {
 }
 
 #cart_title {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     padding: 8px 24px 4px 24px;
 
     border-radius: 24px 0 0 0;
     height: 24px;
+    width: 100%;
 
     background: #333;
     background: rgba(51, 51, 51, 0.8);
@@ -231,15 +226,9 @@ table {
 }
 
 #cart_list {
-    position: absolute;
-    top: 36px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 8px 24px;
+    padding: 8px 20px;
 
-    display: block;
-    /* overflow-y: auto; */
+    width: 100%;
 
     background: #333;
     background: rgba(51, 51, 51, 0.6);
@@ -249,7 +238,8 @@ table {
 }
 
 .button_cart {
-    line-height: 200%;
+    padding: 4px;
+
     pointer-events: auto;
 }
 
