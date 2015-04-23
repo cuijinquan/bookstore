@@ -208,6 +208,7 @@ table {
     display: block;
 
     color: #EEE;
+    pointer-events: auto;
 }
 
 #cart_title {
@@ -215,8 +216,22 @@ table {
 
     border-radius: 24px 0 0 0;
     height: 24px;
-    width: 100%;
+}
 
+#cart_list {
+    padding: 8px 20px;
+}
+
+#cart_buy {
+    padding: 8px 24px;
+
+    height: 24px;
+
+    text-align: right;
+    font-size: 20px;
+}
+
+.bar_cart {
     background: #333;
     background: rgba(51, 51, 51, 0.8);
     background: linear-gradient(
@@ -225,11 +240,7 @@ table {
     font-weight: bold;
 }
 
-#cart_list {
-    padding: 8px 20px;
-
-    width: 100%;
-
+.frame_cart {
     background: #333;
     background: rgba(51, 51, 51, 0.6);
     background: linear-gradient(
@@ -239,8 +250,6 @@ table {
 
 .button_cart {
     padding: 4px;
-
-    pointer-events: auto;
 }
 
 /* -------- content -------- */

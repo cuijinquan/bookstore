@@ -1365,6 +1365,10 @@ var content_update = function (go) {
                 ajax_book_info(book_id);
 
                 break;
+            case '#!buy':
+                // TODO
+
+                break;
             default:
                 // TODO: use a view?
                 tag_error('此页不存在');
