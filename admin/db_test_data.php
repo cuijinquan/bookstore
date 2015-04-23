@@ -149,7 +149,7 @@
     // done
     db_buy_set_done(1, '好评');
     db_buy_set_done(7, '不错');
-    db_buy_set_done(8, null);
+    db_buy_set_done(8, '**赞**');
     db_buy_set_done(9, '满意');
     db_buy_set_done(10, '很好');
 ?>

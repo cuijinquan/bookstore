@@ -88,6 +88,8 @@
             // 'feedback' => $buy_info['feedback'],
 
             // 'date_create' => $buy_info['date_create'],
+            // 'date_accept' => $buy_info['date_accept'],
+            // 'date_done' => $buy_info['date_done']
             'bool_accept' => ($buy_info['date_accept'] !== null),
             'bool_done' => ($buy_info['date_done'] !== null)
         );

@@ -85,7 +85,7 @@
             case 'a':
                 return 'date_accept is not null and date_done is null';
             case 'd':
-                return /* date_accept is not null */ 'and date_done is not null';
+                return /* date_accept is not null and */ 'date_done is not null';
             case 'ca':
                 return 'date_done is null';
             case 'ad':

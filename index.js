@@ -495,6 +495,35 @@ var ajax_cat_book = function (id) {
     );
 };
 
+var ajax_book_feedback = function (id) {
+    $.post(
+        'ajax/book_feedback.php',
+        {
+            book_id: id,
+            begin: 0,
+        },
+        function (data) {
+            var idata = [];
+
+            for (var i in data['data']) {
+                var buy_info = data['data'][i];
+
+                idata.push({
+                    big: buy_info['feedback'].length >= 24,
+                    href: undefined,
+                    click: function () {},
+                    title: '', // TODO
+                    text: buy_info['feedback']
+                        + '\n\n日期 ' + buy_info['date_done'],
+                });
+            }
+
+            view_isotope_insert(idata);
+        },
+        'json'
+    );
+};
+
 var ajax_list_order = function (title, mode) {
     $.post(
         'ajax/user_buy_sell.php',
@@ -1160,13 +1189,15 @@ var content_update = function (go) {
                 ajax_cat_book(cat_id);
 
                 break;
-            case '#!book': // view: ???(TODO), args: book_id
+            case '#!book': // view: isotope, args: book_id
                 view_isotope_reset();
                 view_switch('isotope');
 
                 var book_id = parseInt(arg[1]);
 
                 ajax_book_info(book_id);
+
+                ajax_book_feedback(book_id);
 
                 break;
             case '#!register': // view: submit, args: n/a
