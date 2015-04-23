@@ -683,12 +683,14 @@ var page_switch = function (title, hook, notag) {
 var cart_show = function () {
     // $('#cart_list').stop().slideDown(200);
     $('#cart_list').css('display', 'block');
+    $('#cart_buy').css('display', 'block');
     $('#cart_title').click(cart_hide);
 };
 
 var cart_hide = function () {
     // $('#cart_list').stop().slideUp(200);
     $('#cart_list').css('display', 'none');
+    $('#cart_buy').css('display', 'none');
     $('#cart_title').click(cart_show);
 };
 
@@ -699,44 +701,53 @@ var cart_update = function () {
         .text('购物车 (' + cart.length + ')');
 
     $('#cart_list').empty();
-    for (var i in cart) {
-        $('<tr />')
-            .append(
-                $('<td />')
-                    .addClass('button_cart')
-                    .append(
-                        $('<a />')
-                            .addClass('red')
-                            .click(function () {
-                                cart_remove(i);
-                            })
-                            .text('❌')
-                    )
-            )
-            .append(
-                $('<td />')
-                    .addClass('button_cart')
-                    .append(
-                        $('<a />')
-                            .attr('href', cart[i]['href'])
-                            .text(cart[i]['textl'])
-                    )
-            )
-            .append(
-                $('<td />')
-                    .addClass('button_cart')
-                    .append(
-                        $('<a />')
-                            .attr('href', cart[i]['href'])
-                            .text(cart[i]['textr'])
-                    )
-            )
-            .appendTo('#cart_list');
-    }
 
     if (cart.length > 0) {
+        for (var i in cart) {
+            $('<tr />')
+                .append(
+                    $('<td />')
+                        .addClass('button_cart')
+                        .append(
+                            $('<a />')
+                                .addClass('red')
+                                .click(function () {
+                                    cart_remove(i);
+                                })
+                                .text('❌')
+                        )
+                )
+                .append(
+                    $('<td />')
+                        .addClass('button_cart')
+                        .append(
+                            $('<a />')
+                                .attr('href', cart[i]['href'])
+                                .text(cart[i]['textl'])
+                        )
+                )
+                .append(
+                    $('<td />')
+                        .addClass('button_cart')
+                        .append(
+                            $('<a />')
+                                .attr('href', cart[i]['href'])
+                                .text(cart[i]['textr'])
+                        )
+                )
+                .appendTo('#cart_list');
+        }
+
         cart_show();
     } else {
+        $('<tr />')
+                .append(
+                    $('<td />')
+                        .addClass('button_cart')
+                        .text('（空）')
+                )
+                .appendTo('#cart_list');
+
         cart_hide();
     }
 };
@@ -1067,7 +1078,7 @@ var content_update = function (go) {
 
         var arg = window.location.hash.split('-');
         switch (arg[0]) {
-            case '#!home':
+            case '#!home': // view: isotope, args: n/a
                 view_isotope_reset();
                 view_switch('isotope');
 
@@ -1077,7 +1088,7 @@ var content_update = function (go) {
                 ajax_cat_cat(0);
 
                 break;
-            case '#!explore':
+            case '#!explore': // view: lists, args: n/a
                 view_lists_reset();
                 view_switch('lists');
 
@@ -1088,7 +1099,7 @@ var content_update = function (go) {
                 ajax_list_book('热门新书', 'newsold');
 
                 break;
-            case '#!users':
+            case '#!users': // view: lists, args: n/a
                 view_lists_reset();
                 view_switch('lists');
 
@@ -1099,7 +1110,7 @@ var content_update = function (go) {
                 ajax_list_user('畅销卖家', 'sold');
 
                 break;
-            case '#!orders':
+            case '#!orders': // view: lists, args: n/a
                 view_lists_reset();
                 view_switch('lists');
 
@@ -1112,7 +1123,7 @@ var content_update = function (go) {
                 ajax_list_order('未完成销售', 's_a');
 
                 break;
-            case '#!my':
+            case '#!my': // view: isotope, args: n/a
                 view_isotope_reset();
                 view_switch('isotope');
 
@@ -1124,7 +1135,41 @@ var content_update = function (go) {
                 ajax_user_book(login_user_id);
 
                 break;
-            case '#!register':
+            case '#!user': // view: isotope, args: user_id
+                view_isotope_reset();
+                view_switch('isotope');
+
+                var user_id = parseInt(arg[1]);
+
+                ajax_user_info(user_id);
+
+                // TODO: load more than 50 books
+                ajax_user_book(user_id);
+
+                break;
+            case '#!cat': // view: isotope, args: cat_id
+                view_isotope_reset();
+                view_switch('isotope');
+
+                var cat_id = parseInt(arg[1]);
+
+                ajax_cat_info(cat_id);
+
+                // TODO: load more than 50 catalogs & books
+                ajax_cat_cat(cat_id);
+                ajax_cat_book(cat_id);
+
+                break;
+            case '#!book': // view: ???(TODO), args: book_id
+                view_isotope_reset();
+                view_switch('isotope');
+
+                var book_id = parseInt(arg[1]);
+
+                ajax_book_info(book_id);
+
+                break;
+            case '#!register': // view: submit, args: n/a
                 page_switch('注册', true, true);
 
                 view_submit(
@@ -1233,7 +1278,7 @@ var content_update = function (go) {
                 view_switch('submit');
 
                 break;
-            case '#!edituser':
+            case '#!edituser': // view: submit, args: n/a
                 page_switch('修改个人信息', true, true);
 
                 // TODO: default data
@@ -1368,41 +1413,11 @@ var content_update = function (go) {
                 view_switch('submit');
 
                 break;
-            case '#!user':
-                view_isotope_reset();
-                view_switch('isotope');
-
-                var user_id = parseInt(arg[1]);
-
-                ajax_user_info(user_id);
-
-                // TODO: load more than 50 books
-                ajax_user_book(user_id);
+            case '#!addbook': // view: submit(TODO), args: n/a
+                // TODO
 
                 break;
-            case '#!cat':
-                view_isotope_reset();
-                view_switch('isotope');
-
-                var cat_id = parseInt(arg[1]);
-
-                ajax_cat_info(cat_id);
-
-                // TODO: load more than 50 catalogs & books
-                ajax_cat_cat(cat_id);
-                ajax_cat_book(cat_id);
-
-                break;
-            case '#!book':
-                view_isotope_reset();
-                view_switch('isotope');
-
-                var book_id = parseInt(arg[1]);
-
-                ajax_book_info(book_id);
-
-                break;
-            case '#!buy':
+            case '#!addbuy': // view: submit(TODO), args: n/a
                 // TODO
 
                 break;
