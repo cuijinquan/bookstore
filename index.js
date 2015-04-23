@@ -424,7 +424,7 @@ var ajax_book_info = function (id) {
                         click: function () {
                             cart_add(id, '#!book-' + id, data['name'], data['price']);
                         },
-                        text: '加入购物车', // TODO
+                        text: '加入购物车',
                     },]
                 );
             } else {
