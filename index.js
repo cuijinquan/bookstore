@@ -378,9 +378,9 @@ var ajax_cat_info = function (id) {
                         text: '返回上层',
                     },
                     {
-                        href: undefined, // href: window.location.hash,
+                        href: '#!addbook-' + id,
                         click: function () {},
-                        text: '我要卖书', // TODO
+                        text: '我要卖书',
                     },]
                 );
             } else {
@@ -512,7 +512,7 @@ var ajax_book_feedback = function (id) {
                     big: buy_info['feedback'].length >= 24,
                     href: undefined,
                     click: function () {},
-                    title: '', // TODO
+                    title: '',
                     text: buy_info['feedback']
                         + '\n\n日期 ' + buy_info['date_done'],
                 });
@@ -1444,7 +1444,7 @@ var content_update = function (go) {
                 view_switch('submit');
 
                 break;
-            case '#!addbook': // view: submit(TODO), args: n/a
+            case '#!addbook': // view: submit(TODO), args: parent_cat_id
                 // TODO
 
                 break;
@@ -1474,6 +1474,10 @@ $(function () {
     $('#navigation_head').click(function () {
         content_update(window.location.hash);
     });
+
+    // hide objects
+    $('.login_need').css('display', 'none');
+    $('.login_ok').css('display', 'none');
 
     // init
     cart_init();
