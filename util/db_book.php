@@ -28,6 +28,7 @@
                 price           varchar(64)     not null,
                 inventory       bigint          not null,
 
+                    unique key (owner_user_id, name),
                     key (book_id, owner_user_id, name),
 
                 sold_count      bigint          not null,
@@ -72,6 +73,13 @@
 
     function db_book_get($book_id) {
         return db_select('book', 'book_id', $book_id)->fetch_assoc();
+    }
+
+    function db_book_get_name($owner, $name) {
+        return db_select_cond(
+            'book', 'owner_user_id = %s and name = %s',
+            array($owner, $name)
+        )->fetch_assoc();
     }
 
     function db_book_list_all(
