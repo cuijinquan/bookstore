@@ -192,7 +192,7 @@ var ajax_auth_edit = function (arg) {
                         } else if (data['auth_name']) {
                             tag_error('密码错误');
                         } else {
-                            tag_error('用户不存在');
+                            tag_error('用户未登录');
                         }
                     }
                 },
@@ -255,6 +255,18 @@ var ajax_user_info = function (id) {
             } else {
                 tag_error('此用户不存在');
             }
+        },
+        'json'
+    );
+};
+
+var ajax_self_info_async = function (handler) {
+    $.post(
+        'ajax/user_self.php',
+        {},
+        function (data) {
+            data['login_name'] = data['name'];
+            handler(data);
         },
         'json'
     );
@@ -1080,6 +1092,12 @@ var view_submit = function (rows, values, handler) {
     }
 };
 
+var view_submit_async = function (rows, source, handler) {
+    source(function (values) {
+        view_submit(rows, values, handler);
+    });
+};
+
 // -------- content --------
 
 // parse location.hash and load a page
@@ -1312,8 +1330,7 @@ var content_update = function (go) {
             case '#!edituser': // view: submit, args: n/a
                 page_switch('修改个人信息', true, true);
 
-                // TODO: default data
-                view_submit(
+                view_submit_async(
                     [{
                         key: 'login_name',
                         name: '原用户名 *',
@@ -1323,6 +1340,15 @@ var content_update = function (go) {
                         key: 'login_password',
                         name: '原密码 *',
                         type: 'password',
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('red')
+                                    .text('原密码不能为空！');
+                            }
+                        },
                         generator: function (value, i) {
                             var name = $('#submit_input_login_name');
 
@@ -1367,7 +1393,12 @@ var content_update = function (go) {
                         checker: function (value, i) {
                             var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
 
-                            if (value === '') {
+                            // special case
+                            if ($('#submit_input_login_password').val().length === 0) {
+                                return '';
+                            }
+
+                            if (value.length === 0) {
                                 value = $('#submit_input_login_password').val();
 
                                 $('#submit_input_password').val(value);
@@ -1436,9 +1467,7 @@ var content_update = function (go) {
                         name: '自我介绍',
                         type: 'textarea',
                     },],
-                    {
-                        login_name: login_name,
-                    },
+                    ajax_self_info_async,
                     ajax_auth_edit
                 );
                 view_switch('submit');

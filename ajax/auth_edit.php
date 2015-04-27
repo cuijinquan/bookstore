@@ -16,10 +16,11 @@
     $post_address = ajax_arg('address', FILTER_UNSAFE_RAW, null);
 
     $auth_salt = session_delete('auth_salt');
+    $auth_user_id = session_get('auth_user_id');
 
     $user_info = db_user_get_name($post_login_name);
 
-    if ($user_info) {
+    if ($user_info && $user_info['user_id'] === $auth_user_id) {
         $auth_password = hash('sha256', $user_info['password'] . $auth_salt);
 
         if ($post_login_password === $auth_password) {
