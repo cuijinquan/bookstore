@@ -58,8 +58,7 @@
             break;
 
         default:
-            header("HTTP/1.1 403 Forbidden");
-            die('bad call');
+            ajax_err();
             break;
     }
 

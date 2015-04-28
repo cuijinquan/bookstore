@@ -6,7 +6,8 @@
     $db_conn = new mysqli($db_ip, $db_username, $db_password, $db_name, $db_port);
 
     if ($db_conn->connect_error) {
-        die('DB error: ' . $mysqli->connect_error);
+        header('HTTP/1.1 500 Internal Server Error');
+        die('database error');
     }
 
     $db_conn->query('set character set "utf8";');

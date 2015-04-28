@@ -37,8 +37,8 @@
             return $_SESSION[$key];
         } else {
             // value not exists
-            header("HTTP/1.1 403 Forbidden");
-            die('no session');
+            header('HTTP/1.1 401 Unauthorized');
+            die('session error');
         }
     }
 
@@ -54,8 +54,8 @@
             unset($_SESSION[$key]);
         } else {
             // value not exists
-            header("HTTP/1.1 403 Forbidden");
-            die('no session');
+            header('HTTP/1.1 401 Unauthorized');
+            die('session error');
         }
 
         return $value;

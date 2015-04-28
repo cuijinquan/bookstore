@@ -10,6 +10,12 @@
     $filter_text = filter_wrap('/^[^\x{00}-\x{1f}\x{7f}]+$/isAD');
     $filter_hash = filter_wrap('/^[0-9A-F]{64}$/isAD');
 
+    // throw an ajax error
+    function ajax_err() {
+        header('HTTP/1.1 400 Bad Request');
+        die('ajax error');
+    }
+
     // read arguments in the HTTP request
     function ajax_arg($key, $filter, $options) {
         global $ajax_post;
@@ -24,8 +30,7 @@
             return $value;
         } else {
             // argument illegal or not exists
-            header("HTTP/1.1 403 Forbidden");
-            die('bad call');
+            ajax_err();
         }
     }
 
