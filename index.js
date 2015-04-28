@@ -774,8 +774,79 @@ var cart_hide = function () {
     $('#cart_title').click(cart_show);
 };
 
-var cart_update = function () {
+var cart_init = function () {
+    if (!window['localStorage']) {
+        window['localStorage'] = {};
+    }
+
+    if (!localStorage['bookstore_cart']) {
+        localStorage['bookstore_cart'] = JSON.stringify([]);
+    }
+
+    cart_update();
+    setInterval(cart_update, 1000); // auto refresh
+};
+
+var cart_get = function () {
+    return JSON.parse(localStorage['bookstore_cart']);
+};
+
+var cart_get_raw = function () {
+    return localStorage['bookstore_cart'];
+};
+
+var cart_set = function (cart) {
+    localStorage['bookstore_cart'] = JSON.stringify(cart);
+    cart_update();
+};
+
+var cart_add = function (id, href, textl, textr) {
     var cart = cart_get();
+
+    for (var i in cart) {
+        if (cart[i]['id'] === id) {
+            return;
+        }
+    }
+
+    cart.push({
+        id: id,
+        href: href,
+        textl: textl,
+        textr: textr,
+    });
+
+    cart_set(cart);
+};
+
+var cart_remove = function (id) {
+    var cart = cart_get();
+
+    for (var i in cart) {
+        if (cart[i]['id'] === id) {
+            cart.splice(i, 1);
+            break;
+        }
+    }
+
+    cart_set(cart);
+};
+
+var cart_clear = function () {
+    cart_set([]);
+};
+
+var cart_old_data = undefined;
+
+var cart_update = function () {
+    var raw = cart_get_raw();
+
+    if (raw === cart_old_data) {
+        return;
+    }
+
+    cart_old_data = raw;
+    var cart = JSON.parse(raw);
 
     $('#cart_title')
         .text('购物车 (' + cart.length + ')');
@@ -791,9 +862,11 @@ var cart_update = function () {
                         .append(
                             $('<a />')
                                 .addClass('red')
-                                .click(function () {
-                                    cart_remove(i);
-                                })
+                                .click(function (i) {
+                                    return function () {
+                                        cart_remove(cart[i]['id']);
+                                    };
+                                } (i))
                                 .text('❌')
                         )
                 )
@@ -830,58 +903,6 @@ var cart_update = function () {
 
         cart_hide();
     }
-};
-
-var cart_init = function () {
-    if (!window['localStorage']) {
-        window['localStorage'] = {};
-    }
-
-    if (!localStorage['bookstore_cart']) {
-        localStorage['bookstore_cart'] = JSON.stringify([]);
-    }
-
-    cart_update();
-};
-
-var cart_get = function () {
-    return JSON.parse(localStorage['bookstore_cart']);
-};
-
-var cart_set = function (cart) {
-    localStorage['bookstore_cart'] = JSON.stringify(cart);
-    cart_update();
-};
-
-var cart_add = function (id, href, textl, textr) {
-    var cart = cart_get();
-
-    for (var i in cart) {
-        if (cart[i]['id'] === id) {
-            return;
-        }
-    }
-
-    cart.push({
-        id: id,
-        href: href,
-        textl: textl,
-        textr: textr,
-    });
-
-    cart_set(cart);
-};
-
-var cart_remove = function (index) {
-    var cart = cart_get();
-
-    cart.splice(index, 1);
-
-    cart_set(cart);
-};
-
-var cart_clear = function () {
-    cart_set([]);
 };
 
 // -------- intro --------
@@ -1586,8 +1607,16 @@ var content_update = function (go) {
                 ajax_cat_info(cat_id, true);
 
                 break;
-            case '#!addbuy': // view: submit(TODO), args: n/a
-                // TODO
+            case '#!addbuy': // view: submit, args: n/a
+                var cart = cart_get();
+
+                // view_submit_async(
+                // );
+                view_switch('submit');
+
+                page_switch('下单', true, true);
+
+                intro_show(undefined, '购物车', 'text', []);
 
                 break;
             default:
