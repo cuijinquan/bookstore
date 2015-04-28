@@ -149,10 +149,10 @@ var ajax_logout = function () {
     );
 };
 
-var ajax_auth_reg = function (arg) {
+var ajax_auth_reg = function (args) {
     $.post(
         'ajax/auth_reg.php',
-        arg,
+        args,
         function (data) {
             if (data['auth_success']) {
                 login_user_id = data['auth_user_id'];
@@ -167,19 +167,19 @@ var ajax_auth_reg = function (arg) {
     );
 };
 
-var ajax_auth_edit = function (arg) {
+var ajax_auth_edit = function (args) {
     $.post(
         'ajax/auth_gen.php',
         {},
         function (data) {
-            arg['login_password'] = crypt_salt(
-                arg['login_password'],
+            args['login_password'] = crypt_salt(
+                args['login_password'],
                 data['auth_salt']
             );
 
             $.post(
                 'ajax/auth_edit.php',
-                arg,
+                args,
                 function (data) {
                     if (data['auth_success']) {
                         login_user_id = data['auth_user_id'];
@@ -218,7 +218,7 @@ var ajax_self_info = function () {
                     + '\n\n**地区：**' + data['location']
                     + '\n\n**地址：**' + data['address']
                     + '\n\n**已购买：**' + data['bought_count'] + '本'
-                    + '\n\n**在售图书：**' + data['book_count']
+                    + '\n\n**在售图书：**' + data['book_count'] + '种'
                     + '\n\n**已销售：**' + data['sold_count'] + '本'
                     + '\n\n**注册日期：**' + data['date_create']
                     + '\n\n**上次登录：**' + data['date_login'],
@@ -228,6 +228,18 @@ var ajax_self_info = function () {
                     text: '编辑信息',
                 },]
             );
+        },
+        'json'
+    );
+};
+
+var ajax_self_info_async = function (handler) {
+    $.post(
+        'ajax/user_self.php',
+        {},
+        function (data) {
+            data['login_name'] = data['name'];
+            handler(data);
         },
         'json'
     );
@@ -248,25 +260,13 @@ var ajax_user_info = function (id) {
                     data['detail']
                         + '\n\n**用户ID：**' + data['user_id']
                         + '\n\n**地区：**' + data['location']
-                        + '\n\n**在售图书：**' + data['book_count']
+                        + '\n\n**在售图书：**' + data['book_count'] + '种'
                         + '\n\n**已销售：**' + data['sold_count'] + '本',
                     []
                 );
             } else {
                 tag_error('此用户不存在');
             }
-        },
-        'json'
-    );
-};
-
-var ajax_self_info_async = function (handler) {
-    $.post(
-        'ajax/user_self.php',
-        {},
-        function (data) {
-            data['login_name'] = data['name'];
-            handler(data);
         },
         'json'
     );
@@ -291,7 +291,7 @@ var ajax_list_user = function (title, mode) {
                     textl: user_info['name'],
                     textr: {
                         'new': '',
-                        book: user_info['book_count'] + '本',
+                        book: user_info['book_count'] + '种',
                         sold: user_info['sold_count'] + '本',
                     }[mode],
                     textmore: '', // TODO: add this feature (detailed info)
@@ -382,8 +382,8 @@ var ajax_cat_info = function (id) {
                     data['detail']
                         // cat_id
                         + '\n\n**子目录：**' + data['cat_count'] + '个'
-                        + '\n\n**在售图书：**' + data['tot_book_count'] + '本'
-                        + '\n\n**当前目录：**' + data['book_count'] + '本',
+                        + '\n\n**在售图书：**' + data['tot_book_count'] + '种'
+                        + '\n\n**当前目录：**' + data['book_count'] + '种',
                     [{
                         href: '#!cat-' + data['parent_cat_id'],
                         click: function () {},
@@ -466,7 +466,7 @@ var ajax_cat_cat = function (id) {
                     click: function () {},
                     title: cat_info['name'],
                     text: cat_info['detail']
-                        + '\n\n在售 ' + cat_info['tot_book_count'] + '本',
+                        + '\n\n在售 ' + cat_info['tot_book_count'] + '种',
                 });
             }
 
@@ -1073,7 +1073,7 @@ var view_submit = function (rows, values, handler) {
             return;
         }
 
-        var arg = {};
+        var args = {};
 
         for (var i in rows) {
             if (rows[i]['key']) {
@@ -1081,14 +1081,14 @@ var view_submit = function (rows, values, handler) {
                 var text = target.val();
 
                 if (rows[i]['generator']) {
-                    arg[rows[i]['key']] = rows[i]['generator'](text, i);
+                    args[rows[i]['key']] = rows[i]['generator'](text, i);
                 } else {
-                    arg[rows[i]['key']] = text;
+                    args[rows[i]['key']] = text;
                 }
             }
         }
 
-        handler(arg);
+        handler(args);
     }
 };
 
@@ -1123,8 +1123,8 @@ var content_update = function (go) {
         page_prepare();
         intro_hide();
 
-        var arg = window.location.hash.split('-');
-        switch (arg[0]) {
+        var args = window.location.hash.split('-');
+        switch (args[0]) {
             case '#!home': // view: isotope, args: n/a
                 view_isotope_reset();
                 view_switch('isotope');
@@ -1186,7 +1186,7 @@ var content_update = function (go) {
                 view_isotope_reset();
                 view_switch('isotope');
 
-                var user_id = parseInt(arg[1]);
+                var user_id = parseInt(args[1]);
 
                 ajax_user_info(user_id);
 
@@ -1198,7 +1198,7 @@ var content_update = function (go) {
                 view_isotope_reset();
                 view_switch('isotope');
 
-                var cat_id = parseInt(arg[1]);
+                var cat_id = parseInt(args[1]);
 
                 ajax_cat_info(cat_id);
 
@@ -1211,7 +1211,7 @@ var content_update = function (go) {
                 view_isotope_reset();
                 view_switch('isotope');
 
-                var book_id = parseInt(arg[1]);
+                var book_id = parseInt(args[1]);
 
                 ajax_book_info(book_id);
 
