@@ -245,7 +245,7 @@ var ajax_self_info_async = function (handler) {
     );
 };
 
-var ajax_user_info = function (id) {
+var ajax_user_info = function (id, noswitch) {
     $.post(
         'ajax/user_any.php',
         {
@@ -253,7 +253,10 @@ var ajax_user_info = function (id) {
         },
         function (data) {
             if (data['get_success']) {
-                page_switch(data['name']);
+                if (!noswitch) {
+                    page_switch(data['name']);
+                }
+
                 intro_show(
                     data['image'],
                     data['name'],
@@ -367,7 +370,7 @@ var ajax_user_book = function (id) {
     );
 };
 
-var ajax_cat_info = function (id) {
+var ajax_cat_info = function (id, noswitch) {
     $.post(
         'ajax/cat.php',
         {
@@ -375,7 +378,10 @@ var ajax_cat_info = function (id) {
         },
         function (data) {
             if (data['get_success']) {
-                page_switch(data['name']);
+                if (!noswitch) {
+                    page_switch(data['name']);
+                }
+
                 intro_show(
                     data['image'],
                     data['name'],
@@ -403,7 +409,7 @@ var ajax_cat_info = function (id) {
     );
 };
 
-var ajax_book_info = function (id) {
+var ajax_book_info = function (id, noswitch) {
     $.post(
         'ajax/book.php',
         {
@@ -411,7 +417,10 @@ var ajax_book_info = function (id) {
         },
         function (data) {
             if (data['get_success']) {
-                page_switch(data['name']);
+                if (!noswitch) {
+                    page_switch(data['name']);
+                }
+
                 intro_show(
                     data['image'],
                     data['name'],
@@ -441,6 +450,22 @@ var ajax_book_info = function (id) {
                 );
             } else {
                 tag_error('此书不存在');
+            }
+        },
+        'json'
+    );
+};
+
+var ajax_cat_add_book = function (args) {
+    $.post(
+        'ajax/book_add.php',
+        args,
+        function (data) {
+            if (data['set_success']) {
+                alert(JSON.stringify(data));
+                content_update('#!book-' + data['book_id']);
+            } else {
+                tag_error('添加失败');
             }
         },
         'json'
@@ -1473,8 +1498,78 @@ var content_update = function (go) {
                 view_switch('submit');
 
                 break;
-            case '#!addbook': // view: submit(TODO), args: parent_cat_id
-                // TODO
+            case '#!addbook': // view: submit, args: parent_cat_id
+                page_switch('上架新书', true, true);
+
+                var cat_id = parseInt(args[1]);
+
+                ajax_cat_info(cat_id, true);
+
+                view_submit(
+                    [{
+                        key: 'name',
+                        name: '书名 *',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('red')
+                                    .text('书名不能为空！');
+                            }
+                        },
+                    },
+                    {
+                        key: 'price',
+                        name: '价格 *',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('red')
+                                    .text('价格不能为空！');
+                            }
+                        },
+                    },
+                    {
+                        key: 'inventory',
+                        name: '库存 *',
+                        type: 'number',
+                        checker: function (value, i) {
+                            if (value.length !== 0 && !isNaN(parseInt(value))) {
+                                if (parseInt(value) < 0) {
+                                    $('#submit_input_inventory').val(0);
+                                }
+
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('red')
+                                    .text('库存应为数字！');
+                            }
+                        },
+                        generator: function (value, i) {
+                            return parseInt(value);
+                        },
+                    },
+                    {
+                        key: 'detail',
+                        name: '内容介绍',
+                        type: 'textarea',
+                    },],
+                    {
+                        inventory: '1',
+                    },
+                    function (args) {
+                        // hack
+                        args['cat_id'] = cat_id;
+                        ajax_cat_add_book(args);
+                    }
+                );
+                view_switch('submit');
 
                 break;
             case '#!addbuy': // view: submit(TODO), args: n/a

@@ -78,7 +78,8 @@
     function db_book_get_name($owner, $name) {
         return db_select_cond(
             'book', 'owner_user_id = %s and name = %s',
-            array($owner, $name)
+            array($owner, $name),
+            'owner_user_id' // actually no use
         )->fetch_assoc();
     }
 
