@@ -352,7 +352,7 @@ table {
 
     background: #EEE;
     background: rgba(255, 255, 255, 0.2);
-    text-shadow: 1px 1px 2px #888;
+    text-shadow: 2px 2px 3px #CCC;
     cursor: default;
 }
 
@@ -371,6 +371,10 @@ table {
     line-height: 100%;
 }
 
+.button_float:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
 .button_body {
     width: 256px;
 
@@ -378,7 +382,7 @@ table {
     background: rgba(255, 255, 255, 0.4);
     line-height: 200%;
     text-align: center;
-    text-shadow: 1px 1px 2px #888;
+    text-shadow: 2px 2px 3px #CCC;
 }
 
 .button_body:hover {

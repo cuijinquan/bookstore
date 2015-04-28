@@ -405,7 +405,13 @@ var ajax_cat_info = function (id, noswitch) {
                     },
                     {
                         href: '#!addbook-' + id,
-                        click: function () {},
+                        click: function (event) {
+                            if (!login_user_id) {
+                                // not login
+                                event.preventDefault();
+                                tag_error('需要登录');
+                            }
+                        },
                         text: '我要卖书',
                     },]
                 );
@@ -614,14 +620,14 @@ $(function () {
         ajax_logout();
     });
 
-    $('#input_name').keypress(function (e) {
-        if (e.which === 13) {
+    $('#input_name').keypress(function (event) {
+        if (event.which === 13) {
             $('#input_password').focus();
         }
     });
 
-    $('#input_password').keypress(function (e) {
-        if (e.which === 13) {
+    $('#input_password').keypress(function (event) {
+        if (event.which === 13) {
             $('#btn_login').click();
         }
     });
