@@ -253,7 +253,7 @@ var ajax_self_info_async = function (handler) {
     );
 };
 
-var ajax_user_info = function (id, noswitch) {
+var ajax_user_info = function (id, simple) {
     $.post(
         'ajax/user_any.php',
         {
@@ -261,7 +261,7 @@ var ajax_user_info = function (id, noswitch) {
         },
         function (data) {
             if (data['get_success']) {
-                if (!noswitch) {
+                if (!simple) {
                     page_switch(data['name']);
                 }
 
@@ -378,7 +378,7 @@ var ajax_user_book = function (id) {
     );
 };
 
-var ajax_cat_info = function (id, noswitch) {
+var ajax_cat_info = function (id, simple) {
     $.post(
         'ajax/cat.php',
         {
@@ -386,7 +386,7 @@ var ajax_cat_info = function (id, noswitch) {
         },
         function (data) {
             if (data['get_success']) {
-                if (!noswitch) {
+                if (!simple) {
                     page_switch(data['name']);
                 }
 
@@ -398,7 +398,7 @@ var ajax_cat_info = function (id, noswitch) {
                         + '\n\n**子目录：**' + data['cat_count'] + '个'
                         + '\n\n**在售图书：**' + data['tot_book_count'] + '种'
                         + '\n\n**当前目录：**' + data['book_count'] + '种',
-                    [{
+                    simple ? [] : [{
                         href: '#!cat-' + data['parent_cat_id'],
                         click: function () {},
                         text: '返回上层',
@@ -423,7 +423,7 @@ var ajax_cat_info = function (id, noswitch) {
     );
 };
 
-var ajax_book_info = function (id, noswitch) {
+var ajax_book_info = function (id, simple) {
     $.post(
         'ajax/book.php',
         {
@@ -431,7 +431,7 @@ var ajax_book_info = function (id, noswitch) {
         },
         function (data) {
             if (data['get_success']) {
-                if (!noswitch) {
+                if (!simple) {
                     page_switch(data['name']);
                 }
 
@@ -444,7 +444,7 @@ var ajax_book_info = function (id, noswitch) {
                         + '\n\n**库存：**' + data['inventory'] + '本'
                         + '\n\n**已销售：**' + data['sold_count'] + '本'
                         + '\n\n**上架日期：**' + data['date_create'],
-                    [{
+                    simple ? [] : [{
                         href: '#!cat-' + data['parent_cat_id'],
                         click: function () {},
                         text: '返回目录',
@@ -1222,10 +1222,10 @@ var content_update = function (go) {
 
                 break;
             case '#!user': // view: isotope, args: user_id
+                var user_id = parseInt(args[1]);
+
                 view_isotope_reset();
                 view_switch('isotope');
-
-                var user_id = parseInt(args[1]);
 
                 ajax_user_info(user_id);
 
@@ -1234,10 +1234,10 @@ var content_update = function (go) {
 
                 break;
             case '#!cat': // view: isotope, args: cat_id
+                var cat_id = parseInt(args[1]);
+
                 view_isotope_reset();
                 view_switch('isotope');
-
-                var cat_id = parseInt(args[1]);
 
                 ajax_cat_info(cat_id);
 
@@ -1247,10 +1247,10 @@ var content_update = function (go) {
 
                 break;
             case '#!book': // view: isotope, args: book_id
+                var book_id = parseInt(args[1]);
+
                 view_isotope_reset();
                 view_switch('isotope');
-
-                var book_id = parseInt(args[1]);
 
                 ajax_book_info(book_id);
 
@@ -1258,8 +1258,6 @@ var content_update = function (go) {
 
                 break;
             case '#!register': // view: submit, args: n/a
-                page_switch('注册', true, true);
-
                 view_submit(
                     [{
                         key: 'mail',
@@ -1365,10 +1363,10 @@ var content_update = function (go) {
                 );
                 view_switch('submit');
 
+                page_switch('注册', true, true);
+
                 break;
             case '#!edituser': // view: submit, args: n/a
-                page_switch('修改个人信息', true, true);
-
                 view_submit_async(
                     [{
                         key: 'login_name',
@@ -1511,13 +1509,11 @@ var content_update = function (go) {
                 );
                 view_switch('submit');
 
+                page_switch('修改个人信息', true, true);
+
                 break;
             case '#!addbook': // view: submit, args: parent_cat_id
-                page_switch('上架新书', true, true);
-
                 var cat_id = parseInt(args[1]);
-
-                ajax_cat_info(cat_id, true);
 
                 view_submit(
                     [{
@@ -1584,6 +1580,10 @@ var content_update = function (go) {
                     }
                 );
                 view_switch('submit');
+
+                page_switch('上架新书', true, true);
+
+                ajax_cat_info(cat_id, true);
 
                 break;
             case '#!addbuy': // view: submit(TODO), args: n/a
