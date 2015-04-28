@@ -56,8 +56,12 @@ $(document).ajaxStop(function () {
 
 $(document).ajaxError(function (event, xhr) {
     if (!ajax_killing) {
-        if (xhr.status === 403) {
+        if (xhr.status === 400) {
             tag_error('提交被拒绝');
+        } else if (xhr.status === 401) {
+            tag_error('登录失效');
+        } else if (xhr.status === 500) {
+            tag_error('服务器错误');
         } else {
             tag_error('通信错误');
         }
@@ -65,6 +69,10 @@ $(document).ajaxError(function (event, xhr) {
 });
 
 var ajax_kill = function () {
+    if (ajax_killing) {
+        return;
+    }
+
     ajax_killing = true;
     for (var i in ajax_list) {
         ajax_list[i].abort();
@@ -142,7 +150,7 @@ var ajax_logout = function () {
                 login_update();
                 content_update();
             } else {
-                tag_error('内部错误');
+                tag_error('退出失败');
             }
         },
         'json'
