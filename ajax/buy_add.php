@@ -16,6 +16,8 @@
 
         $set_success = true;
     } else {
+        // add fail
+
         $set_success = false;
     }
 
