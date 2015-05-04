@@ -612,6 +612,10 @@ var ajax_list_order = function (title, mode) {
     );
 };
 
+var ajax_buy = function (cart, address) {
+    //
+};
+
 // -------- header --------
 
 // add event handlers
@@ -1196,41 +1200,6 @@ var content_update = function (go) {
                 ajax_cat_cat(0);
 
                 break;
-            case '#!explore': // view: lists, args: n/a
-                view_lists_reset();
-                view_switch('lists');
-
-                page_switch('发现');
-
-                ajax_list_book('最新上架', 'new');
-                ajax_list_book('畅销图书', 'sold');
-                ajax_list_book('热门新书', 'newsold');
-
-                break;
-            case '#!users': // view: lists, args: n/a
-                view_lists_reset();
-                view_switch('lists');
-
-                page_switch('用户');
-
-                ajax_list_user('新注册用户', 'new');
-                ajax_list_user('最多在售', 'book');
-                ajax_list_user('畅销卖家', 'sold');
-
-                break;
-            case '#!orders': // view: lists, args: n/a
-                view_lists_reset();
-                view_switch('lists');
-
-                page_switch('订单', true);
-
-                ajax_list_order('全部购买', 'b_all');
-                ajax_list_order('未完成购买', 'b_ca');
-                ajax_list_order('全部销售', 's_all');
-                ajax_list_order('未确认销售', 's_c');
-                ajax_list_order('未完成销售', 's_a');
-
-                break;
             case '#!my': // view: isotope, args: n/a
                 view_isotope_reset();
                 view_switch('isotope');
@@ -1277,6 +1246,41 @@ var content_update = function (go) {
                 ajax_book_info(book_id);
 
                 ajax_book_feedback(book_id);
+
+                break;
+            case '#!explore': // view: lists, args: n/a
+                view_lists_reset();
+                view_switch('lists');
+
+                page_switch('发现');
+
+                ajax_list_book('最新上架', 'new');
+                ajax_list_book('畅销图书', 'sold');
+                ajax_list_book('热门新书', 'newsold');
+
+                break;
+            case '#!users': // view: lists, args: n/a
+                view_lists_reset();
+                view_switch('lists');
+
+                page_switch('用户');
+
+                ajax_list_user('新注册用户', 'new');
+                ajax_list_user('最多在售', 'book');
+                ajax_list_user('畅销卖家', 'sold');
+
+                break;
+            case '#!orders': // view: lists, args: n/a
+                view_lists_reset();
+                view_switch('lists');
+
+                page_switch('订单', true);
+
+                ajax_list_order('全部购买', 'b_all');
+                ajax_list_order('未完成购买', 'b_ca');
+                ajax_list_order('全部销售', 's_all');
+                ajax_list_order('未确认销售', 's_c');
+                ajax_list_order('未完成销售', 's_a');
 
                 break;
             case '#!register': // view: submit, args: n/a
@@ -1608,20 +1612,59 @@ var content_update = function (go) {
                 ajax_cat_info(cat_id, true);
 
                 break;
-            case '#!addbuy': // view: submit, args: n/a
+            case '#!buy': // view: submit, args: n/a
                 var cart = cart_get();
 
-                // view_submit_async(
-                // );
+                cart_hide();
+
+                view_submit_async(
+                    [{
+                        key: 'name',
+                        name: '用户名 *',
+                        type: 'readonly',
+                    },
+                    {
+                        key: 'location',
+                        name: '所在地区 *',
+                        type: 'readonly',
+                    },
+                    {
+                        key: 'address',
+                        name: '收货地址 *',
+                        type: 'textarea',
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('red')
+                                    .text('地址不能为空！');
+                            }
+                        },
+                    },],
+                    ajax_self_info_async,
+                    function (args) {
+                        ajax_buy(cart, args['address']);
+                    }
+                );
                 view_switch('submit');
 
                 page_switch('下单', true, true);
 
-                intro_show(undefined, '购物车', 'text', []);
+                var cart_str = '';
+                for (var i in cart) {
+                    // TODO: markdown tokens filtering?
+                    cart_str += (
+                        (parseInt(i) + 1) + ' - '
+                        + '**' + cart[i]['textl'] + '** '
+                        + cart[i]['textr'] + '\n\n'
+                    );
+                }
+
+                intro_show(undefined, '购物车', cart_str, []);
 
                 break;
             default:
-                // TODO: use a view?
                 tag_error('此页不存在');
 
                 break;
