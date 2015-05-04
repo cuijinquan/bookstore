@@ -6,6 +6,7 @@
 
     // method(s) of AJAX (get, post or both)
     $ajax_post = $_POST; // $ajax_post = $_REQUEST;
+    $ajax_maxlen = 65536;
 
     // longest session time with no action
     $session_timeout = 60 * 60 * 6;

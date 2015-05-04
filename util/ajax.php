@@ -19,6 +19,7 @@
     // read arguments in the HTTP request
     function ajax_arg($key, $filter, $options) {
         global $ajax_post;
+        global $ajax_maxlen;
 
         if (isset($ajax_post[$key])) {
             $value = filter_var($ajax_post[$key], $filter, $options);
@@ -26,7 +27,7 @@
             $value = false;
         }
 
-        if ($value !== false) {
+        if ($value !== false && strlen($value) <= $ajax_maxlen) {
             return $value;
         } else {
             // argument illegal or not exists
