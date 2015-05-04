@@ -455,7 +455,7 @@ var ajax_book_info = function (id, simple) {
                         text: '查看卖家',
                     },
                     {
-                        href: undefined, // href: window.location.hash,
+                        href: window.location.hash,
                         click: function () {
                             cart_add(id, '#!book-' + id, data['name'], data['price']);
                         },
@@ -1059,6 +1059,7 @@ var view_submit_init = function () {
 
 var view_submit = function (rows, values, handler) {
     $('#submit_table').empty();
+    $('#submit_button').attr('href', window.location.hash);
 
     for (var i in rows) {
         var idname = (rows[i]['key'] ? rows[i]['key'] : i);
@@ -1639,7 +1640,7 @@ $(function () {
         content_update();
     });
     $('#navigation_head').click(function () {
-        content_update(window.location.hash);
+        content_update(window.location.hash); // refresh
     });
 
     // hide objects
