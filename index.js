@@ -613,7 +613,28 @@ var ajax_list_order = function (title, mode) {
 };
 
 var ajax_buy = function (cart, address) {
-    //
+    if (cart.length > 0) {
+        var item = cart.shift();
+
+        $.post(
+            'ajax/buy_add.php',
+            {
+                book_id: item['id'],
+                address: address,
+            },
+            function (data) {
+                if (data['set_success']) {
+                    cart_remove(item['id']);
+                    ajax_buy(cart, address);
+                } else {
+                    tag_error('购买失败');
+                }
+            },
+            'json'
+        );
+    } else {
+        content_update('#!orders');
+    }
 };
 
 // -------- header --------
@@ -1615,7 +1636,7 @@ var content_update = function (go) {
             case '#!buy': // view: submit, args: n/a
                 var cart = cart_get();
 
-                cart_hide();
+                // cart_hide();
 
                 view_submit_async(
                     [{

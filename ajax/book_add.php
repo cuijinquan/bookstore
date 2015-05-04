@@ -25,7 +25,7 @@
         $set_success = true;
         $book_id = $book_info['book_id'];
     } else {
-        // reg fail
+        // add fail
 
         $set_success = false;
         $book_id = null;
