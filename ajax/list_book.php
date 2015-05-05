@@ -49,9 +49,9 @@
 
             'name' => $book_info['name'],
             // 'image' => $book_info['image'],
-            'detail' => $book_info['detail'],
-            'price' => $book_info['price'],
-            'inventory' => $book_info['inventory'],
+            // 'detail' => $book_info['detail'], // notice: not used
+            // 'price' => $book_info['price'], // notice: not used
+            // 'inventory' => $book_info['inventory'], // notice: not used
 
             'sold_count' => $book_info['sold_count']
 

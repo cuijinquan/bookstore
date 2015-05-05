@@ -45,8 +45,8 @@
 
             'name' => $user_info['name'],
             // 'image' => $user_info['image'],
-            'detail' => $user_info['detail'],
-            'location' => $user_info['location'],
+            // 'detail' => $user_info['detail'], // notice: not used
+            // 'location' => $user_info['location'], // notice: not used
 
             'book_count' => $user_info['book_count'],
             'sold_count' => $user_info['sold_count']

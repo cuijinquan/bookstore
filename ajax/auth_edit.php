@@ -16,7 +16,7 @@
     $post_address = ajax_arg('address', FILTER_UNSAFE_RAW, null);
 
     $auth_salt = session_delete('auth_salt');
-    $auth_user_id = session_get('auth_user_id');
+    $auth_user_id = session_get_force('auth_user_id');
 
     $user_info = db_user_get_name($post_login_name);
 
