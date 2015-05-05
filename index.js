@@ -224,7 +224,7 @@ var ajax_self_info = function () {
                     + '\n\n**邮箱：**' + data['mail']
                     + '\n\n**身份：**' + (data['is_admin'] === '1' ? '管理员' : '用户')
                     + '\n\n**地区：**' + data['location']
-                    + '\n\n**地址：**' + data['address']
+                    + '\n\n**收货地址：**' + data['address']
                     + '\n\n**已购买：**' + data['bought_count'] + '本'
                     + '\n\n**在售图书：**' + data['book_count'] + '种'
                     + '\n\n**已销售：**' + data['sold_count'] + '本'
@@ -305,7 +305,6 @@ var ajax_list_user = function (title, mode) {
                         book: user_info['book_count'] + '种',
                         sold: user_info['sold_count'] + '本',
                     }[mode],
-                    textmore: '', // TODO: add this feature (detailed info)
                 });
             }
 
@@ -337,7 +336,6 @@ var ajax_list_book = function (title, mode) {
                         sold: book_info['sold_count'] + '本',
                         newsold: book_info['sold_count'] + '本',
                     }[mode],
-                    textmore: '', // TODO: add this feature (detailed info)
                 });
             }
 
@@ -599,10 +597,9 @@ var ajax_list_order = function (title, mode) {
                     textl: buy_info['book_name'],
                     textr: [
                         '未确认',
-                        '已确认',
+                        '未完成',
                         '已完成',
                     ][buy_info['bool_accept'] + buy_info['bool_done']],
-                    textmore: '', // TODO: add this feature (detailed info)
                 });
             }
 
