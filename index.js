@@ -468,6 +468,19 @@ var ajax_book_info = function (id, simple) {
     );
 };
 
+var ajax_book_info_async = function (id, handler) {
+    $.post(
+        'ajax/book.php',
+        {
+            book_id: id,
+        },
+        function (data) {
+            handler(data);
+        },
+        'json'
+    );
+};
+
 var ajax_cat_add_book = function (args) {
     $.post(
         'ajax/book_add.php',
@@ -586,14 +599,72 @@ var ajax_list_order = function (title, mode) {
             for (var i in data['data']) {
                 var buy_info = data['data'][i];
 
-                // TODO:
-                // 'buy_id'
-                // 'seller_user_id'
-                // 'address'
+                var handler = function (buy_info) {
+                    var show = function (book_info) {
+                        var buttons = [
+                            {
+                                href: '#!user-' + buy_info['seller_user_id'],
+                                click: function () {},
+                                text: '查看卖家',
+                            },
+                            {
+                                href: '#!book-' + buy_info['buy_book_id'],
+                                click: function () {},
+                                text: '查看图书',
+                            },
+                        ];
+
+                        if (
+                            mode[0] === 's'
+                            && !buy_info['bool_accept']
+                            // && !buy_info['bool_done']
+                        ) {
+                            buttons.push({
+                                href: '#!orders',
+                                click: function () {
+                                    ajax_buy_accept(buy_info['buy_id']);
+                                },
+                                text: '确认订单',
+                            });
+                        }
+
+                        if (
+                            mode[0] === 'b'
+                            && buy_info['bool_accept']
+                            && !buy_info['bool_done']
+                        ) {
+                            buttons.push({
+                                href: '#!orders',
+                                click: function () {
+                                    // TODO
+                                    ajax_buy_done(buy_info['buy_id'], 'test');
+                                },
+                                text: '完成收货',
+                            });
+                        }
+
+                        intro_show(
+                            undefined,
+                            book_info['name'],
+                            book_info['detail']
+                                + '\n\n**价格：**' + book_info['price']
+                                + '\n\n**库存：**' + book_info['inventory'] + '本'
+                                // + '\n\n**已销售：**' + book_info['sold_count'] + '本'
+                                // + '\n\n**上架日期：**' + book_info['date_create']
+                                + '\n\n**收货地址**：' + buy_info['address'],
+                            buttons
+                        );
+                    };
+
+                    return function () {
+                        ajax_book_info_async(buy_info['buy_book_id'], show);
+                    };
+                } (buy_info);
 
                 idata.push({
-                    href: '#!book-' + buy_info['buy_book_id'],
-                    click: function () {},
+                    // href: '#!book-' + buy_info['buy_book_id'],
+                    href: undefined,
+                    click: handler,
                     textl: buy_info['book_name'],
                     textr: [
                         '未确认',
@@ -632,6 +703,41 @@ var ajax_buy = function (cart, address) {
     } else {
         content_update('#!orders');
     }
+};
+
+var ajax_buy_accept = function (id) {
+    $.post(
+        'ajax/buy_accept.php',
+        {
+            buy_id: id,
+        },
+        function (data) {
+            if (data['set_success']) {
+                content_update('#!orders');
+            } else {
+                tag_error('操作失败');
+            }
+        },
+        'json'
+    );
+};
+
+var ajax_buy_done = function (id, feedback) {
+    $.post(
+        'ajax/buy_done.php',
+        {
+            buy_id: id,
+            feedback: feedback,
+        },
+        function (data) {
+            if (data['set_success']) {
+                content_update('#!orders');
+            } else {
+                tag_error('操作失败');
+            }
+        },
+        'json'
+    );
 };
 
 // -------- header --------
