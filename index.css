@@ -361,11 +361,10 @@ textarea {
 }
 
 .button_float {
-    float: right;
     margin: 8px;
     padding: 12px;
 
-    display: block;
+    display: inline-block;
     border-left: solid 8px #FFF;
     border-left: solid 8px rgba(255, 255, 255, 0.4);
 

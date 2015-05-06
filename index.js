@@ -397,11 +397,6 @@ var ajax_cat_info = function (id, simple) {
                         + '\n\n**在售图书：**' + data['tot_book_count'] + '种'
                         + '\n\n**当前目录：**' + data['book_count'] + '种',
                     simple ? [] : [{
-                        href: '#!cat-' + data['parent_cat_id'],
-                        click: function () {},
-                        text: '返回上层',
-                    },
-                    {
                         href: '#!addbook-' + id,
                         click: function (event) {
                             if (!login_user_id) {
@@ -411,6 +406,11 @@ var ajax_cat_info = function (id, simple) {
                             }
                         },
                         text: '我要卖书',
+                    },
+                    {
+                        href: '#!cat-' + data['parent_cat_id'],
+                        click: function () {},
+                        text: '返回上层',
                     },]
                 );
             } else {
@@ -443,9 +443,11 @@ var ajax_book_info = function (id, simple) {
                         + '\n\n**已销售：**' + data['sold_count'] + '本'
                         + '\n\n**上架日期：**' + data['date_create'],
                     simple ? [] : [{
-                        href: '#!cat-' + data['parent_cat_id'],
-                        click: function () {},
-                        text: '返回目录',
+                        href: window.location.hash,
+                        click: function () {
+                            cart_add(id, '#!book-' + id, data['name'], data['price']);
+                        },
+                        text: '加入购物车',
                     },
                     {
                         href: '#!user-' + data['owner_user_id'],
@@ -453,11 +455,9 @@ var ajax_book_info = function (id, simple) {
                         text: '查看卖家',
                     },
                     {
-                        href: window.location.hash,
-                        click: function () {
-                            cart_add(id, '#!book-' + id, data['name'], data['price']);
-                        },
-                        text: '加入购物车',
+                        href: '#!cat-' + data['parent_cat_id'],
+                        click: function () {},
+                        text: '返回目录',
                     },]
                 );
             } else {
@@ -603,14 +603,14 @@ var ajax_list_order = function (title, mode) {
                     var show = function (book_info) {
                         var buttons = [
                             {
-                                href: '#!user-' + buy_info['seller_user_id'],
-                                click: function () {},
-                                text: '查看卖家',
-                            },
-                            {
                                 href: '#!book-' + buy_info['buy_book_id'],
                                 click: function () {},
                                 text: '查看图书',
+                            },
+                            {
+                                href: '#!user-' + buy_info['seller_user_id'],
+                                click: function () {},
+                                text: '查看卖家',
                             },
                         ];
 
@@ -619,7 +619,7 @@ var ajax_list_order = function (title, mode) {
                             && !buy_info['bool_accept']
                             // && !buy_info['bool_done']
                         ) {
-                            buttons.push({
+                            buttons.unshift({
                                 href: '#!orders',
                                 click: function () {
                                     ajax_buy_accept(buy_info['buy_id']);
@@ -633,7 +633,7 @@ var ajax_list_order = function (title, mode) {
                             && buy_info['bool_accept']
                             && !buy_info['bool_done']
                         ) {
-                            buttons.push({
+                            buttons.unshift({
                                 href: '#!orders',
                                 click: function () {
                                     // TODO
