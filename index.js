@@ -28,16 +28,21 @@ var login_ok_show = function () {
     $('.login_ok').css('display', 'block');
 };
 
-var login_update = function () {
-    if (login_user_id) {
-        $('#text_name').text(login_name);
+var login_update = function (id, name) {
+    if (id) {
+        $('#text_name').text(name);
         login_ok_show();
     } else {
         login_need_show();
     }
 
-    if (login_page_hook) {
-        content_update('#!home');
+    if (login_user_id !== id || login_name !== name) {
+        login_user_id = id;
+        login_name = name;
+
+        if (login_page_hook) {
+            content_update('#!home');
+        }
     }
 };
 
@@ -86,14 +91,9 @@ var ajax_auto_login = function () {
         {},
         function (data) {
             if (data['auth_user_id']) {
-                login_user_id = data['auth_user_id'];
-                login_name = data['auth_name'];
-
-                login_update();
-                content_update();
+                login_update(data['auth_user_id'], data['auth_name']);
             } else {
-                login_update();
-                content_update();
+                login_update(undefined, undefined);
             }
         },
         'json'
@@ -116,11 +116,7 @@ var ajax_login = function (i_name, i_pass) {
                 },
                 function (data) {
                     if (data['auth_success']) {
-                        login_user_id = data['auth_user_id'];
-                        login_name = data['auth_name'];
-
-                        login_update();
-                        content_update();
+                        login_update(data['auth_user_id'], data['auth_name']);
                     } else {
                         if (data['auth_name']) {
                             tag_error('密码错误');
@@ -144,11 +140,7 @@ var ajax_logout = function () {
         },
         function (data) {
             if (data['auth_success']) {
-                login_user_id = undefined;
-                login_name = undefined;
-
-                login_update();
-                content_update();
+                login_update(undefined, undefined);
             } else {
                 tag_error('退出失败');
             }
@@ -163,10 +155,7 @@ var ajax_auth_reg = function (args) {
         args,
         function (data) {
             if (data['auth_success']) {
-                login_user_id = data['auth_user_id'];
-                login_name = data['auth_name'];
-
-                login_update();
+                login_update(data['auth_user_id'], data['auth_name']);
             } else {
                 tag_error('注册失败');
             }
@@ -190,10 +179,7 @@ var ajax_auth_edit = function (args) {
                 args,
                 function (data) {
                     if (data['auth_success']) {
-                        login_user_id = data['auth_user_id'];
-                        login_name = data['auth_name'];
-
-                        login_update();
+                        login_update(data['auth_user_id'], data['auth_name']);
                     } else {
                         if (data['auth_user_id']) {
                             tag_error('修改失败');
@@ -1852,6 +1838,8 @@ $(function () {
     cart_init();
     view_isotope_init();
     view_submit_init();
+
+    content_update();
 
     // ajax
     ajax_auto_login();
