@@ -312,6 +312,25 @@ textarea {
 
 #intro_tool {
     float: right;
+
+    line-height: 100%;
+    text-align: right;
+}
+
+#intro_submit {
+    margin: 8px;
+
+    width: 512px;
+
+    text-align: left;
+}
+
+#intro_submit_title {
+    margin: 8px 0;
+}
+
+#intro_submit_input {
+    width: 100%;
 }
 
 #main {

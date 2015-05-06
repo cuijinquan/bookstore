@@ -614,6 +614,8 @@ var ajax_list_order = function (title, mode) {
                             },
                         ];
 
+                        var submit = false;
+
                         if (
                             mode[0] === 's'
                             && !buy_info['bool_accept']
@@ -633,11 +635,15 @@ var ajax_list_order = function (title, mode) {
                             && buy_info['bool_accept']
                             && !buy_info['bool_done']
                         ) {
+                            submit = true;
+
                             buttons.unshift({
                                 href: '#!orders',
                                 click: function () {
-                                    // TODO
-                                    ajax_buy_done(buy_info['buy_id'], 'test');
+                                    ajax_buy_done(
+                                        buy_info['buy_id'],
+                                        $('#intro_submit_input').val()
+                                    );
                                 },
                                 text: '完成收货',
                             });
@@ -652,7 +658,21 @@ var ajax_list_order = function (title, mode) {
                                 // + '\n\n**已销售：**' + book_info['sold_count'] + '本'
                                 // + '\n\n**上架日期：**' + book_info['date_create']
                                 + '\n\n**收货地址**：' + buy_info['address'],
-                            buttons
+                            buttons,
+                            submit ? (
+                                $('<div />')
+                                    .attr('id', 'intro_submit')
+                                    .append(
+                                        $('<p />')
+                                            .attr('id', 'intro_submit_title')
+                                            .text('订单评价')
+                                    )
+                                    .append(
+                                        $('<textarea />')
+                                            .addClass('input_body')
+                                            .attr('id', 'intro_submit_input')
+                                    )
+                            ) : undefined
                         );
                     };
 
@@ -1039,7 +1059,7 @@ var intro_hide = function () {
     $('#intro').css('display', 'none');
 };
 
-var intro_show = function (image, title, text, buttons) {
+var intro_show = function (image, title, text, buttons, extra) {
     $('#intro_image').css('display', 'none');
 
     if (image) {
@@ -1058,6 +1078,12 @@ var intro_show = function (image, title, text, buttons) {
     $('#intro_text').html(markdown.toHTML(text));
 
     $('#intro_tool').empty();
+
+    if (extra) {
+        $('#intro_tool')
+            .append(extra);
+    }
+
     for (var i in buttons) {
         $('<a />')
             .addClass('button_float')
