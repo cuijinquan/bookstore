@@ -445,7 +445,12 @@ var ajax_book_info = function (id, simple) {
                     simple ? [] : [{
                         href: window.location.hash,
                         click: function () {
-                            cart_add(id, '#!book-' + id, data['name'], data['price']);
+                            cart_add(
+                                id,
+                                '#!book-' + id,
+                                data['name'],
+                                data['price']
+                            );
                         },
                         text: '加入购物车',
                     },
@@ -1463,7 +1468,9 @@ var content_update = function (go) {
                         name: '密码 *',
                         type: 'password',
                         checker: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
+                            var target = $(
+                                '#submit_' + (parseInt(i) + 1) + ' .submit_input'
+                            );
 
                             if (value !== target.val()) {
                                 target.val('');
@@ -1491,7 +1498,9 @@ var content_update = function (go) {
                         name: '确认密码 *',
                         type: 'password',
                         checker: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) - 1) + ' .submit_input');
+                            var target = $(
+                                '#submit_' + (parseInt(i) - 1) + ' .submit_input'
+                            );
                             var value1 = target.val();
 
                             if (value1 === value) {
@@ -1599,7 +1608,9 @@ var content_update = function (go) {
                         name: '密码 *',
                         type: 'password',
                         checker: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
+                            var target = $(
+                                '#submit_' + (parseInt(i) + 1) + ' .submit_input'
+                            );
 
                             // special case
                             if ($('#submit_input_login_password').val().length === 0) {
@@ -1639,7 +1650,9 @@ var content_update = function (go) {
                         name: '确认密码 *',
                         type: 'password',
                         checker: function (value, i) {
-                            var target = $('#submit_' + (parseInt(i) - 1) + ' .submit_input');
+                            var target = $(
+                                '#submit_' + (parseInt(i) - 1) + ' .submit_input'
+                            );
                             var value1 = target.val();
 
                             if (value1 === value) {

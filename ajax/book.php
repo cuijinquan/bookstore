@@ -30,7 +30,6 @@
 
             'date_create', $book_info['date_create']
 
-            // TODO: order history & comments?
             // TODO: catalog path?
         );
     } else {
