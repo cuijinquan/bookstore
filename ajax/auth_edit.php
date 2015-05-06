@@ -4,12 +4,13 @@
     require_once '../util/db_user.php';
 
     // edit user's information
-    // args: login_name, login_password, mail, name, detail, password, location, address
+    // args: login_name, login_password, mail, name, image, detail, password, location, address
 
     $post_login_name = ajax_arg('login_name', FILTER_VALIDATE_REGEXP, $filter_text);
     $post_login_password = ajax_arg('login_password', FILTER_VALIDATE_REGEXP, $filter_hash);
     $post_mail = ajax_arg('mail', FILTER_VALIDATE_EMAIL, null);
     $post_name = ajax_arg('name', FILTER_VALIDATE_REGEXP, $filter_text);
+    $post_image = or_null(ajax_arg('image', FILTER_VALIDATE_REGEXP, $filter_imghash));
     $post_detail = ajax_arg('detail', FILTER_UNSAFE_RAW, null);
     $post_password = ajax_arg('password', FILTER_VALIDATE_REGEXP, $filter_hash);
     $post_location = ajax_arg('location', FILTER_VALIDATE_REGEXP, $filter_text);
@@ -28,7 +29,7 @@
 
             $user_info['mail'] = $post_mail;
             $user_info['name'] = $post_name;
-            // $user_info['image'] = $post_image; // TODO
+            $user_info['image'] = $post_image;
             $user_info['detail'] = $post_detail;
             $user_info['password'] = $post_password;
             $user_info['location'] = $post_location;
