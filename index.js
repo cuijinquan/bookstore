@@ -1239,6 +1239,13 @@ var view_submit = function (rows, values, handler) {
             input = $('<input />')
                 .attr('type', 'text')
                 .attr('readonly', 'readonly');
+        } else if (rows[i]['type'] === 'image') {
+            input = $('<input />')
+                .attr('type', 'text')
+                .attr('readonly', 'readonly')
+                .click(function () {
+                    // TODO
+                });
         } else {
             input = $('<input />')
                 .attr('type', rows[i]['type']);
@@ -1520,6 +1527,11 @@ var content_update = function (go) {
                         type: 'textarea',
                     },
                     {
+                        key: 'image',
+                        name: '头像',
+                        type: 'image',
+                    },
+                    {
                         key: 'detail',
                         name: '自我介绍',
                         type: 'textarea',
@@ -1672,6 +1684,11 @@ var content_update = function (go) {
                         type: 'textarea',
                     },
                     {
+                        key: 'image',
+                        name: '头像',
+                        type: 'image',
+                    },
+                    {
                         key: 'detail',
                         name: '自我介绍',
                         type: 'textarea',
@@ -1736,6 +1753,11 @@ var content_update = function (go) {
                         generator: function (value, i) {
                             return parseInt(value);
                         },
+                    },
+                    {
+                        key: 'image',
+                        name: '图片',
+                        type: 'image',
                     },
                     {
                         key: 'detail',
