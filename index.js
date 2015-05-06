@@ -1227,14 +1227,9 @@ var view_submit = function (rows, values, handler) {
 
         input
             .addClass('submit_input')
+            .addClass('input_body')
             .attr('id', 'submit_input_' + idname)
-            .keypress(function () {
-                var target = $('#submit_' + (parseInt(i) + 1) + ' .submit_input');
-
-                if (target) {
-                    target.focus();
-                }
-            })
+            // .keypress(function () {}) // change focus on key 13?
             .change(checker);
 
         if (values[idname]) {

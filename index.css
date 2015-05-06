@@ -23,6 +23,10 @@ table {
     border-spacing: 0;
 }
 
+textarea {
+    height: 192px;
+}
+
 /* -------- header -------- */
 
 #header {
@@ -389,6 +393,15 @@ table {
     background: rgba(255, 255, 255, 0.6);
 }
 
+.input_body {
+    border: none;
+
+    background: #FFF;
+    background: rgba(255, 255, 255, 0.4);
+    line-height: 150%;
+    font-size: 16px;
+}
+
 .title {
     line-height: 150%;
     font-size: 32px;
@@ -482,17 +495,7 @@ table {
 .submit_input {
     margin: 12px 4px;
 
-    border: none;
     width: 384px;
-
-    background: #FFF;
-    background: rgba(255, 255, 255, 0.4);
-    line-height: 150%;
-    font-size: 16px;
-}
-
-textarea.submit_input {
-    height: 192px;
 }
 
 .submit_hint {
