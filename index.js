@@ -156,6 +156,7 @@ var ajax_auth_reg = function (args) {
         function (data) {
             if (data['auth_success']) {
                 login_update(data['auth_user_id'], data['auth_name']);
+                content_update('#!home');
             } else {
                 tag_error('注册失败');
             }
@@ -180,6 +181,7 @@ var ajax_auth_edit = function (args) {
                 function (data) {
                     if (data['auth_success']) {
                         login_update(data['auth_user_id'], data['auth_name']);
+                        content_update('#!my');
                     } else {
                         if (data['auth_user_id']) {
                             tag_error('修改失败');
@@ -1843,4 +1845,5 @@ $(function () {
 
     // ajax
     ajax_auto_login();
+    setInterval(ajax_auto_login, 60000); // auto refresh
 });
