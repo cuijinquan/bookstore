@@ -122,7 +122,37 @@
         ');
     }
 
+    // update an exist row with an array
+    function db_update_multi(
+        $table, $cond_column, $cond_value,
+        $values = array()
+    ) {
+        global $db_conn;
+
+        $set_str = '';
+
+        foreach ($values as $key => $value) {
+            if ($set_str === '') {
+                $set_str = '`' . $db_conn->escape_string($key) . '` = '
+                    . db_escape($value);
+            } else {
+                $set_str = $set_str . ', `' . $db_conn->escape_string($key) . '` = '
+                    . db_escape($value);
+            }
+        }
+
+        return $db_conn->query('
+            update `' . $db_conn->escape_string($table) . '`
+            set ' . $set_str . '
+            where (
+                `' . $db_conn->escape_string($cond_column) . '`
+                = ' . db_escape($cond_value) . '
+            );
+        ');
+    }
+
     // write (insert or replace) data to the database
+    // notice: DANGEROUS with foreign keys
     function db_write($table, $data, $replace) {
         global $db_conn;
 
@@ -136,7 +166,7 @@
         $data_str = '';
 
         foreach ($data as $key => $value) {
-            if ($value !== null) {
+            if ($value !== null) { // TODO: ?
                 if ($column_str === '') {
                     $column_str = '`' . $db_conn->escape_string($key) . '`';
                     $data_str = db_escape($value);
