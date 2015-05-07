@@ -115,4 +115,12 @@
     // function db_book_set($data) {
     //     return db_write('book', $data, true);
     // }
+
+    function db_book_set($data) {
+        return db_update_multi(
+            'book',
+            'book_id', $data['book_id'],
+            $data
+        );
+    }
 ?>

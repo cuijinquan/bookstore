@@ -9,7 +9,7 @@
     $filter_number = filter_wrap('/^[0-9]+$/isAD');
     $filter_text = filter_wrap('/^[^\x{00}-\x{1f}\x{7f}]+$/isAD');
     $filter_hash = filter_wrap('/^[0-9A-F]{64}$/isAD');
-    $filter_imghash = filter_wrap('/^[0-9A-F]{64}|$/isAD');
+    $filter_imghash = filter_wrap('/^[0-9A-F]{32}|$/isAD');
 
     // convert empty string to null
     // used on image links
