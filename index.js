@@ -42,6 +42,8 @@ var login_update = function (id, name) {
 
         if (login_page_hook) {
             content_update('#!home');
+        } else {
+            content_update();
         }
     }
 };
@@ -474,13 +476,12 @@ var ajax_book_info_async = function (id, handler) {
     );
 };
 
-var ajax_cat_add_book = function (args) {
+var ajax_book_add = function (args) {
     $.post(
         'ajax/book_add.php',
         args,
         function (data) {
             if (data['set_success']) {
-                alert(JSON.stringify(data));
                 content_update('#!book-' + data['book_id']);
             } else {
                 tag_error('添加失败');
@@ -1770,7 +1771,7 @@ var content_update = function (go) {
                     function (args) {
                         // hack
                         args['cat_id'] = cat_id;
-                        ajax_cat_add_book(args);
+                        ajax_book_add(args);
                     }
                 );
                 view_switch('submit');
