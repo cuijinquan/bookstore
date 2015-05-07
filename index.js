@@ -220,11 +220,13 @@ var ajax_self_info = function () {
                     + '\n\n**已销售：**' + data['sold_count'] + '本'
                     + '\n\n**注册日期：**' + data['date_create']
                     + '\n\n**上次登录：**' + data['date_login'],
-                [{
-                    href: '#!edituser',
-                    click: function () {},
-                    text: '编辑信息',
-                },]
+                [
+                    {
+                        href: '#!edituser',
+                        click: function () {},
+                        text: '编辑信息',
+                    },
+                ]
             );
         },
         'json'
@@ -386,22 +388,18 @@ var ajax_cat_info = function (id, simple) {
                         + '\n\n**子目录：**' + data['cat_count'] + '个'
                         + '\n\n**在售图书：**' + data['tot_book_count'] + '种'
                         + '\n\n**当前目录：**' + data['book_count'] + '种',
-                    simple ? [] : [{
-                        href: '#!addbook-' + id,
-                        click: function (event) {
-                            if (!login_user_id) {
-                                // not login
-                                event.preventDefault();
-                                tag_error('需要登录');
-                            }
+                    simple ? [] : [
+                        login_user_id ? {
+                            href: '#!addbook-' + id,
+                            click: function () {},
+                            text: '我要卖书',
+                        } : undefined,
+                        {
+                            href: '#!cat-' + data['parent_cat_id'],
+                            click: function () {},
+                            text: '返回上层',
                         },
-                        text: '我要卖书',
-                    },
-                    {
-                        href: '#!cat-' + data['parent_cat_id'],
-                        click: function () {},
-                        text: '返回上层',
-                    },]
+                    ]
                 );
             } else {
                 tag_error('此目录不存在');
@@ -432,28 +430,35 @@ var ajax_book_info = function (id, simple) {
                         + '\n\n**库存：**' + data['inventory'] + '本'
                         + '\n\n**已销售：**' + data['sold_count'] + '本'
                         + '\n\n**上架日期：**' + data['date_create'],
-                    simple ? [] : [{
-                        href: window.location.hash,
-                        click: function () {
-                            cart_add(
-                                id,
-                                '#!book-' + id,
-                                data['name'],
-                                data['price']
-                            );
+                    simple ? [] : [
+                        (login_user_id === data['owner_user_id']) ? {
+                            href: '#!editbook-' + id,
+                            click: function () {},
+                            text: '编辑信息',
+                        } : undefined,
+                        {
+                            href: window.location.hash,
+                            click: function () {
+                                cart_add(
+                                    id,
+                                    '#!book-' + id,
+                                    data['name'],
+                                    data['price']
+                                );
+                            },
+                            text: '加入购物车',
                         },
-                        text: '加入购物车',
-                    },
-                    {
-                        href: '#!user-' + data['owner_user_id'],
-                        click: function () {},
-                        text: '查看卖家',
-                    },
-                    {
-                        href: '#!cat-' + data['parent_cat_id'],
-                        click: function () {},
-                        text: '返回目录',
-                    },]
+                        {
+                            href: '#!user-' + data['owner_user_id'],
+                            click: function () {},
+                            text: '查看卖家',
+                        },
+                        {
+                            href: '#!cat-' + data['parent_cat_id'],
+                            click: function () {},
+                            text: '返回目录',
+                        },
+                    ]
                 );
             } else {
                 tag_error('此书不存在');
@@ -595,33 +600,21 @@ var ajax_list_order = function (title, mode) {
 
                 var handler = function (buy_info) {
                     var show = function (book_info) {
-                        var buttons = [
-                            {
-                                href: '#!book-' + buy_info['buy_book_id'],
-                                click: function () {},
-                                text: '查看图书',
-                            },
-                            {
-                                href: '#!user-' + buy_info['seller_user_id'],
-                                click: function () {},
-                                text: '查看卖家',
-                            },
-                        ];
-
                         var submit = false;
+                        var extra_button = undefined;
 
                         if (
                             mode[0] === 's'
                             && !buy_info['bool_accept']
                             // && !buy_info['bool_done']
                         ) {
-                            buttons.unshift({
+                            extra_button = {
                                 href: '#!orders',
                                 click: function () {
                                     ajax_buy_accept(buy_info['buy_id']);
                                 },
                                 text: '确认订单',
-                            });
+                            };
                         }
 
                         if (
@@ -631,7 +624,7 @@ var ajax_list_order = function (title, mode) {
                         ) {
                             submit = true;
 
-                            buttons.unshift({
+                            extra_button = {
                                 href: '#!orders',
                                 click: function () {
                                     ajax_buy_done(
@@ -640,7 +633,7 @@ var ajax_list_order = function (title, mode) {
                                     );
                                 },
                                 text: '完成收货',
-                            });
+                            };
                         }
 
                         intro_show(
@@ -652,7 +645,19 @@ var ajax_list_order = function (title, mode) {
                                 // + '\n\n**已销售：**' + book_info['sold_count'] + '本'
                                 // + '\n\n**上架日期：**' + book_info['date_create']
                                 + '\n\n**收货地址**：' + buy_info['address'],
-                            buttons,
+                            [
+                                extra_button,
+                                {
+                                    href: '#!book-' + buy_info['buy_book_id'],
+                                    click: function () {},
+                                    text: '查看图书',
+                                },
+                                {
+                                    href: '#!user-' + buy_info['seller_user_id'],
+                                    click: function () {},
+                                    text: '查看卖家',
+                                },
+                            ],
                             submit ? (
                                 $('<div />')
                                     .attr('id', 'intro_submit')
@@ -1079,12 +1084,14 @@ var intro_show = function (image, title, text, buttons, extra) {
     }
 
     for (var i in buttons) {
-        $('<a />')
-            .addClass('button_float')
-            .attr('href', buttons[i]['href'])
-            .click(buttons[i]['click'])
-            .text(buttons[i]['text'])
-            .appendTo('#intro_tool');
+        if (buttons[i]) {
+            $('<a />')
+                .addClass('button_float')
+                .attr('href', buttons[i]['href'])
+                .click(buttons[i]['click'])
+                .text(buttons[i]['text'])
+                .appendTo('#intro_tool');
+        }
     }
 
     $('#intro').css('display', 'block');
