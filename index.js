@@ -496,6 +496,25 @@ var ajax_book_add = function (args) {
     );
 };
 
+var ajax_book_edit = function (args) {
+    $.post(
+        'ajax/book_edit.php',
+        args,
+        function (data) {
+            if (data['set_success']) {
+                content_update('#!book-' + data['book_id']);
+            } else {
+                if (data['book_id']) {
+                    tag_error('修改失败');
+                } else {
+                    tar_error('此书不存在');
+                }
+            }
+        },
+        'json'
+    );
+};
+
 var ajax_cat_cat = function (id) {
     $.post(
         'ajax/cat_cat.php',
@@ -1786,6 +1805,75 @@ var content_update = function (go) {
                 page_switch('上架新书', true, true);
 
                 ajax_cat_info(cat_id, true);
+
+                break;
+            case '#!editbook': // view: submit, args: book_id
+                var book_id = parseInt(args[1]);
+
+                view_submit_async(
+                    [{
+                        key: 'name',
+                        name: '书名 *',
+                        type: 'readonly',
+                    },
+                    {
+                        key: 'price',
+                        name: '价格 *',
+                        type: 'text',
+                        checker: function (value, i) {
+                            if (value.length !== 0) {
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('red')
+                                    .text('价格不能为空！');
+                            }
+                        },
+                    },
+                    {
+                        key: 'inventory',
+                        name: '库存 *',
+                        type: 'number',
+                        checker: function (value, i) {
+                            if (value.length !== 0 && !isNaN(parseInt(value))) {
+                                if (parseInt(value) < 0) {
+                                    $('#submit_input_inventory').val(0);
+                                }
+
+                                return '';
+                            } else {
+                                return $('<p />')
+                                    .addClass('red')
+                                    .text('库存应为数字！');
+                            }
+                        },
+                        generator: function (value, i) {
+                            return parseInt(value);
+                        },
+                    },
+                    {
+                        key: 'image',
+                        name: '图片',
+                        type: 'image',
+                    },
+                    {
+                        key: 'detail',
+                        name: '内容介绍',
+                        type: 'textarea',
+                    },],
+                    function (handler) {
+                        ajax_book_info_async(book_id, handler);
+                    },
+                    function (args) {
+                        // hack
+                        args['book_id'] = book_id;
+                        delete args['name'];
+                        ajax_book_edit(args);
+                    }
+                );
+                view_switch('submit');
+
+                page_switch('修改图书信息', true, true);
 
                 break;
             case '#!buy': // view: submit, args: n/a
