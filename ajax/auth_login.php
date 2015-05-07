@@ -20,7 +20,7 @@
             // login ok
 
             $auth_success = true;
-            $auth_user_id = $user_info['user_id'];
+            $auth_user_id = intval($user_info['user_id']);
             $auth_name = $user_info['name'];
 
             session_set('auth_user_id', $auth_user_id);

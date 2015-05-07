@@ -14,7 +14,8 @@
     $buy_info = db_buy_get($post_buy_id);
 
     if (
-        $buy_info['buyer_user_id'] === $auth_user_id
+        $buy_info
+        && intval($buy_info['buyer_user_id']) === $auth_user_id
         && $buy_info['date_accept'] !== null
         && $buy_info['date_done'] === null
         && db_buy_set_done($post_buy_id, $post_feedback)
