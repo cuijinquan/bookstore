@@ -11,6 +11,7 @@
 
     $auth_user_id = session_get_force('auth_user_id');
 
+    // TODO: check owner !== buyer
     if (db_buy_add($auth_user_id, $post_book_id, $post_address)) {
         // add ok
 

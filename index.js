@@ -1,9 +1,14 @@
 'use strict';
 
+var DEBUG = function (value) {
+    alert(JSON.stringify(value));
+};
+
 // -------- login --------
 
 var login_page_hook = false;
-var login_user_id = undefined;
+// var login_user_id = undefined;
+var login_user_id = 0; // hack: force update
 var login_name = undefined;
 
 // calculate 1-layer hashed password
@@ -1959,7 +1964,7 @@ $(function () {
     view_isotope_init();
     view_submit_init();
 
-    content_update();
+    // content_update();
 
     // ajax
     ajax_auto_login();
