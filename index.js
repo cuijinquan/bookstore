@@ -433,6 +433,10 @@ var ajax_book_info = function (id, simple) {
                         // book_id
                         + '\n\n**价格：**' + data['price']
                         + '\n\n**库存：**' + data['inventory'] + '本'
+                        + (
+                            data['inventory'] <= 5 ?
+                            '\n\n**本书库存较少，可能会延迟发货**' : ''
+                        )
                         + '\n\n**已销售：**' + data['sold_count'] + '本'
                         + '\n\n**上架日期：**' + data['date_create'],
                     simple ? [] : [
@@ -666,6 +670,10 @@ var ajax_list_order = function (title, mode) {
                             book_info['detail']
                                 + '\n\n**价格：**' + book_info['price']
                                 + '\n\n**库存：**' + book_info['inventory'] + '本'
+                                + (
+                                    book_info['inventory'] <= 5 ?
+                                    '\n\n**本书库存较少，可能会延迟发货**' : ''
+                                )
                                 // + '\n\n**已销售：**' + book_info['sold_count'] + '本'
                                 // + '\n\n**上架日期：**' + book_info['date_create']
                                 + '\n\n**收货地址**：' + buy_info['address'],
@@ -1361,11 +1369,7 @@ var view_submit = function (rows, values, handler) {
                 .attr('readonly', 'readonly');
         } else if (rows[i]['type'] === 'image') {
             input = $('<input />')
-                .attr('type', 'text')
-                .attr('readonly', 'readonly')
-                .click(function () {
-                    // TODO
-                });
+                .attr('type', 'hidden');
         } else {
             input = $('<input />')
                 .attr('type', rows[i]['type']);

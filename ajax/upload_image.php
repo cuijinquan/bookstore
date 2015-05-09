@@ -5,7 +5,8 @@
     // upload an image
     // args: file (see: HTTP file upload)
 
-    $auth_user_id = session_get_force('auth_user_id');
+    // notice: allow image uploading in user registration
+    // $auth_user_id = session_get_force('auth_user_id');
 
     if (
         isset($_FILES['file'])
