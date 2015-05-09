@@ -1236,6 +1236,94 @@ var view_submit_init = function () {
     });
 };
 
+var view_submit_upload = function (input) {
+    var refresh = function (value) {
+        input.val(value);
+        upload.remove();
+        view_submit_upload(input);
+    };
+
+    // init components
+
+    var upload_image = $('<img />')
+        .css({
+            margin: '0 0 8px 0',
+        });
+
+    var upload_file = $('<input />')
+        .attr('type', 'file')
+        .attr('name', 'file')
+        .attr('required', 'required');
+
+    var upload_submit = $('<input />')
+        .attr('type', 'submit')
+        .val('提交');
+
+    var upload_clear = $('<input />')
+        .attr('type', 'button')
+        .val('清除')
+        .click(function () {
+            refresh('');
+        });
+
+    var upload_form = $('<form />')
+        .css({
+            margin: '0',
+        })
+        .attr('action', 'ajax/upload_image.php')
+        .attr('method', 'post')
+        .attr('enctype', 'multipart/form-data')
+        .append(upload_file)
+        .append(upload_submit)
+        .append(upload_clear);
+
+    // build the iframe
+
+    var upload = $('<iframe />');
+    input.after(upload);
+
+    var upload_body = upload.contents().find('body');
+    upload_body
+        .css({
+            margin: '0',
+            padding: '8px',
+        })
+        .append(upload_image)
+        .append(upload_form);
+
+    upload
+        .addClass('submit_input')
+        .addClass('input_body')
+        .height(upload_body.get(0).offsetHeight)
+        .on('load', function () {
+            var data = JSON.parse(
+                upload.contents().find('body').html()
+            );
+
+            if (data['upload_success']) {
+                refresh(data['upload_hash']);
+            } else {
+                tag_error('上传失败');
+                // refresh(input.val());
+            }
+        });
+
+    // load image
+
+    var image = input.val();
+    if (image) { // TODO: new function?
+        $.get(
+            'upload/' + image,
+            {},
+            function (data) {
+                upload_image.attr('src', data);
+                upload.height(upload_body.get(0).offsetHeight);
+            },
+            'text'
+        );
+    }
+};
+
 var view_submit = function (rows, values, handler) {
     $('#submit_table').empty();
     $('#submit_button').attr('href', window.location.hash);
@@ -1303,6 +1391,10 @@ var view_submit = function (rows, values, handler) {
             .append($('<td />').append(input))
             .append($('<td />').append(hint))
             .appendTo('#submit_table');
+
+        if (rows[i]['type'] === 'image') {
+            view_submit_upload(input);
+        }
     }
 
     // set the handler
