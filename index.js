@@ -1414,8 +1414,10 @@ var view_submit = function (rows, values, handler) {
         var args = {};
 
         for (var i in rows) {
+            var idname = (rows[i]['key'] ? rows[i]['key'] : i);
+            var target = $('#submit_input_' + idname);
+
             if (rows[i]['key']) {
-                var target = $('#submit_input_' + rows[i]['key']);
                 var text = target.val();
 
                 if (rows[i]['generator']) {
@@ -1423,6 +1425,10 @@ var view_submit = function (rows, values, handler) {
                 } else {
                     args[rows[i]['key']] = text;
                 }
+            }
+
+            if (rows[i]['type'] === 'password') {
+                target.val('');
             }
         }
 
