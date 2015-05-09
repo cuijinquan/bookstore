@@ -1251,6 +1251,8 @@ var view_submit_upload = function (input) {
         view_submit_upload(input);
     };
 
+    var active = false;
+
     // init components
 
     var upload_image = $('<img />')
@@ -1265,7 +1267,10 @@ var view_submit_upload = function (input) {
 
     var upload_submit = $('<input />')
         .attr('type', 'submit')
-        .val('提交');
+        .val('提交')
+        .click(function () {
+            active = true;
+        });
 
     var upload_clear = $('<input />')
         .attr('type', 'button')
@@ -1287,34 +1292,35 @@ var view_submit_upload = function (input) {
 
     // build the iframe
 
-    var upload = $('<iframe />');
-    input.after(upload);
-
-    var upload_body = upload.contents().find('body');
-    upload_body
-        .css({
-            margin: '0',
-            padding: '8px',
-        })
-        .append(upload_image)
-        .append(upload_form);
-
-    upload
+    var upload = $('<iframe />')
         .addClass('submit_input')
         .addClass('input_body')
-        .height(upload_body.get(0).offsetHeight)
         .on('load', function () {
-            var data = JSON.parse(
-                upload.contents().find('body').html()
-            );
+            var body = upload.contents().find('body');
 
-            if (data['upload_success']) {
-                refresh(data['upload_hash']);
+            if (active) {
+                var data = JSON.parse(body.html());
+
+                if (data['upload_success']) {
+                    refresh(data['upload_hash']);
+                } else {
+                    tag_error('上传失败');
+                    // refresh(input.val());
+                }
             } else {
-                tag_error('上传失败');
-                // refresh(input.val());
+                body
+                    .css({
+                        margin: '0',
+                        padding: '8px',
+                    })
+                    .append(upload_image)
+                    .append(upload_form);
+
+                upload.height(body.height() + 16);
             }
         });
+
+    input.after(upload);
 
     // load image
 
@@ -1324,8 +1330,10 @@ var view_submit_upload = function (input) {
             'upload/' + image,
             {},
             function (data) {
+                var body = upload.contents().find('body');
+
                 upload_image.attr('src', data);
-                upload.height(upload_body.get(0).offsetHeight);
+                upload.height(body.height() + 16);
             },
             'text'
         );
