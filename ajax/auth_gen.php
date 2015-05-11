@@ -3,6 +3,7 @@
     require_once '../util/session.php';
 
     // generate a salt value for authorization
+    // common args: n/a
     // args: n/a
 
     // stronger version: openssl_random_pseudo_bytes(32, true)

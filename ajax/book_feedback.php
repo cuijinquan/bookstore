@@ -4,6 +4,7 @@
     require_once '../util/db_buy.php';
 
     // get comments (feedbacks) of a book
+    // common args: n/a
     // args: book_id, begin
 
     $post_book_id = intval(ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number));

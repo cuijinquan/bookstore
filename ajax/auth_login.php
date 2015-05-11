@@ -4,6 +4,7 @@
     require_once '../util/db_user.php';
 
     // do login
+    // common args: n/a
     // args: name, password (salted hash)
 
     $post_name = ajax_arg('name', FILTER_VALIDATE_REGEXP, $filter_text);

@@ -3,10 +3,11 @@
     require_once '../util/session.php';
 
     // upload an image
+    // common args: n/a
     // args: file (see: HTTP file upload)
 
     // notice: allow image uploading in user registration
-    // $auth_user_id = session_get_force('auth_user_id');
+    // $auth_user_id = ...
 
     if (
         isset($_FILES['file'])

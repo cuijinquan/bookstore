@@ -4,6 +4,7 @@
     require_once '../util/db_user.php';
 
     // get login status
+    // common args: n/a
     // args: n/a
 
     $auth_user_id = session_get('auth_user_id');

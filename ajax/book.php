@@ -4,6 +4,7 @@
     require_once '../util/db_book.php';
 
     // get info of a book
+    // common args: n/a
     // args: book_id
 
     $post_book_id = intval(ajax_arg('book_id', FILTER_VALIDATE_REGEXP, $filter_number));

@@ -4,6 +4,7 @@
     require_once '../util/db_user.php';
 
     // do user registration
+    // common args: n/a
     // args: mail, name, image, detail, password, location, address
 
     $post_mail = ajax_arg('mail', FILTER_VALIDATE_EMAIL, null);

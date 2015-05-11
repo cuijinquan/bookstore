@@ -4,6 +4,7 @@
     require_once '../util/db_book.php';
 
     // get info of books owned by a user
+    // common args: n/a
     // args: user_id, begin
 
     $post_user_id = intval(ajax_arg('user_id', FILTER_VALIDATE_REGEXP, $filter_number));

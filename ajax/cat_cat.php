@@ -4,6 +4,7 @@
     require_once '../util/db_cat.php';
 
     // get sub catalogs in a catalog
+    // common args: n/a
     // args: cat_id, begin
 
     $post_cat_id = intval(ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number));

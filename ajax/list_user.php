@@ -4,6 +4,7 @@
     require_once '../util/db_user.php';
 
     // get info of all users
+    // common args: n/a
     // args: mode, begin
 
     $post_mode = ajax_arg('mode', FILTER_VALIDATE_REGEXP, $filter_text);
