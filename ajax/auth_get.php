@@ -13,12 +13,15 @@
         $user_info = db_user_get($auth_user_id);
 
         $auth_name = $user_info['name'];
+        $auth_sudo = $user_info['is_admin'];
     } else {
         $auth_name = null;
+        $auth_sudo = false;
     }
 
     echo ajax_gen(
         'auth_user_id', $auth_user_id,
-        'auth_name', $auth_name
+        'auth_name', $auth_name,
+        'auth_sudo', $auth_sudo
     );
 ?>

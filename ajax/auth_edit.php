@@ -44,12 +44,14 @@
                 $auth_success = true;
                 $auth_user_id = $user_info['user_id'];
                 $auth_name = $user_info['name'];
+                $auth_sudo = $user_info['is_admin'];
             } else {
                 // edit fail
 
                 $auth_success = false;
                 $auth_user_id = $user_info['user_id'];
                 $auth_name = $user_info['name'];
+                $auth_sudo = $user_info['is_admin'];
             }
         } else {
             // wrong password
@@ -57,6 +59,7 @@
             $auth_success = false;
             $auth_user_id = null;
             $auth_name = $user_info['name'];
+            $auth_sudo = false;
         }
     } else {
         // wrong name
@@ -64,11 +67,13 @@
         $auth_success = false;
         $auth_user_id = null;
         $auth_name = null;
+        $auth_sudo = false;
     }
 
     echo ajax_gen(
         'auth_success', $auth_success,
         'auth_user_id', $auth_user_id,
-        'auth_name', $auth_name
+        'auth_name', $auth_name,
+        'auth_sudo', $auth_sudo
     );
 ?>

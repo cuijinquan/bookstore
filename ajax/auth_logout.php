@@ -11,6 +11,7 @@
 
     // if success
     session_delete('auth_user_id');
+    session_delete('auth_sudo');
 
     echo ajax_gen();
 ?>
