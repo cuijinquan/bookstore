@@ -10,6 +10,7 @@ var login_page_hook = false;
 // var login_user_id = undefined;
 var login_user_id = -1; // hack: force update
 var login_name = undefined;
+var login_sudo = false;
 
 // calculate 1-layer hashed password
 var crypt_password = function (name, password_raw) {
@@ -33,17 +34,22 @@ var login_ok_show = function () {
     $('.login_ok').css('display', 'block');
 };
 
-var login_update = function (id, name) {
+var login_update = function (id, name, sudo) {
     if (id) {
-        $('#text_name').text(name);
+        if (sudo) {
+            $('#text_name').text(name + ' [管理员]');
+        } else {
+            $('#text_name').text(name);
+        }
         login_ok_show();
     } else {
         login_need_show();
     }
 
-    if (login_user_id !== id || login_name !== name) {
+    if (login_user_id !== id || login_name !== name || login_sudo !== sudo) {
         login_user_id = id;
         login_name = name;
+        login_sudo = sudo;
 
         if (login_page_hook) {
             content_update('#!home');
@@ -112,9 +118,13 @@ var ajax_auto_login = function () {
         {},
         function (data) {
             if (data['auth_user_id']) {
-                login_update(data['auth_user_id'], data['auth_name']);
+                login_update(
+                    data['auth_user_id'],
+                    data['auth_name'],
+                    data['auth_sudo']
+                );
             } else {
-                login_update(undefined, undefined);
+                login_update(undefined, undefined, false);
             }
         },
         'json'
@@ -137,7 +147,11 @@ var ajax_login = function (i_name, i_pass) {
                 },
                 function (data) {
                     if (data['auth_success']) {
-                        login_update(data['auth_user_id'], data['auth_name']);
+                        login_update(
+                            data['auth_user_id'],
+                            data['auth_name'],
+                            data['auth_sudo']
+                        );
                     } else {
                         if (data['auth_name']) {
                             tag_error('密码错误');
@@ -160,7 +174,7 @@ var ajax_logout = function () {
             login_user_id: login_user_id,
         },
         function (data) {
-            login_update(undefined, undefined);
+            login_update(undefined, undefined, false);
         },
         'json'
     );
@@ -172,7 +186,11 @@ var ajax_auth_reg = function (args) {
         args,
         function (data) {
             if (data['auth_success']) {
-                login_update(data['auth_user_id'], data['auth_name']);
+                login_update(
+                    data['auth_user_id'],
+                    data['auth_name'],
+                    data['auth_sudo']
+                );
                 content_update('#!home');
             } else {
                 tag_error('注册失败');
@@ -198,7 +216,11 @@ var ajax_auth_edit = function (args) {
                 args,
                 function (data) {
                     if (data['auth_success']) {
-                        login_update(data['auth_user_id'], data['auth_name']);
+                        login_update(
+                            data['auth_user_id'],
+                            data['auth_name'],
+                            data['auth_sudo']
+                        );
                         content_update('#!my');
                     } else {
                         if (data['auth_user_id']) {
