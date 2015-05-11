@@ -22,6 +22,12 @@
 
     $_SESSION['session_time'] = time();
 
+    // throw a session error
+    function session_err() {
+        header('HTTP/1.1 401 Unauthorized');
+        die('session error');
+    }
+
     // get value in the session data
     function session_get($key) {
         if (isset($_SESSION[$key])) {
@@ -37,8 +43,7 @@
             return $_SESSION[$key];
         } else {
             // value not exists
-            header('HTTP/1.1 401 Unauthorized');
-            die('session error');
+            session_err();
         }
     }
 
@@ -54,8 +59,7 @@
             unset($_SESSION[$key]);
         } else {
             // value not exists
-            header('HTTP/1.1 401 Unauthorized');
-            die('session error');
+            session_err();
         }
 
         return $value;
