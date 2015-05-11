@@ -8,7 +8,7 @@ var DEBUG = function (value) {
 
 var login_page_hook = false;
 // var login_user_id = undefined;
-var login_user_id = 0; // hack: force update
+var login_user_id = -1; // hack: force update
 var login_name = undefined;
 
 // calculate 1-layer hashed password
@@ -91,6 +91,19 @@ var ajax_kill = function () {
         ajax_list[i].abort();
     }
     ajax_killing = false;
+};
+
+var ajax_image = function (image, handler) {
+    if (image) {
+        $.get(
+            'upload/' + image,
+            {},
+            function (data) {
+                handler(data);
+            },
+            'text'
+        );
+    }
 };
 
 var ajax_auto_login = function () {
@@ -1101,17 +1114,13 @@ var intro_hide = function () {
 var intro_show = function (image, title, text, buttons, extra) {
     $('#intro_image').css('display', 'none');
 
-    if (image) {
-        $.get(
-            'upload/' + image,
-            {},
-            function (data) {
-                $('#intro_image').attr('src', data);
-                $('#intro_image').css('display', 'block');
-            },
-            'text'
-        );
-    }
+    ajax_image(
+        image,
+        function (data) {
+            $('#intro_image').attr('src', data);
+            $('#intro_image').css('display', 'block');
+        }
+    );
 
     $('#intro_title').text(title);
     $('#intro_text').html(markdown.toHTML(text));
@@ -1332,20 +1341,15 @@ var view_submit_upload = function (input) {
 
     // load image
 
-    var image = input.val();
-    if (image) { // TODO: new function?
-        $.get(
-            'upload/' + image,
-            {},
-            function (data) {
-                var body = upload.contents().find('body');
+    ajax_image(
+        input.val(),
+        function (data) {
+            var body = upload.contents().find('body');
 
-                upload_image.attr('src', data);
-                upload.height(body.height() + 16);
-            },
-            'text'
-        );
-    }
+            upload_image.attr('src', data);
+            upload.height(body.height() + 16); // TODO: on iframe change
+        }
+    );
 };
 
 var view_submit = function (rows, values, handler) {
