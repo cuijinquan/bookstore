@@ -20,7 +20,7 @@
         'image', $user_info['image'],
         'detail', $user_info['detail'],
         // 'password', $user_info['password'],
-        'is_admin', $user_info['is_admin'],
+        'is_admin', intval($user_info['is_admin']) > 0,
         'location', $user_info['location'],
         'address', $user_info['address'],
 

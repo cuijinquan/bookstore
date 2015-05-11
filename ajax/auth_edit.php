@@ -44,14 +44,14 @@
                 $auth_success = true;
                 $auth_user_id = $user_info['user_id'];
                 $auth_name = $user_info['name'];
-                $auth_sudo = $user_info['is_admin'];
+                $auth_sudo = intval($user_info['is_admin']) > 0;
             } else {
                 // edit fail
 
                 $auth_success = false;
                 $auth_user_id = $user_info['user_id'];
                 $auth_name = $user_info['name'];
-                $auth_sudo = $user_info['is_admin'];
+                $auth_sudo = intval($user_info['is_admin']) > 0;
             }
         } else {
             // wrong password

@@ -23,7 +23,7 @@
             $auth_success = true;
             $auth_user_id = intval($user_info['user_id']);
             $auth_name = $user_info['name'];
-            $auth_sudo = $user_info['is_admin'];
+            $auth_sudo = intval($user_info['is_admin']) > 0;
 
             session_set('auth_user_id', $auth_user_id);
             session_set('auth_sudo', $auth_sudo);

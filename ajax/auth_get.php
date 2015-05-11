@@ -13,7 +13,7 @@
         $user_info = db_user_get($auth_user_id);
 
         $auth_name = $user_info['name'];
-        $auth_sudo = $user_info['is_admin'];
+        $auth_sudo = intval($user_info['is_admin']) > 0;
     } else {
         $auth_name = null;
         $auth_sudo = false;
