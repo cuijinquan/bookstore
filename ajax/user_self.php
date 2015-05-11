@@ -4,9 +4,11 @@
     require_once '../util/db_user.php';
 
     // get info of the logged-in user
+    // common args: login_user_id
     // args: n/a
 
-    $auth_user_id = session_get_force('auth_user_id');
+    $auth_user_id = intval(ajax_arg('login_user_id', FILTER_VALIDATE_REGEXP, $filter_number));
+    session_check('auth_user_id', $auth_user_id);
 
     $user_info = db_user_get($auth_user_id);
 

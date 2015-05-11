@@ -4,7 +4,11 @@
     require_once '../util/db_user.php';
 
     // edit user's information
+    // common args: login_user_id
     // args: login_name, login_password, mail, name, image, detail, password, location, address
+
+    $auth_user_id = intval(ajax_arg('login_user_id', FILTER_VALIDATE_REGEXP, $filter_number));
+    session_check('auth_user_id', $auth_user_id);
 
     $post_login_name = ajax_arg('login_name', FILTER_VALIDATE_REGEXP, $filter_text);
     $post_login_password = ajax_arg('login_password', FILTER_VALIDATE_REGEXP, $filter_hash);
@@ -17,7 +21,6 @@
     $post_address = ajax_arg('address', FILTER_UNSAFE_RAW, null);
 
     $auth_salt = session_delete('auth_salt');
-    $auth_user_id = session_get_force('auth_user_id');
 
     $user_info = db_user_get_name($post_login_name);
 

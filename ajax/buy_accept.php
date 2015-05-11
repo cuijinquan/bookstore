@@ -4,11 +4,13 @@
     require_once '../util/db_buy.php';
 
     // accept an order
+    // common args: login_user_id
     // args: buy_id
 
-    $post_buy_id = intval(ajax_arg('buy_id', FILTER_VALIDATE_REGEXP, $filter_number));
+    $auth_user_id = intval(ajax_arg('login_user_id', FILTER_VALIDATE_REGEXP, $filter_number));
+    session_check('auth_user_id', $auth_user_id);
 
-    $auth_user_id = session_get_force('auth_user_id');
+    $post_buy_id = intval(ajax_arg('buy_id', FILTER_VALIDATE_REGEXP, $filter_number));
 
     $buy_info = db_buy_get($post_buy_id);
 

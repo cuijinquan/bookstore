@@ -4,7 +4,11 @@
     require_once '../util/db_book.php';
 
     // add a book
+    // common args: login_user_id
     // args: cat_id, name, image, detail, price, inventory
+
+    $auth_user_id = intval(ajax_arg('login_user_id', FILTER_VALIDATE_REGEXP, $filter_number));
+    session_check('auth_user_id', $auth_user_id);
 
     $post_cat_id = intval(ajax_arg('cat_id', FILTER_VALIDATE_REGEXP, $filter_number));
     $post_name = ajax_arg('name', FILTER_VALIDATE_REGEXP, $filter_text);
@@ -12,8 +16,6 @@
     $post_detail = ajax_arg('detail', FILTER_UNSAFE_RAW, null);
     $post_price = ajax_arg('price', FILTER_VALIDATE_REGEXP, $filter_text);
     $post_inventory = intval(ajax_arg('inventory', FILTER_VALIDATE_REGEXP, $filter_number));
-
-    $auth_user_id = session_get_force('auth_user_id');
 
     if (db_book_add(
         $auth_user_id, $post_cat_id,

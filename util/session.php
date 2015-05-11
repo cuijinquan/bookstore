@@ -38,9 +38,25 @@
     }
 
     // get value in the session data or error
-    function session_get_force($key) {
+    // function session_get_force($key) {
+    //     if (isset($_SESSION[$key])) {
+    //         return $_SESSION[$key];
+    //     } else {
+    //         // value not exists
+    //         session_err();
+    //     }
+    // }
+
+    // check value in the session data
+    function session_check($key, $value) {
         if (isset($_SESSION[$key])) {
-            return $_SESSION[$key];
+            if ($_SESSION[$key] === $value) {
+                // ok
+                return;
+            } else {
+                // wrong value
+                session_err();
+            }
         } else {
             // value not exists
             session_err();

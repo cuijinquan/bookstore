@@ -4,12 +4,14 @@
     require_once '../util/db_buy.php';
 
     // get info of own orders (buying or selling)
+    // common args: login_user_id
     // args: mode, begin
+
+    $auth_user_id = intval(ajax_arg('login_user_id', FILTER_VALIDATE_REGEXP, $filter_number));
+    session_check('auth_user_id', $auth_user_id);
 
     $post_mode = ajax_arg('mode', FILTER_VALIDATE_REGEXP, $filter_text);
     $post_begin = intval(ajax_arg('begin', FILTER_VALIDATE_REGEXP, $filter_number));
-
-    $auth_user_id = session_get_force('auth_user_id');
 
     switch ($post_mode) {
         case 'b_d':

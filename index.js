@@ -72,6 +72,7 @@ $(document).ajaxError(function (event, xhr) {
             tag_error('提交被拒绝');
         } else if (xhr.status === 401) {
             tag_error('登录失效');
+            // ajax_auto_login();
         } else if (xhr.status === 500) {
             tag_error('服务器错误');
         } else {
@@ -143,14 +144,10 @@ var ajax_logout = function () {
     $.post(
         'ajax/auth_logout.php',
         {
-            user_id: login_user_id,
+            login_user_id: login_user_id,
         },
         function (data) {
-            if (data['auth_success']) {
-                login_update(undefined, undefined);
-            } else {
-                tag_error('退出失败');
-            }
+            login_update(undefined, undefined);
         },
         'json'
     );
@@ -177,6 +174,7 @@ var ajax_auth_edit = function (args) {
         'ajax/auth_gen.php',
         {},
         function (data) {
+            args['login_user_id'] = login_user_id;
             args['login_password'] = crypt_salt(
                 args['login_password'],
                 data['auth_salt']
@@ -209,7 +207,9 @@ var ajax_auth_edit = function (args) {
 var ajax_self_info = function () {
     $.post(
         'ajax/user_self.php',
-        {},
+        {
+            login_user_id: login_user_id,
+        },
         function (data) {
             intro_show(
                 data['image'],
@@ -241,7 +241,9 @@ var ajax_self_info = function () {
 var ajax_self_info_async = function (handler) {
     $.post(
         'ajax/user_self.php',
-        {},
+        {
+            login_user_id: login_user_id,
+        },
         function (data) {
             data['login_name'] = data['name'];
             handler(data);
@@ -491,6 +493,7 @@ var ajax_book_info_async = function (id, handler) {
 };
 
 var ajax_book_add = function (args) {
+    args['login_user_id'] = login_user_id;
     $.post(
         'ajax/book_add.php',
         args,
@@ -506,6 +509,7 @@ var ajax_book_add = function (args) {
 };
 
 var ajax_book_edit = function (args) {
+    args['login_user_id'] = login_user_id;
     $.post(
         'ajax/book_edit.php',
         args,
@@ -617,6 +621,7 @@ var ajax_list_order = function (title, mode) {
     $.post(
         'ajax/user_buy_sell.php',
         {
+            login_user_id: login_user_id,
             mode: mode,
             begin: 0,
         },
@@ -738,6 +743,7 @@ var ajax_buy = function (cart, address) {
         $.post(
             'ajax/buy_add.php',
             {
+                login_user_id: login_user_id,
                 book_id: item['id'],
                 address: address,
             },
@@ -760,6 +766,7 @@ var ajax_buy_accept = function (id) {
     $.post(
         'ajax/buy_accept.php',
         {
+            login_user_id: login_user_id,
             buy_id: id,
         },
         function (data) {
@@ -777,6 +784,7 @@ var ajax_buy_done = function (id, feedback) {
     $.post(
         'ajax/buy_done.php',
         {
+            login_user_id: login_user_id,
             buy_id: id,
             feedback: feedback,
         },
