@@ -1006,7 +1006,8 @@ var cart_init = function () {
     }
 
     cart_update();
-    setInterval(cart_update, 1000); // auto refresh
+    window.addEventListener('storage', cart_update);
+    setInterval(cart_update, 10000); // auto refresh
 };
 
 var cart_get = function () {
